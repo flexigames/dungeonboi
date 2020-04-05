@@ -1659,6 +1659,7 @@ tileset.src = "https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x7
 game.on("draw", function (ctx, dt) {
   drawBackground(ctx);
   drawLevel(ctx);
+  ctx.drawImage(tileset, sx, sy, TILE_SIZE, TILE_SIZE, 0, 0, TILE_SIZE, TILE_SIZE);
 });
 game.start();
 
@@ -1700,8 +1701,8 @@ function drawWallRightTile(ctx, x, y) {
 }
 
 function drawWallCornerTopRightTile(ctx, x, y) {
-  drawSprite(ctx, "wall_side_top_right", x * TILE_SIZE, (y - 1) * TILE_SIZE);
-  drawSprite(ctx, "wall_side_", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  drawSprite(ctx, "wall_side_top_right", (x + 1) * TILE_SIZE, (y - 1) * TILE_SIZE);
+  drawSprite(ctx, "wall_side_right", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 var sprites = _tiles_list_v.default.split("\n").map(function (line) {
@@ -1728,12 +1729,15 @@ var sprites = _tiles_list_v.default.split("\n").map(function (line) {
 }, {});
 
 function drawSprite(ctx, name, x, y) {
-  var _sprites$name = sprites[name],
-      sx = _sprites$name.sx,
-      sy = _sprites$name.sy,
-      swidth = _sprites$name.swidth,
-      sheight = _sprites$name.sheight;
-  ctx.drawImage(tileset, sx, sy, swidth, sheight, x, y, swidth, sheight);
+  var sprite = sprites[name];
+
+  if (sprite) {
+    var _sx = sprite.sx,
+        _sy = sprite.sy,
+        swidth = sprite.swidth,
+        sheight = sprite.sheight;
+    ctx.drawImage(tileset, _sx, _sy, swidth, sheight, x, y, swidth, sheight);
+  }
 }
 },{"crtrdg-gameloop":"node_modules/crtrdg-gameloop/index.js","./level.txt":"level.txt","./tiles_list_v1.3.txt":"tiles_list_v1.3.txt"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -1763,7 +1767,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41702" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36412" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
