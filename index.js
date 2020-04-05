@@ -18,7 +18,8 @@ game.on("draw", function(ctx, dt) {
   // drawLevel(ctx);
   
   
-  ctx.drawImage(tileset, 32, 126, TILE_SIZE, TILE_SIZE, 0, 0, TILE_SIZE, TILE_SIZE);
+  ctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, 0, 0, TILE_SIZE, TILE_SIZE);
+  drawSprite(ctx, "wall_corner_top_left", TILE_SIZE * 2, 0);
 });
 
 game.start();
@@ -79,12 +80,20 @@ const sprites = tilesList
   })
   .reduce((prev, { name, ...rest }) => ({ ...prev, [name]: { ...rest } }), {});
 
+let i = 0
+
 function drawSprite(ctx, name, x, y) {
   const sprite = sprites[name];
 
   if (sprite) {
+    if (i === 0) {
+      i = i + 1
+      console.log({sprite})
+      console.log(x)
+      console.log(y)
+    }
     const { sx, sy, swidth, sheight } = sprite;
 
-    ctx.drawImage(tileset, sx, sy + 16, swidth, sheight, x, y, swidth, sheight);
+    ctx.drawImage(tileset, sx + 10, sy + 20, swidth, sheight, x, y, swidth, sheight);
   }
 }
