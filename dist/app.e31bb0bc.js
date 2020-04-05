@@ -1613,17 +1613,18 @@ module.exports = function createGame (options) {
 
 
 },{"gameloop-canvas":"node_modules/crtrdg-gameloop/node_modules/gameloop-canvas/index.js","isarray":"node_modules/crtrdg-gameloop/node_modules/isarray/index.js"}],"level.txt":[function(require,module,exports) {
-module.exports = "................................\n................................\n......___.......................\n......___.......................\n..._______________________......\n......___................_......\n......___................_......\n......___................_......\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.._____________________________.\n...____________________________.\n....___________________________.\n.....__________________________.\n.............._............_....\n.............._............_....\n.............._............_....\n...........______..............\n...........______...............\n...........______...............\n................................\n................................";
+module.exports = "................................\n................................\n......___.......................\n......___.......................\n..._______________________......\n......___................_......\n......___................_......\n......___................_......\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.._____________________________.\n...____________________________.\n....___________________________.\n.....__________________________.\n.............._............_....\n.............._............_....\n.............._............_....\n...........______........_____..\n...........______...............\n...........______...............\n................................\n................................";
 },{}],"tiles_list_v1.3.txt":[function(require,module,exports) {
 module.exports = "wall_top_left 16 0 16 16\nwall_top_mid 32 0 16 16\nwall_top_right 48 0 16 16\n\nwall_left 16 16 16 16\nwall_mid 32 16 16 16\nwall_right 48 16 16 16\n\nwall_fountain_top 64 0 16 16\nwall_fountain_mid_red_anim 64 16 16 16 3\nwall_fountain_basin_red_anim 64 32 16 16 3\nwall_fountain_mid_blue_anim 64 48 16 16 3\nwall_fountain_basin_blue_anim 64 64 16 16 3\n\nwall_hole_1 48 32 16 16\nwall_hole_2 48 48 16 16\n\nwall_banner_red 16 32 16 16\nwall_banner_blue 32 32 16 16\nwall_banner_green 16 48 16 16\nwall_banner_yellow 32 48 16 16\n\ncolumn_top 80 80 16 16\ncolumn_mid 80 96 16 16\ncoulmn_base 80 112 16 16\nwall_column_top 96 80 16 16\nwall_column_mid 96 96 16 16\nwall_coulmn_base 96 112 16 16\n\nwall_goo 64 80 16 16\nwall_goo_base 64 96 16 16\n\nfloor_1 16 64 16 16\nfloor_2 32 64 16 16\nfloor_3 48 64 16 16\nfloor_4 16 80 16 16\nfloor_5 32 80 16 16\nfloor_6 48 80 16 16\nfloor_7 16 96 16 16\nfloor_8 32 96 16 16\nfloor_ladder 48 96 16 16\n\nfloor_spikes_anim 16 176 16 16 4\n\nwall_side_top_left 0 112 16 16\nwall_side_top_right 16 112 16 16\nwall_side_mid_left 0 128 16 16\nwall_side_mid_right 16 128 16 16\nwall_side_front_left 0 144 16 16\nwall_side_front_right 16 144 16 16\n\nwall_corner_top_left 32 112 16 16\nwall_corner_top_right 48 112 16 16\nwall_corner_left 32 128 16 16\nwall_corner_right 48 128 16 16\nwall_corner_bottom_left 32 144 16 16\nwall_corner_bottom_right 48 144 16 16\nwall_corner_front_left 32 160 16 16\nwall_corner_front_right 48 160 16 16\n\nwall_inner_corner_l_top_left 80 128 16 16\nwall_inner_corner_l_top_rigth 64 128 16 16\nwall_inner_corner_mid_left 80 144 16 16\nwall_inner_corner_mid_rigth 64 144 16 16\nwall_inner_corner_t_top_left 80 160 16 16\nwall_inner_corner_t_top_rigth 64 160 16 16\n\nedge 96 128 16 16\nhole  96 144 16 16\n\ndoors_all 16 221 64 35\ndoors_frame_left 16 224 16 32\ndoors_frame_top 32 221 32 3\ndoors_frame_righ 63 224 16 32\ndoors_leaf_closed 32 224 32 32\ndoors_leaf_open 80 224 32 32\n\nchest_empty_open_anim 304 288 16 16 3\nchest_full_open_anim 304 304 16 16 3\nchest_mimic_open_anim 304 320 16 16 3\n\nflask_big_red 288 224 16 16\nflask_big_blue 304 224 16 16\nflask_big_green 320 224 16 16\nflask_big_yellow 336 224 16 16\n\nflask_red 288 240 16 16\nflask_blue 304 240 16 16\nflask_green 320 240 16 16\nflask_yellow 336 240 16 16\n\nskull 288 320 16 16\ncrate 288 298 16 22\n\ncoin_anim 288 272 8 8 4\n\nui_heart_full 288 256 16 16\nui_heart_half 304 256 16 16\nui_heart_empty 320 256 16 16\n\nweapon_knife 293 18 6 13\nweapon_rusty_sword 307 26 10 21\nweapon_regular_sword 323 26 10 21\nweapon_red_gem_sword 339 26 10 21\nweapon_big_hammer 291 42 10 37\nweapon_hammer 307 55 10 24\nweapon_baton_with_spikes 323 57 10 22\nweapon_mace 339 55 10 24\nweapon_katana 293 82 6 29\nweapon_saw_sword 307 86 10 25\nweapon_anime_sword 322 81 12 30\nweapon_axe 341 90 9 21\nweapon_machete 294 121 5 22\nweapon_cleaver 310 124 8 19\nweapon_duel_sword 325 113 9 30\nweapon_knight_sword 339 114 10 29\nweapon_golden_sword 291 153 10 22\nweapon_lavish_sword 307 145 10 30\nweapon_red_magic_staff 324 145 8 30\nweapon_green_magic_staff 340 145 8 30\nweapon_spear 293 177 6 30\n\ntiny_zombie_idle_anim 368 16 16 16 4\ntiny_zombie_run_anim 432 16 16 16 4\ngoblin_idle_anim 368 32 16 16 4\ngoblin_run_anim 432 32 16 16 4\nimp_idle_anim 368 48 16 16 4\nimp_run_anim 432 48 16 16 4\nskelet_idle_anim 368 80 16 16 4\nskelet_run_anim 432 80 16 16 4\nmuddy_idle_anim 368 112 16 16 4\nmuddy_run_anim 368 112 16 16 4\nswampy_idle_anim 432 112 16 16 4\nswampy_run_anim 432 112 16 16 4\nzombie_idle_anim 368 144 16 16 4\nzombie_run_anim 368 144 16 16 4\nice_zombie_idle_anim 432 144 16 16 4\nice_zombie_run_anim 432 144 16 16 4\nmasked_orc_idle_anim 368 172 16 20 4\nmasked_orc_run_anim 432 172 16 20 4\norc_warrior_idle_anim 368 204 16 20 4\norc_warrior_run_anim 432 204 16 20 4\norc_shaman_idle_anim 368 236 16 20 4\norc_shaman_run_anim 432 236 16 20 4\nnecromancer_idle_anim 368 268 16 20 4\nnecromancer_run_anim 368 268 16 20 4\nwogol_idle_anim 368 300 16 20 4\nwogol_run_anim 432 300 16 20 4\nchort_idle_anim 368 328 16 24 4\nchort_run_anim 432 328 16 24 4\nbig_zombie_idle_anim 16 270 32 34 4\nbig_zombie_run_anim 144 270 32 34 4\nogre_idle_anim  16 320 32 32 4\nogre_run_anim 144 320 32 32 4\nbig_demon_idle_anim  16 364 32 36 4\nbig_demon_run_anim 144 364 32 36 4\n\nelf_f_idle_anim 128 4 16 28 4\nelf_f_run_anim 192 4 16 28 4\nelf_f_hit_anim 256 4 16 28 1\n\nelf_m_idle_anim 128 36 16 28 4\nelf_m_run_anim 192 36 16 28 4\nelf_m_hit_anim 256 36 16 28 1\n\nknight_f_idle_anim 128 68 16 28 4\nknight_f_run_anim 192 68 16 28 4\nknight_f_hit_anim 256 68 16 28 1\n\nknight_m_idle_anim 128 100 16 28 4\nknight_m_run_anim 192 100 16 28 4\nknight_m_hit_anim 256 100 16 28 1\n\nwizzard_f_idle_anim 128 132 16 28 4\nwizzard_f_run_anim 192 132 16 28 4\nwizzard_f_hit_anim 256 132 16 28 1\n\nwizzard_m_idle_anim 128 164 16 28 4\nwizzard_m_run_anim 192 164 16 28 4\nwizzard_m_hit_anim 256 164 16 28 1\n\nlizard_f_idle_anim 128 196 16 28 4\nlizard_f_run_anim 192 196 16 28 4\nlizard_f_hit_anim 256 196 16 28 1\n\nlizard_m_idle_anim 128 228 16 28 4\nlizard_m_run_anim 192 228 16 28 4\nlizard_m_hit_anim 256 228 16 28 1\n";
-},{}],"index.js":[function(require,module,exports) {
+},{}],"lib/sprite.js":[function(require,module,exports) {
 "use strict";
 
-var _crtrdgGameloop = _interopRequireDefault(require("crtrdg-gameloop"));
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
-var _level = _interopRequireDefault(require("./level.txt"));
-
-var _tiles_list_v = _interopRequireDefault(require("./tiles_list_v1.3.txt"));
+var _tiles_list_v = _interopRequireDefault(require("../tiles_list_v1.3.txt"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1649,31 +1650,65 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var TILE_SIZE = 16;
-var state = {
-  player: {
-    x: 100,
-    y: 100
-  }
-};
-var game = (0, _crtrdgGameloop.default)();
-game.canvas.height = 512;
-game.canvas.width = 512;
 var tileset = new Image(512, 512);
 tileset.src = "https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409";
-game.on("draw", function (ctx, dt) {
-  drawLevel(ctx);
-  drawSprite(ctx, "wizzard_m_idle_anim", state.player.x, state.player.y);
-});
-game.start();
 
-var levelMatrix = _level.default.split("\n").map(function (line) {
-  return line.split("");
-});
+var sprites = _tiles_list_v.default.split("\n").map(function (line) {
+  var _line$split = line.split(" "),
+      _line$split2 = _slicedToArray(_line$split, 6),
+      name = _line$split2[0],
+      sx = _line$split2[1],
+      sy = _line$split2[2],
+      swidth = _line$split2[3],
+      sheight = _line$split2[4],
+      frames = _line$split2[5];
 
-function getLevelTile(x, y) {
-  return levelMatrix[y] && levelMatrix[y][x];
+  return {
+    name: name,
+    sx: parseInt(sx),
+    sy: parseInt(sy),
+    swidth: parseInt(swidth),
+    sheight: parseInt(sheight),
+    frames: parseInt(frames)
+  };
+}).reduce(function (prev, _ref) {
+  var name = _ref.name,
+      rest = _objectWithoutProperties(_ref, ["name"]);
+
+  return _objectSpread({}, prev, _defineProperty({}, name, _objectSpread({}, rest)));
+}, {});
+
+function drawSprite(ctx, name, x, y) {
+  var sprite = sprites[name];
+
+  if (sprite) {
+    var sx = sprite.sx,
+        sy = sprite.sy,
+        swidth = sprite.swidth,
+        sheight = sprite.sheight;
+    ctx.drawImage(tileset, sx, sy, swidth, sheight, x, y, swidth, sheight);
+  }
 }
+
+var _default = drawSprite;
+exports.default = _default;
+},{"../tiles_list_v1.3.txt":"tiles_list_v1.3.txt"}],"lib/level.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _level = _interopRequireDefault(require("../level.txt"));
+
+var _sprite = _interopRequireDefault(require("./sprite"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TILE_SIZE = 16;
+var _default = drawLevel;
+exports.default = _default;
 
 function drawLevel(ctx) {
   levelMatrix.forEach(function (line, y) {
@@ -1699,106 +1734,98 @@ function drawLevel(ctx) {
 }
 
 function drawWallInnerRightCorner(ctx, x, y) {
-  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_side_front_left", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_side_front_left", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawWallInnerLeftCorner(ctx, x, y) {
-  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_side_front_right", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_side_front_right", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawWallInnerLeftTopCorner(ctx, x, y) {
-  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_side_top_right", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  (0, _sprite.default)(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_side_top_right", x * TILE_SIZE, (y - 1) * TILE_SIZE);
 }
 
 function drawWallInnerRightTopCorner(ctx, x, y) {
-  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_side_top_left", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  (0, _sprite.default)(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_side_top_left", x * TILE_SIZE, (y - 1) * TILE_SIZE);
 }
 
 function drawFloorTile(ctx, x, y) {
-  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawWallTopTile(ctx, x, y) {
-  drawSprite(ctx, "wall_top_mid", x * TILE_SIZE, (y - 1) * TILE_SIZE);
-  drawSprite(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_top_mid", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawWallCornerTopLeftTile(ctx, x, y) {
-  drawSprite(ctx, "wall_corner_left", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_corner_top_left", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_corner_left", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_corner_top_left", x * TILE_SIZE, (y - 1) * TILE_SIZE);
 }
 
 function drawWallCornerTopRightTile(ctx, x, y) {
-  drawSprite(ctx, "wall_corner_right", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_corner_right", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_corner_top_right", x * TILE_SIZE, (y - 1) * TILE_SIZE);
 }
 
 function drawWallCornerBottomRightTile(ctx, x, y) {
-  drawSprite(ctx, "wall_corner_front_right", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_corner_bottom_right", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_corner_front_right", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_corner_bottom_right", x * TILE_SIZE, (y - 1) * TILE_SIZE);
 }
 
 function drawWallCornerBottomLeftTile(ctx, x, y) {
-  drawSprite(ctx, "wall_corner_front_left", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_corner_bottom_left", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_corner_front_left", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_corner_bottom_left", x * TILE_SIZE, (y - 1) * TILE_SIZE);
 }
 
 function drawWallLeftTile(ctx, x, y) {
-  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawWallRightTile(ctx, x, y) {
-  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawWallBottomTile(ctx, x, y) {
-  drawSprite(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_top_mid", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE);
+  (0, _sprite.default)(ctx, "wall_top_mid", x * TILE_SIZE, (y - 1) * TILE_SIZE);
 }
 
-var sprites = _tiles_list_v.default.split("\n").map(function (line) {
-  var _line$split = line.split(" "),
-      _line$split2 = _slicedToArray(_line$split, 5),
-      name = _line$split2[0],
-      sx = _line$split2[1],
-      sy = _line$split2[2],
-      swidth = _line$split2[3],
-      sheight = _line$split2[4];
+var levelMatrix = _level.default.split("\n").map(function (line) {
+  return line.split("");
+});
 
-  return {
-    name: name,
-    sx: parseInt(sx),
-    sy: parseInt(sy),
-    swidth: parseInt(swidth),
-    sheight: parseInt(sheight)
-  };
-}).reduce(function (prev, _ref) {
-  var name = _ref.name,
-      rest = _objectWithoutProperties(_ref, ["name"]);
-
-  return _objectSpread({}, prev, _defineProperty({}, name, _objectSpread({}, rest)));
-}, {});
-
-function drawSprite(ctx, name, x, y) {
-  var sprite = sprites[name];
-
-  if (sprite) {
-    var sx = sprite.sx,
-        sy = sprite.sy,
-        swidth = sprite.swidth,
-        sheight = sprite.sheight;
-    ctx.drawImage(tileset, sx, sy, swidth, sheight, x, y, swidth, sheight);
-  }
+function getLevelTile(x, y) {
+  return levelMatrix[y] && levelMatrix[y][x];
 }
-},{"crtrdg-gameloop":"node_modules/crtrdg-gameloop/index.js","./level.txt":"level.txt","./tiles_list_v1.3.txt":"tiles_list_v1.3.txt"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"../level.txt":"level.txt","./sprite":"lib/sprite.js"}],"index.js":[function(require,module,exports) {
+"use strict";
+
+var _crtrdgGameloop = _interopRequireDefault(require("crtrdg-gameloop"));
+
+var _level = _interopRequireDefault(require("./lib/level"));
+
+var _sprite = _interopRequireDefault(require("./lib/sprite"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var game = (0, _crtrdgGameloop.default)();
+game.canvas.height = 512;
+game.canvas.width = 512;
+game.on("draw", function (ctx, dt) {
+  (0, _level.default)(ctx);
+  (0, _sprite.default)(ctx, "wizzard_m_idle_anim", 100, 100);
+});
+game.start();
+},{"crtrdg-gameloop":"node_modules/crtrdg-gameloop/index.js","./lib/level":"lib/level.js","./lib/sprite":"lib/sprite.js"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1826,7 +1853,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45718" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40455" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
