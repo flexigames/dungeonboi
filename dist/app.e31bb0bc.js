@@ -1656,7 +1656,11 @@ game.canvas.width = 512;
 var tileset = new Image(512, 512);
 tileset.src = "https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409";
 game.on("draw", function (ctx, dt) {
-  drawLevel(ctx);
+  // drawLevel(ctx)
+  drawWallCornerTopLeftTile(ctx, 0, 0);
+  drawWallCornerTopRightTile(ctx, 1, 0);
+  drawWallCornerBottomRightTile(ctx, 1, 1);
+  drawWallCornerBottomLeftTile(ctx, 0, 1);
   drawSprite(ctx, 'wizzard_m_idle_anim', 10 * TILE_SIZE, 10 * TILE_SIZE);
 });
 game.start();
@@ -1698,8 +1702,25 @@ function drawWallTopTile(ctx, x, y) {
   drawSprite(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE);
 }
 
+function drawWallCornerTopLeftTile(ctx, x, y) {
+  drawSprite(ctx, "wall_corner_top_left", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "wall_corner_front_left", x * TILE_SIZE, y * TILE_SIZE); // drawSprite(ctx, "wall_side_mid_left", (x - 1) * TILE_SIZE, y * TILE_SIZE)
+}
+
 function drawWallCornerTopRightTile(ctx, x, y) {
+  // drawSprite(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE)
   drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "wall_corner_front_right", x * TILE_SIZE, y * TILE_SIZE);
+}
+
+function drawWallCornerBottomRightTile(ctx, x, y) {
+  drawSprite(ctx, "wall_corner_bottom_right", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "wall_corner_right", x * TILE_SIZE, y * TILE_SIZE);
+}
+
+function drawWallCornerBottomLeftTile(ctx, x, y) {
+  drawSprite(ctx, "wall_corner_left", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "wall_corner_bottom_left", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawWallLeftTile(ctx, x, y) {
@@ -1778,7 +1799,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39684" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38406" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
