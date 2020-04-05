@@ -2859,10 +2859,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var Player = /*#__PURE__*/function () {
   function Player(x, y) {
+    var flipped = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
     _classCallCheck(this, Player);
 
     this.x = x;
     this.y = y;
+    this.flipped = flipped;
   }
 
   _createClass(Player, [{
@@ -2897,7 +2900,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var game = (0, _crtrdgGameloop.default)();
 game.canvas.height = 512;
 game.canvas.width = 512;
-var entities = [new _Player.default(140, 240)];
+var player = new _Player.default(140, 240);
+var entities = [player];
 game.on("draw", function (ctx, dt) {
   (0, _level.default)(ctx);
   drawEntities(ctx);
@@ -2938,7 +2942,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36893" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42059" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
