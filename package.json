@@ -1,0 +1,17 @@
+  
+{
+  "name": "hexapong",
+  "version": "0.0.0",
+  "description": "pong spinoff",
+  "main": "index.js",
+  "scripts": {
+    "start": "bankai start index.js"
+  },
+  "dependencies": {
+    "crtrdg-gameloop": "1.0.3"
+  },
+  "devDependencies": {
+    "browserify": "16.5.1",
+    "bankai": "9.15.3"
+  }
+}
