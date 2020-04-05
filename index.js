@@ -1,27 +1,45 @@
-import createGame from 'crtrdg-gameloop'
-import level from 'level.txt'
+import createGame from "crtrdg-gameloop";
+import level from "./level.txt";
 
-console.log({level})
+const TILE_SIZE = 16;
 
-const game = createGame()
+const game = createGame();
 
-game.canvas.height = 512
-game.canvas.width = 512
+game.canvas.height = 512;
+game.canvas.width = 512;
 
 const tileset = new Image(512, 512); // Using optional size for image
-tileset.src = 'https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409'
+tileset.src =
+  "https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409";
 
+game.on("draw", function(ctx, dt) {
+  drawBackground(ctx)
+  drawLevel(ctx);
+});
 
-// ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+game.start();
 
+function drawBackground(ctx) {
+  ctx.save()
+  ctx.fillStyle = "#222";
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.restore()
+}
 
-
-game.on('draw', function (ctx, dt) {
-  // ctx.drawImage(tileset, 0, 0, 16, 16, 0, 0, 16, 16)
-  ctx.fillStyle = "#222"
-  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-  ctx.drawImage(tileset, 16, 64, 16, 16, 0, 0, 16, 16)
-})
-
-
-game.start()
+function drawLevel(ctx) {
+  level.split("\n").forEach((line, x) =>
+    line.split("").forEach((tile, y) => {
+      ctx.drawImage(
+        tileset,
+        TILE_SIZE,
+        4 * TILE_SIZE,
+        TILE_SIZE,
+        TILE_SIZE,
+        x * TILE_SIZE,
+        y * TILE_SIZE,
+        TILE_SIZE,
+        TILE_SIZE
+      );
+    })
+  );
+}
