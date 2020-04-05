@@ -30,49 +30,126 @@ function drawLevel(ctx) {
   level.split("\n").forEach((line, y) =>
     line.split("").forEach((tile, x) => {
       if (tile === "_") {
-        ctx.drawImage(
-          tileset,
-          TILE_SIZE,
-          4 * TILE_SIZE,
-          TILE_SIZE,
-          TILE_SIZE,
-          x * TILE_SIZE,
-          y * TILE_SIZE,
-          TILE_SIZE,
-          TILE_SIZE
-        );
+        drawFloorTile(ctx, x, y)
       }
-      if (tile === "-") {
-                ctx.drawImage(
-          tileset,
-          TILE_SIZE,
-          4 * TILE_SIZE,
-          TILE_SIZE,
-          TILE_SIZE,
-          x * TILE_SIZE,
-          y * TILE_SIZE,
-          TILE_SIZE,
-          TILE_SIZE
-        );
+      else if (tile === "-") {
+        drawWallTopTile(ctx, x, y)
       }
     })
   );
 }
 
 function drawFloorTile(ctx, x, y) {
-          ctx.drawImage(
-          tileset,
-          TILE_SIZE,
-          4 * TILE_SIZE,
-          TILE_SIZE,
-          TILE_SIZE,
-          x * TILE_SIZE,
-          y * TILE_SIZE,
-          TILE_SIZE,
-          TILE_SIZE
-        );
+  ctx.drawImage(
+    tileset,
+    TILE_SIZE,
+    4 * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE,
+    x * TILE_SIZE,
+    y * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE
+  );
 }
 
-const tiles = {
-  _: (ctx, x, y) => drawFloorTile(ctx, x, y)
+function drawWallTopTile(ctx, x, y) {
+  ctx.drawImage(
+    tileset,
+    2 * TILE_SIZE,
+    1 * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE,
+    x * TILE_SIZE,
+    y * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE
+  );
+  ctx.drawImage(
+    tileset,
+    2 * TILE_SIZE,
+    0 * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE,
+    x * TILE_SIZE,
+    (y - 1) * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE
+  );
 }
+
+function drawWallLeftTile(ctx, x, y) {
+  ctx.drawImage(
+    tileset,
+    2 * TILE_SIZE,
+    1 * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE,
+    x * TILE_SIZE,
+    y * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE
+  );
+  ctx.drawImage(
+    tileset,
+    2 * TILE_SIZE,
+    0 * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE,
+    x * TILE_SIZE,
+    (y - 1) * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE
+  );
+}
+
+function drawWallRightTile(ctx, x, y) {
+  ctx.drawImage(
+    tileset,
+    2 * TILE_SIZE,
+    1 * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE,
+    x * TILE_SIZE,
+    y * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE
+  );
+  ctx.drawImage(
+    tileset,
+    2 * TILE_SIZE,
+    0 * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE,
+    x * TILE_SIZE,
+    (y - 1) * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE
+  );
+}
+
+function drawWallBottomTile(ctx, x, y) {
+  ctx.drawImage(
+    tileset,
+    2 * TILE_SIZE,
+    1 * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE,
+    x * TILE_SIZE,
+    y * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE
+  );
+  ctx.drawImage(
+    tileset,
+    2 * TILE_SIZE,
+    0 * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE,
+    x * TILE_SIZE,
+    (y - 1) * TILE_SIZE,
+    TILE_SIZE,
+    TILE_SIZE
+  );
+}
+

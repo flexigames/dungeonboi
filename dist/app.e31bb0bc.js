@@ -1613,7 +1613,7 @@ module.exports = function createGame (options) {
 
 
 },{"gameloop-canvas":"node_modules/crtrdg-gameloop/node_modules/gameloop-canvas/index.js","isarray":"node_modules/crtrdg-gameloop/node_modules/isarray/index.js"}],"level.txt":[function(require,module,exports) {
-module.exports = "................................\n................................\n................................\n................................\n................................\n................................\n................................\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________..______________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................";
+module.exports = "................................\n................................\n................................\n................................\n................................\n................................\n................................\n.------------------------------.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________..______________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................";
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -1647,11 +1647,9 @@ function drawLevel(ctx) {
   _level.default.split("\n").forEach(function (line, y) {
     return line.split("").forEach(function (tile, x) {
       if (tile === "_") {
-        ctx.drawImage(tileset, TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-      }
-
-      if (tile === "-") {
-        ctx.drawImage(tileset, TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        drawFloorTile(ctx, x, y);
+      } else if (tile === "-") {
+        drawWallTopTile(ctx, x, y);
       }
     });
   });
@@ -1661,11 +1659,25 @@ function drawFloorTile(ctx, x, y) {
   ctx.drawImage(tileset, TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 }
 
-var tiles = {
-  _: function _(ctx, x, y) {
-    return drawFloorTile(ctx, x, y);
-  }
-};
+function drawWallTopTile(ctx, x, y) {
+  ctx.drawImage(tileset, 2 * TILE_SIZE, 1 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  ctx.drawImage(tileset, 2 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+}
+
+function drawWallLeftTile(ctx, x, y) {
+  ctx.drawImage(tileset, 2 * TILE_SIZE, 1 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  ctx.drawImage(tileset, 2 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+}
+
+function drawWallRightTile(ctx, x, y) {
+  ctx.drawImage(tileset, 2 * TILE_SIZE, 1 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  ctx.drawImage(tileset, 2 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+}
+
+function drawWallBottomTile(ctx, x, y) {
+  ctx.drawImage(tileset, 2 * TILE_SIZE, 1 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  ctx.drawImage(tileset, 2 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+}
 },{"crtrdg-gameloop":"node_modules/crtrdg-gameloop/index.js","./level.txt":"level.txt"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -1694,7 +1706,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44231" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44839" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
