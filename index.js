@@ -37,6 +37,9 @@ function drawLevel(ctx) {
       } else if (tile === "|") {
         drawWallRightTile(ctx, x, y);
       }
+       else if (tile === "x") {
+        drawWallCornerTopRightTile(ctx, x, y);
+      }
     })
   );
 }
@@ -53,6 +56,11 @@ function drawWallTopTile(ctx, x, y) {
 function drawWallRightTile(ctx, x, y) {
   drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
   drawSprite(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE)
+}
+
+function drawWallCornerTopRightTile(ctx, x, y) {
+  drawSprite(ctx, "wall_side_top_right", x * TILE_SIZE, (y - 1) * TILE_SIZE)
+  drawSprite(ctx, "wall_side_", x * TILE_SIZE, (y - 1) * TILE_SIZE)
 }
 
 const sprites = tilesList.split("\n").map(line => {
