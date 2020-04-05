@@ -14,22 +14,14 @@ tileset.src =
   "https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409";
 
 game.on("draw", function(ctx, dt) {
-  // drawBackground(ctx);
   // drawLevel(ctx);
   
   
-  ctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, 0, 0, TILE_SIZE, TILE_SIZE);
-  drawSprite(ctx, "wall_corner_top_left", TILE_SIZE * 2, 0);
+  ctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
+  drawSprite(ctx, "wall_corner_top_left", 0, 0);
 });
 
 game.start();
-
-function drawBackground(ctx) {
-  ctx.save();
-  ctx.fillStyle = "#222";
-  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.restore();
-}
 
 function drawLevel(ctx) {
   level.split("\n").forEach((line, y) =>
@@ -89,11 +81,12 @@ function drawSprite(ctx, name, x, y) {
     if (i === 0) {
       i = i + 1
       console.log({sprite})
+      console.log(ctx)
       console.log(x)
       console.log(y)
     }
     const { sx, sy, swidth, sheight } = sprite;
 
-    ctx.drawImage(tileset, sx + 10, sy + 20, swidth, sheight, x, y, swidth, sheight);
+    ctx.drawImage(tileset, sx, sy + 12, swidth, sheight, x, y, swidth, sheight);
   }
 }
