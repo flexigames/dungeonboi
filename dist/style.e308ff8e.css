@@ -8,6 +8,8 @@ html, body {
 }
 
 canvas {
+    height: 1024px;
+    width: 1024px;
     image-rendering: pixelated;
 }
 

@@ -1581,8 +1581,8 @@ var _crtrdgGameloop = _interopRequireDefault(require("crtrdg-gameloop"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var game = (0, _crtrdgGameloop.default)();
-game.canvas.height = 128;
-game.canvas.width = 128;
+game.canvas.height = 512;
+game.canvas.width = 512;
 var tileset = new Image(512, 512); // Using optional size for image
 
 tileset.src = 'https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409'; // ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
@@ -1591,7 +1591,7 @@ game.on('draw', function (ctx, dt) {
   // ctx.drawImage(tileset, 0, 0, 16, 16, 0, 0, 16, 16)
   ctx.fillStyle = "#222";
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.drawImage(tileset, 16, 64, 16, 16, 0, 0, 64, 64);
+  ctx.drawImage(tileset, 16, 64, 16, 16, 0, 0, 16, 16);
 });
 game.start();
 },{"crtrdg-gameloop":"node_modules/crtrdg-gameloop/index.js"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -1622,7 +1622,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43131" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34529" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
