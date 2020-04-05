@@ -10,7 +10,7 @@ export default class Player {
   }
 
   draw(ctx) {
-    animateSprite(ctx, this.isMoving() ? "wizzard_m_idle_anim" : "wizzard_m_run_anim", this.x, this.y)
+    animateSprite(ctx, this.isMoving() ? "wizzard_m_idle_anim" : "wizzard_m_run_anim", this.x, this.y, this.flipped)
   }
 
   update(dt) {
