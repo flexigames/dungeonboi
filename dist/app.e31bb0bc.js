@@ -1657,10 +1657,7 @@ var tileset = new Image(512, 512); // Using optional size for image
 
 tileset.src = "https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409";
 game.on("draw", function (ctx, dt) {
-  // drawLevel(ctx);
-  console.logctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
-  ctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
-  drawSprite(ctx, "wall_corner_top_left", 0, 0);
+  drawLevel(ctx);
 });
 game.start();
 
@@ -1685,18 +1682,16 @@ function drawFloorTile(ctx, x, y) {
 }
 
 function drawWallTopTile(ctx, x, y) {
-  drawSprite(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_top_mid", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  drawSprite(ctx, "wall_top_mid", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawWallRightTile(ctx, x, y) {
   drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawWallCornerTopRightTile(ctx, x, y) {
-  drawSprite(ctx, "wall_side_top_right", (x + 1) * TILE_SIZE, (y - 1) * TILE_SIZE);
-  drawSprite(ctx, "wall_side_right", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 var sprites = _tiles_list_v.default.split("\n").map(function (line) {
@@ -1710,10 +1705,10 @@ var sprites = _tiles_list_v.default.split("\n").map(function (line) {
 
   return {
     name: name,
-    sx: sx,
-    sy: sy,
-    swidth: swidth,
-    sheight: sheight
+    sx: parseInt(sx),
+    sy: parseInt(sy),
+    swidth: parseInt(swidth),
+    sheight: parseInt(sheight)
   };
 }).reduce(function (prev, _ref) {
   var name = _ref.name,
@@ -1722,23 +1717,16 @@ var sprites = _tiles_list_v.default.split("\n").map(function (line) {
   return _objectSpread({}, prev, _defineProperty({}, name, _objectSpread({}, rest)));
 }, {});
 
-var i = 0;
-
 function drawSprite(ctx, name, x, y) {
   var sprite = sprites[name];
 
   if (sprite) {
-    if (i === 0) {
-      i = i + 1;
-      console.log("ctx.drawImage(".concat(tileset, ", ").concat(sx, ", ").concat(sy + 12, ", ").concat(swidth, ", ").concat(sheight, ", ").concat(x, ", ").concat(y, ", ").concat(swidth, ", ").concat(sheight, ")"));
-    }
-
+    console.warn("".concat(name, " doesn't exist as a sprite"));
     var sx = sprite.sx,
         sy = sprite.sy,
         swidth = sprite.swidth,
         sheight = sprite.sheight;
-    console.log("ctx.drawImage(".concat(tileset, ", ").concat(sx, ", ").concat(sy + 12, ", ").concat(swidth, ", ").concat(sheight, ", ").concat(x, ", ").concat(y, ", ").concat(swidth, ", ").concat(sheight, ")"));
-    ctx.drawImage(tileset, sx, sy + 12, swidth, sheight, x, y, swidth, sheight);
+    ctx.drawImage(tileset, sx, sy, swidth, sheight, x, y, swidth, sheight);
   }
 }
 },{"crtrdg-gameloop":"node_modules/crtrdg-gameloop/index.js","./level.txt":"level.txt","./tiles_list_v1.3.txt":"tiles_list_v1.3.txt"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -1769,7 +1757,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38417" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34861" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

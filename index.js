@@ -1,92 +1,77 @@
-import createGame from "crtrdg-gameloop";
-import level from "./level.txt";
-import tilesList from "./tiles_list_v1.3.txt";
+import createGame from "crtrdg-gameloop"
+import level from "./level.txt"
+import tilesList from "./tiles_list_v1.3.txt"
 
-const TILE_SIZE = 16;
+const TILE_SIZE = 16
 
-const game = createGame();
+const game = createGame()
 
-game.canvas.height = 512;
-game.canvas.width = 512;
+game.canvas.height = 512
+game.canvas.width = 512
 
-const tileset = new Image(512, 512); // Using optional size for image
+const tileset = new Image(512, 512) // Using optional size for image
 tileset.src =
-  "https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409";
+  "https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409"
 
 game.on("draw", function(ctx, dt) {
-  // drawLevel(ctx);
-  
-  
-  console.logctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
-  ctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
-  drawSprite(ctx, "wall_corner_top_left", 0, 0);
-});
+  drawLevel(ctx)
+})
 
-game.start();
+game.start()
 
 function drawLevel(ctx) {
   level.split("\n").forEach((line, y) =>
     line.split("").forEach((tile, x) => {
       if (tile === "_") {
-        drawFloorTile(ctx, x, y);
+        drawFloorTile(ctx, x, y)
       } else if (tile === "-") {
-        drawWallTopTile(ctx, x, y);
+        drawWallTopTile(ctx, x, y)
       } else if (tile === "|") {
-        drawWallRightTile(ctx, x, y);
+        drawWallRightTile(ctx, x, y)
       } else if (tile === "x") {
-        drawWallCornerTopRightTile(ctx, x, y);
+        drawWallCornerTopRightTile(ctx, x, y)
       }
     })
-  );
+  )
 }
 
 function drawFloorTile(ctx, x, y) {
-  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
 }
 
 function drawWallTopTile(ctx, x, y) {
-  drawSprite(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_top_mid", x * TILE_SIZE, (y - 1) * TILE_SIZE);
+  drawSprite(ctx, "wall_top_mid", x * TILE_SIZE, y * TILE_SIZE)
 }
 
 function drawWallRightTile(ctx, x, y) {
-  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
-  drawSprite(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE)
 }
 
 function drawWallCornerTopRightTile(ctx, x, y) {
-  drawSprite(ctx, "wall_side_top_right", (x+1) * TILE_SIZE, (y - 1) * TILE_SIZE);
-  drawSprite(ctx, "wall_side_right", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, y * TILE_SIZE)
 }
 
 const sprites = tilesList
   .split("\n")
   .map(line => {
-    const [name, sx, sy, swidth, sheight] = line.split(" ");
+    const [name, sx, sy, swidth, sheight] = line.split(" ")
     return {
       name,
-      sx,
-      sy,
-      swidth,
-      sheight
-    };
+      sx: parseInt(sx),
+      sy: parseInt(sy),
+      swidth: parseInt(swidth),
+      sheight: parseInt(sheight)
+    }
   })
-  .reduce((prev, { name, ...rest }) => ({ ...prev, [name]: { ...rest } }), {});
-
-let i = 0
+  .reduce((prev, { name, ...rest }) => ({ ...prev, [name]: { ...rest } }), {})
 
 function drawSprite(ctx, name, x, y) {
-  const sprite = sprites[name];
+  const sprite = sprites[name]
 
   if (sprite) {
-    if (i === 0) {
-      i = i + 1
-    console.log(`ctx.drawImage(${tileset}, ${sx}, ${sy + 12}, ${swidth}, ${sheight}, ${x}, ${y}, ${swidth}, ${sheight})`)
-      
-    }
-    const { sx, sy, swidth, sheight } = sprite;
-
-    console.log(`ctx.drawImage(${tileset}, ${sx}, ${sy + 12}, ${swidth}, ${sheight}, ${x}, ${y}, ${swidth}, ${sheight})`)
-    ctx.drawImage(tileset, sx, sy + 12, swidth, sheight, x, y, swidth, sheight);
+    console.warn(`${name} doesn't exist as a sprite`)
+    const { sx, sy, swidth, sheight } = sprite
+    ctx.drawImage(tileset, sx, sy, swidth, sheight, x, y, swidth, sheight)
   }
 }
