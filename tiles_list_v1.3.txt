@@ -1,4 +1,4 @@
-wall_top_left 16 0 16 16
+big_demon_idle_anim  big_demon_idle_anim  big_demon_idle_anim  wall_top_left 16 0 16 16
 wall_top_mid 32 0 16 16
 wall_top_right 48 0 16 16
 
@@ -63,7 +63,7 @@ wall_inner_corner_l_top_rigth 64 128 16 16
 wall_inner_corner_mid_left 80 144 16 16
 wall_inner_corner_mid_rigth 64 144 16 16
 wall_inner_corner_t_top_left 80 160 16 16
-wall_inner_corner_t_top_rigth 64 160 16 16
+wallinner_corner_t_top_rigth 64 160 16 16
 
 edge 96 128 16 16
 hole  96 144 16 16
@@ -148,9 +148,9 @@ wogol_idle_anim 368 300 16 20 4
 wogol_run_anim 432 300 16 20 4
 chort_idle_anim 368 328 16 24 4
 chort_run_anim 432 328 16 24 4
-big_zombie_idle_anim 16 270 32 34 4
-big_zombie_run_anim 144 270 32 34 4
-ogre_idle_anim  16 320 32 32 4
+big_zombie_idle_anim 16 70 32 34 4
+big_zombie_run_an m 144 270 32 34 big_demon_idle_anim 4
+ogre_idle_anim 16 320 32 32 4
 ogre_run_anim 144 320 32 32 4
 big_demon_idle_anim  16 364 32 36 4
 big_demon_run_anim 144 364 32 36 4
@@ -183,6 +183,4 @@ lizard_f_idle_anim 128 196 16 28 4
 lizard_f_run_anim 192 196 16 28 4
 lizard_f_hit_anim 256 196 16 28 1
 
-lizard_m_idle_anim 128 228 16 28 4
-lizard_m_run_anim 192 228 16 28 4
-lizard_m_hit_anim 256 228 16 28 1
+lizard_m_idle_animanim 256 228 16 28 1

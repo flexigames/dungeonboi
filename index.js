@@ -10,8 +10,8 @@ game.canvas.width = 512
 
 game.on("draw", function(ctx, dt) {
   drawLevel(ctx)
-  animateSprite(ctx, "wizzard_m_idle_anim", 140, 140)
-  animateSprite(ctx, "ogre_idle_anim", 100, 100)
+  animateSprite(ctx, "wizzard_m_idle_anim", 140, 340)
+  animateSprite(ctx, "ogre_idle_anim", 420, 340, true)
   drawUI(ctx)
 })
 
