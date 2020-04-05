@@ -29,12 +29,20 @@ function drawLevel(ctx) {
         drawWallTopTile(ctx, x, y)
       } else if (tile === "|") {
         drawWallRightTile(ctx, x, y)
-      } else if (tile === "x") {
-        drawWallCornerTopRightTile(ctx, x, y)
       } else if (tile === "b") {
         drawWallBottomTile(ctx, x, y)
       } else if (tile === 'l') {
         drawWallLeftTile(ctx, x, y)
+      } else if (tile === 'r') {
+        drawWallRightTile(ctx, x, y)
+      } else if (tile === "1") {
+        drawWallCornerTopLeftTile(ctx, x, y)
+      } else if (tile === "2") {
+        drawWallCornerTopRightTile(ctx, x, y)
+      } else if (tile === '3') {
+        drawWallCornerBottomRightTile(ctx, x, y)
+      } else if (tile === '4') {
+        drawWallCornerBottomLeftTile(ctx, x, y)
       }
     })
   )
@@ -49,17 +57,30 @@ function drawWallTopTile(ctx, x, y) {
   drawSprite(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE)
 }
 
-function drawWallRightTile(ctx, x, y) {
-  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
-  drawSprite(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE)
+function drawWallCornerTopLeftTile(ctx, x, y) {
+  drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, y * TILE_SIZE)
 }
 
 function drawWallCornerTopRightTile(ctx, x, y) {
   drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, y * TILE_SIZE)
 }
 
-function drawWallLeftTile(ctx, x, y) {
-  drawSprite(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE)
+function drawWallCornerTopRightTile(ctx, x, y) {
+  drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, y * TILE_SIZE)
+}
+
+function drawWallCornerTopRightTile(ctx, x, y) {
+  drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, y * TILE_SIZE)
+}
+
+function drawWallLeftTile(ctx, x, y) { 
+  drawSprite(ctx, "floor_1", x  * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_side_mid_left", (x - 1) * TILE_SIZE, y * TILE_SIZE)
+}
+
+function drawWallRightTile(ctx, x, y) { 
+  drawSprite(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE)
 }
 
 
