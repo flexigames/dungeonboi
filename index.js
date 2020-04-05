@@ -14,7 +14,7 @@ game.on('draw', function (ctx, dt) {
   // ctx.drawImage(tileset, 0, 0, 16, 16, 0, 0, 16, 16)
   ctx.fillStyle = "#222"
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-  ctx.drawImage(tileset, 16, 64, 16, 16, 0, 0, 16, 16)
+  ctx.drawImage(tileset, 16, 64, 16, 16, 0, 0, 64, 64)
 })
 
 
