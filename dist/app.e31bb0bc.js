@@ -1846,9 +1846,13 @@ var _crtrdgGameloop = _interopRequireDefault(require("crtrdg-gameloop"));
 
 var _level = _interopRequireDefault(require("./lib/level"));
 
-var _sprite = require("./lib/sprite");
+var _sprite = _interopRequireWildcard(require("./lib/sprite"));
 
 var _ui = _interopRequireDefault(require("./lib/ui"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1857,7 +1861,9 @@ game.canvas.height = 512;
 game.canvas.width = 512;
 game.on("draw", function (ctx, dt) {
   (0, _level.default)(ctx);
-  (0, _sprite.animateSprite)(ctx, "wizzard_m_idle_anim", 100, 100);
+  (0, _sprite.animateSprite)(ctx, "wizzard_m_idle_anim", 140, 140);
+  drawSp;
+  (0, _sprite.animateSprite)(ctx, "ogre_idle_anim", 100, 100);
   (0, _ui.default)(ctx);
 });
 game.start();
@@ -1889,7 +1895,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42513" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42230" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
