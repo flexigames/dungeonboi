@@ -41,14 +41,28 @@ function drawLevel(ctx) {
           getLevelTile(x - 1, y) === "_" &&
           getLevelTile(x, y + 1) === "_"
         )
-          return drawWallFrontRightCorner(ctx, x, y)
+          return drawWallInnerRightCorner(ctx, x, y)
         
         if (
           getLevelTile(x + 1, y + 1) === "_" &&
           getLevelTile(x + 1, y) === "_" &&
           getLevelTile(x, y + 1) === "_"
         )
-          return drawWallFrontRightCorner(ctx, x, y)
+          return drawWallInnerLeftCorner(ctx, x, y)
+        
+        if (
+          getLevelTile(x + 1, y - 1) === "_" &&
+          getLevelTile(x + 1, y) === "_" &&
+          getLevelTile(x, y - 1) === "_"
+        )
+          return drawWallInnerLeftTopCorner(ctx, x, y)
+        
+                if (
+          getLevelTile(x - 1, y - 1) === "_" &&
+          getLevelTile(x - 1, y) === "_" &&
+          getLevelTile(x, y - 1) === "_"
+        )
+          return drawWallInnerRightTopCorner(ctx, x, y)
 
         if (getLevelTile(x, y + 1) === "_") return drawWallTopTile(ctx, x, y)
         if (getLevelTile(x, y - 1) === "_") return drawWallBottomTile(ctx, x, y)
@@ -67,9 +81,26 @@ function drawLevel(ctx) {
   )
 }
 
-function drawWallFrontRightCorner(ctx, x, y) {
+function drawWallInnerRightCorner(ctx, x, y) {
   drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
   drawSprite(ctx, "wall_side_front_left", x * TILE_SIZE, y * TILE_SIZE)
+}
+
+function drawWallInnerLeftCorner(ctx, x, y) {
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_side_front_right", x * TILE_SIZE, y * TILE_SIZE)
+}
+
+function drawWallInnerLeftTopCorner(ctx, x, y) {
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_side_top_right", x * TILE_SIZE, (y - 1) * TILE_SIZE)
+}
+
+function drawWallInnerRightTopCorner(ctx, x, y) {
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_side_top_left", x * TILE_SIZE, (y - 1) * TILE_SIZE)
 }
 
 function drawFloorTile(ctx, x, y) {
