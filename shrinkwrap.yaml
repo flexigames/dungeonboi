@@ -5,6 +5,7 @@ devDependencies:
   browserify: 16.5.1
   parcel-bundler: 1.12.4
   parcel-plugin-txt: 1.0.3
+  seedrandom: 3.0.5
 packages:
   /@babel/code-frame/7.8.3:
     dependencies:
@@ -7083,6 +7084,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-azEAihtQ9mEyZGhfgTJy3IbOWEzeOrYbg7NcYEshPKnKd+LZmC3TNd5dmDxbLBsTG/JVWmCp+vDJ03vJjeXMHg==
+  /seedrandom/3.0.5:
+    dev: true
+    resolution:
+      integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==
   /selfsigned/1.10.7:
     dependencies:
       node-forge: 0.9.0
@@ -8563,3 +8568,4 @@ specifiers:
   crtrdg-gameloop: 1.0.3
   parcel-bundler: '*'
   parcel-plugin-txt: '*'
+  seedrandom: 3.0.5

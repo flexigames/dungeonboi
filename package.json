@@ -14,6 +14,7 @@
     "browserify": "16.5.1",
     "bankai": "9.15.3",
     "parcel-bundler": "*",
-    "parcel-plugin-txt": "*"
+    "parcel-plugin-txt": "*",
+    "seedrandom": "3.0.5"
   }
 }
