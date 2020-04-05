@@ -24,21 +24,23 @@ game.on("draw", function(ctx, dt) {
 
 game.start()
 
+const levelMatrix = level.split("\n").map(line => line.split(""))
+
+function getLevelTile(x, y) {
+  return levelMatrix[y] && levelMatrix[y][x]
+}
+
 function drawLevel(ctx) {
-  level.split("\n").forEach((line, y) =>
-    line.split("").forEach((tile, x) => {
+  levelMatrix.forEach((line, y) =>
+    line.forEach((tile, x) => {
       if (tile === "_") {
         drawFloorTile(ctx, x, y)
-      } else if (tile === "-") {
-        drawWallTopTile(ctx, x, y)
-      } else if (tile === "|") {
-        drawWallRightTile(ctx, x, y)
-      } else if (tile === "b") {
-        drawWallBottomTile(ctx, x, y)
-      } else if (tile === 'l') {
-        drawWallLeftTile(ctx, x, y)
-      } else if (tile === 'r') {
-        drawWallRightTile(ctx, x, y)
+      } else if (tile === '.') {
+        if (getLevelTile(x, y + 1) === '_') return drawWallTopTile(ctx, x, y)
+        if (getLevelTile(x, y - 1) === '_') return drawWallBottomTile(ctx, x, y)
+        if (getLevelTile(x + 1, y) === '_') return drawWallLeftTile(ctx, x, y)
+        if (getLevelTile(x - 1, y) === '_') return drawWallRightTile(ctx, x, y)
+        if (getLevelTile(x - 1, y - 1) === '_') return drawWallCornerTopLeftTile(ctx, x, y)
       } else if (tile === "1") {
         drawWallCornerTopLeftTile(ctx, x, y)
       } else if (tile === "2") {

@@ -1665,21 +1665,25 @@ game.on("draw", function (ctx, dt) {
 });
 game.start();
 
+var levelMatrix = _level.default.split("\n").map(function (line) {
+  return line.split("");
+});
+
+function getLevelTile(x, y) {
+  return levelMatrix[y] && levelMatrix[y][x];
+}
+
 function drawLevel(ctx) {
-  _level.default.split("\n").forEach(function (line, y) {
-    return line.split("").forEach(function (tile, x) {
+  levelMatrix.forEach(function (line, y) {
+    return line.forEach(function (tile, x) {
       if (tile === "_") {
         drawFloorTile(ctx, x, y);
-      } else if (tile === "-") {
-        drawWallTopTile(ctx, x, y);
-      } else if (tile === "|") {
-        drawWallRightTile(ctx, x, y);
-      } else if (tile === "b") {
-        drawWallBottomTile(ctx, x, y);
-      } else if (tile === 'l') {
-        drawWallLeftTile(ctx, x, y);
-      } else if (tile === 'r') {
-        drawWallRightTile(ctx, x, y);
+      } else if (tile === '.') {
+        if (getLevelTile(x, y + 1) === '_') return drawWallTopTile(ctx, x, y);
+        if (getLevelTile(x, y - 1) === '_') return drawWallBottomTile(ctx, x, y);
+        if (getLevelTile(x + 1, y) === '_') return drawWallLeftTile(ctx, x, y);
+        if (getLevelTile(x - 1, y) === '_') return drawWallRightTile(ctx, x, y);
+        if (getLevelTile(x - 1, y - 1) === '_') return;
       } else if (tile === "1") {
         drawWallCornerTopLeftTile(ctx, x, y);
       } else if (tile === "2") {
@@ -1799,7 +1803,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42126" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38841" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
