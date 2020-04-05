@@ -4,6 +4,13 @@ import tilesList from "./tiles_list_v1.3.txt"
 
 const TILE_SIZE = 16
 
+let state = {
+  player: {
+    x: 100,
+    y: 100
+  }
+}
+
 const game = createGame()
 
 game.canvas.height = 512
@@ -15,11 +22,7 @@ tileset.src =
 
 game.on("draw", function(ctx, dt) {
   drawLevel(ctx)
-  // drawWallCornerTopLeftTile(ctx, 0, 1)
-  // drawWallCornerTopRightTile(ctx, 1, 1)
-  // drawWallCornerBottomRightTile(ctx, 1, 2)
-  // drawWallCornerBottomLeftTile(ctx, 0, 2)
-  drawSprite(ctx, "wizzard_m_idle_anim", 10 * TILE_SIZE, 10 * TILE_SIZE)
+  drawSprite(ctx, "wizzard_m_idle_anim", state.player.x, state.player.y)
 })
 
 game.start()
