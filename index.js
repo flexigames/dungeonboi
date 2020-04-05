@@ -40,7 +40,8 @@ function drawFloorTile(ctx, x, y) {
 }
 
 function drawWallTopTile(ctx, x, y) {
-  drawSprite(ctx, "wall_top_mid", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_top_mid", x * TILE_SIZE, (y - 1) * TILE_SIZE)
+  drawSprite(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE)
 }
 
 function drawWallRightTile(ctx, x, y) {
@@ -70,7 +71,6 @@ function drawSprite(ctx, name, x, y) {
   const sprite = sprites[name]
 
   if (sprite) {
-    console.warn(`${name} doesn't exist as a sprite`)
     const { sx, sy, swidth, sheight } = sprite
     ctx.drawImage(tileset, sx, sy, swidth, sheight, x, y, swidth, sheight)
   }
