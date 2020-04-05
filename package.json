@@ -1,11 +1,11 @@
   
 {
-  "name": "hexapong",
+  "name": "dungeonboi",
   "version": "0.0.0",
-  "description": "pong spinoff",
+  "description": "a dungeon crawler",
   "main": "index.html",
   "scripts": {
-    "start": "parcel src/index.html --port $PORT"
+    "start": "parcel index.html --port $PORT"
   },
   "dependencies": {
     "crtrdg-gameloop": "1.0.3"

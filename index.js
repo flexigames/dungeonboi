@@ -1,6 +1,9 @@
-const createGame = require('crtrdg-gameloop')
+import createGame from 'crtrdg-gameloop'
 
 const game = createGame()
+
+game.canvas.height = 128
+game.canvas.width = 128
 
 const tileset = new Image(512, 512); // Using optional size for image
 tileset.src = 'https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409'

@@ -3,7 +3,7 @@ dependencies:
 devDependencies:
   bankai: 9.15.3
   browserify: 16.5.1
-  parcel: 1.12.4
+  parcel-bundler: 1.12.4
 packages:
   /@babel/code-frame/7.8.3:
     dependencies:
@@ -5776,7 +5776,7 @@ packages:
     dev: true
     resolution:
       integrity: sha1-35T9jPZTHs915r75oIWPvHK+Ikc=
-  /parcel/1.12.4:
+  /parcel-bundler/1.12.4:
     dependencies:
       '@babel/code-frame': 7.8.3
       '@babel/core': 7.9.0
@@ -5843,7 +5843,7 @@ packages:
     hasBin: true
     requiresBuild: true
     resolution:
-      integrity: sha512-qfc74e2/R4pCoU6L/ZZnK9k3iDS6ir4uHea0e9th9w52eehcAGf2ido/iABq9PBXdsIOe4NSY3oUm7Khe7+S3w==
+      integrity: sha512-G+iZGGiPEXcRzw0fiRxWYCKxdt/F7l9a0xkiU4XbcVRJCSlBnioWEwJMutOCCpoQmaQtjB4RBHDGIHN85AIhLQ==
   /parents/1.0.1:
     dependencies:
       path-platform: 0.11.15
@@ -8554,4 +8554,4 @@ specifiers:
   bankai: 9.15.3
   browserify: 16.5.1
   crtrdg-gameloop: 1.0.3
-  parcel: '*'
+  parcel-bundler: '*'
