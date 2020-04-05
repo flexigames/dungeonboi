@@ -19,7 +19,7 @@ game.on("draw", function(ctx, dt) {
   // drawWallCornerTopRightTile(ctx, 1, 1)
   // drawWallCornerBottomRightTile(ctx, 1, 2)
   // drawWallCornerBottomLeftTile(ctx, 0, 2)
-  drawSprite(ctx, 'wizzard_m_idle_anim', 10 * TILE_SIZE, 10 * TILE_SIZE)
+  drawSprite(ctx, "wizzard_m_idle_anim", 10 * TILE_SIZE, 10 * TILE_SIZE)
 })
 
 game.start()
@@ -35,20 +35,19 @@ function drawLevel(ctx) {
     line.forEach((tile, x) => {
       if (tile === "_") {
         drawFloorTile(ctx, x, y)
-      } else if (tile === '.') {
-        if (getLevelTile(x, y + 1) === '_') return drawWallTopTile(ctx, x, y)
-        if (getLevelTile(x, y - 1) === '_') return drawWallBottomTile(ctx, x, y)
-        if (getLevelTile(x + 1, y) === '_') return drawWallLeftTile(ctx, x, y)
-        if (getLevelTile(x - 1, y) === '_') return drawWallRightTile(ctx, x, y)
-        if (getLevelTile(x - 1, y - 1) === '_') return drawWallCornerTopLeftTile(ctx, x, y)
-      } else if (tile === "1") {
-        drawWallCornerTopLeftTile(ctx, x, y)
-      } else if (tile === "2") {
-        drawWallCornerTopRightTile(ctx, x, y)
-      } else if (tile === '3') {
-        drawWallCornerBottomRightTile(ctx, x, y)
-      } else if (tile === '4') {
-        drawWallCornerBottomLeftTile(ctx, x, y)
+      } else if (tile === ".") {
+        if (getLevelTile(x, y + 1) === "_") return drawWallTopTile(ctx, x, y)
+        if (getLevelTile(x, y - 1) === "_") return drawWallBottomTile(ctx, x, y)
+        if (getLevelTile(x + 1, y) === "_") return drawWallLeftTile(ctx, x, y)
+        if (getLevelTile(x - 1, y) === "_") return drawWallRightTile(ctx, x, y)
+        if (getLevelTile(x - 1, y - 1) === "_")
+          return drawWallCornerBottomRightTile(ctx, x, y)
+        if (getLevelTile(x - 1, y + 1) === "_")
+          return drawWallCornerTopRightTile(ctx, x, y)
+        if (getLevelTile(x + 1, y - 1) === "_")
+          return drawWallCornerBottomLeftTile(ctx, x, y)
+        if (getLevelTile(x + 1, y + 1) === "_")
+          return drawWallCornerTopLeftTile(ctx, x, y)
       }
     })
   )
@@ -65,28 +64,30 @@ function drawWallTopTile(ctx, x, y) {
 
 function drawWallCornerTopLeftTile(ctx, x, y) {
   drawSprite(ctx, "wall_corner_left", x * TILE_SIZE, y * TILE_SIZE)
-  drawSprite(ctx, "wall_corner_top_left", x * TILE_SIZE, (y-1) * TILE_SIZE)
-
+  drawSprite(ctx, "wall_corner_top_left", x * TILE_SIZE, (y - 1) * TILE_SIZE)
 }
 
 function drawWallCornerTopRightTile(ctx, x, y) {
   drawSprite(ctx, "wall_corner_right", x * TILE_SIZE, y * TILE_SIZE)
-  drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, (y-1) * TILE_SIZE)
-  
+  drawSprite(ctx, "wall_corner_top_right", x * TILE_SIZE, (y - 1) * TILE_SIZE)
 }
 
 function drawWallCornerBottomRightTile(ctx, x, y) {
   drawSprite(ctx, "wall_corner_front_right", x * TILE_SIZE, y * TILE_SIZE)
-  drawSprite(ctx, "wall_corner_bottom_right", x * TILE_SIZE, (y-1) * TILE_SIZE)
+  drawSprite(
+    ctx,
+    "wall_corner_bottom_right",
+    x * TILE_SIZE,
+    (y - 1) * TILE_SIZE
+  )
 }
 
 function drawWallCornerBottomLeftTile(ctx, x, y) {
-  
   drawSprite(ctx, "wall_corner_front_left", x * TILE_SIZE, y * TILE_SIZE)
-  drawSprite(ctx, "wall_corner_bottom_left", x * TILE_SIZE, (y-1) * TILE_SIZE)
+  drawSprite(ctx, "wall_corner_bottom_left", x * TILE_SIZE, (y - 1) * TILE_SIZE)
 }
 
-function drawWallLeftTile(ctx, x, y) { 
+function drawWallLeftTile(ctx, x, y) {
   drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
   drawSprite(ctx, "wall_side_mid_right", x * TILE_SIZE, y * TILE_SIZE)
 }
@@ -95,7 +96,6 @@ function drawWallRightTile(ctx, x, y) {
   drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
   drawSprite(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE)
 }
-
 
 function drawWallBottomTile(ctx, x, y) {
   drawSprite(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE)
