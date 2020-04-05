@@ -14,11 +14,11 @@ tileset.src =
   "https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409";
 
 game.on("draw", function(ctx, dt) {
-  drawBackground(ctx);
-  drawLevel(ctx);
+  // drawBackground(ctx);
+  // drawLevel(ctx);
   
   
-  ctx.drawImage(tileset, sx, sy, TILE_SIZE, TILE_SIZE, 0, 0, TILE_SIZE, TILE_SIZE);
+  ctx.drawImage(tileset, 32, 126, TILE_SIZE, TILE_SIZE, 0, 0, TILE_SIZE, TILE_SIZE);
 });
 
 game.start();
@@ -85,6 +85,6 @@ function drawSprite(ctx, name, x, y) {
   if (sprite) {
     const { sx, sy, swidth, sheight } = sprite;
 
-    ctx.drawImage(tileset, sx, sy, swidth, sheight, x, y, swidth, sheight);
+    ctx.drawImage(tileset, sx, sy + 16, swidth, sheight, x, y, swidth, sheight);
   }
 }

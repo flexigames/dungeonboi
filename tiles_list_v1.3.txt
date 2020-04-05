@@ -60,7 +60,7 @@ wall_corner_front_right 48 160 16 16
 
 wall_inner_corner_l_top_left 80 128 16 16
 wall_inner_corner_l_top_rigth 64 128 16 16
-wall_inner_corner_mid_left 80 144 16 16
+wall_inner_  corner_mid_left 80 144 16 16
 wall_inner_corner_mid_rigth 64 144 16 16
 wall_inner_corner_t_top_left 80 160 16 16
 wall_inner_corner_t_top_rigth 64 160 16 16
