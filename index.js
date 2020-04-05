@@ -1,5 +1,17 @@
 import createGame from "crtrdg-gameloop";
 import level from "./level.txt";
+import tilesList from "./tiles_list_v1.3.txt";
+
+const sprites = tilesList.split("\n").map(line => {
+  const [name, x, y, width, height] = line.split(" ");
+  return {
+    name,
+    x,
+    y,
+    width,
+    height
+  };
+}).reduce((prev, {name, ...rest}) => ({...prev, }), {})
 
 const TILE_SIZE = 16;
 
@@ -30,10 +42,11 @@ function drawLevel(ctx) {
   level.split("\n").forEach((line, y) =>
     line.split("").forEach((tile, x) => {
       if (tile === "_") {
-        drawFloorTile(ctx, x, y)
-      }
-      else if (tile === "-") {
-        drawWallTopTile(ctx, x, y)
+        drawFloorTile(ctx, x, y);
+      } else if (tile === "-") {
+        drawWallTopTile(ctx, x, y);
+      } else if (tile === "|") {
+        drawWallRightTile(ctx, x, y);
       }
     })
   );
@@ -106,8 +119,8 @@ function drawWallLeftTile(ctx, x, y) {
 function drawWallRightTile(ctx, x, y) {
   ctx.drawImage(
     tileset,
-    2 * TILE_SIZE,
-    1 * TILE_SIZE,
+    TILE_SIZE,
+    4 * TILE_SIZE,
     TILE_SIZE,
     TILE_SIZE,
     x * TILE_SIZE,
@@ -117,12 +130,12 @@ function drawWallRightTile(ctx, x, y) {
   );
   ctx.drawImage(
     tileset,
-    2 * TILE_SIZE,
-    0 * TILE_SIZE,
+    1 * TILE_SIZE,
+    3 * TILE_SIZE,
     TILE_SIZE,
     TILE_SIZE,
     x * TILE_SIZE,
-    (y - 1) * TILE_SIZE,
+    y * TILE_SIZE,
     TILE_SIZE,
     TILE_SIZE
   );
@@ -153,3 +166,15 @@ function drawWallBottomTile(ctx, x, y) {
   );
 }
 
+function getSpriteDetails(name) {
+  tilesList.split("\n").map(line => {
+    [name, x, y, width, height] = line.split(" ");
+    return {
+      name,
+      x,
+      y,
+      width,
+      height
+    };
+  });
+}
