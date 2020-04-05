@@ -17,6 +17,7 @@ game.on("draw", function(ctx, dt) {
   // drawLevel(ctx);
   
   
+  console.logctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
   ctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
   drawSprite(ctx, "wall_corner_top_left", 0, 0);
 });
@@ -80,13 +81,12 @@ function drawSprite(ctx, name, x, y) {
   if (sprite) {
     if (i === 0) {
       i = i + 1
-      console.log({sprite})
-      console.log(ctx)
-      console.log(x)
-      console.log(y)
+    console.log(`ctx.drawImage(${tileset}, ${sx}, ${sy + 12}, ${swidth}, ${sheight}, ${x}, ${y}, ${swidth}, ${sheight})`)
+      
     }
     const { sx, sy, swidth, sheight } = sprite;
 
+    console.log(`ctx.drawImage(${tileset}, ${sx}, ${sy + 12}, ${swidth}, ${sheight}, ${x}, ${y}, ${swidth}, ${sheight})`)
     ctx.drawImage(tileset, sx, sy + 12, swidth, sheight, x, y, swidth, sheight);
   }
 }

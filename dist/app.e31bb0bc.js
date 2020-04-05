@@ -1658,6 +1658,7 @@ var tileset = new Image(512, 512); // Using optional size for image
 tileset.src = "https://cdn.glitch.com/8804483f-7435-434d-ab8d-d8d811696a6a%2F0x72_DungeonTilesetII_v1.3.png?v=1586091258409";
 game.on("draw", function (ctx, dt) {
   // drawLevel(ctx);
+  console.logctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
   ctx.drawImage(tileset, 32, 124, TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
   drawSprite(ctx, "wall_corner_top_left", 0, 0);
 });
@@ -1729,18 +1730,14 @@ function drawSprite(ctx, name, x, y) {
   if (sprite) {
     if (i === 0) {
       i = i + 1;
-      console.log({
-        sprite: sprite
-      });
-      console.log(ctx);
-      console.log(x);
-      console.log(y);
+      console.log("ctx.drawImage(".concat(tileset, ", ").concat(sx, ", ").concat(sy + 12, ", ").concat(swidth, ", ").concat(sheight, ", ").concat(x, ", ").concat(y, ", ").concat(swidth, ", ").concat(sheight, ")"));
     }
 
     var sx = sprite.sx,
         sy = sprite.sy,
         swidth = sprite.swidth,
         sheight = sprite.sheight;
+    console.log("ctx.drawImage(".concat(tileset, ", ").concat(sx, ", ").concat(sy + 12, ", ").concat(swidth, ", ").concat(sheight, ", ").concat(x, ", ").concat(y, ", ").concat(swidth, ", ").concat(sheight, ")"));
     ctx.drawImage(tileset, sx, sy + 12, swidth, sheight, x, y, swidth, sheight);
   }
 }
@@ -1772,7 +1769,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42846" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38417" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
