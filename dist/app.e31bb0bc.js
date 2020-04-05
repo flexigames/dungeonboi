@@ -1679,6 +1679,8 @@ function drawLevel(ctx) {
       if (tile === "_") {
         drawFloorTile(ctx, x, y);
       } else if (tile === ".") {
+        if (getLevelTile(x - 1, y + 1) === "_" && getLevelTile(x - 1, y) === "_" && getLevelTile(x, y + 1) === "_") return drawWallFrontRightCorner(ctx, x, y);
+        if (getLevelTile(x + 1, y + 1) === "_" && getLevelTile(x + 1, y) === "_" && getLevelTile(x, y + 1) === "_") return drawWallFrontRightCorner(ctx, x, y);
         if (getLevelTile(x, y + 1) === "_") return drawWallTopTile(ctx, x, y);
         if (getLevelTile(x, y - 1) === "_") return drawWallBottomTile(ctx, x, y);
         if (getLevelTile(x + 1, y) === "_") return drawWallLeftTile(ctx, x, y);
@@ -1690,6 +1692,11 @@ function drawLevel(ctx) {
       }
     });
   });
+}
+
+function drawWallFrontRightCorner(ctx, x, y) {
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "wall_side_front_left", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawFloorTile(ctx, x, y) {
@@ -1798,7 +1805,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36040" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34568" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

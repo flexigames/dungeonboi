@@ -36,6 +36,20 @@ function drawLevel(ctx) {
       if (tile === "_") {
         drawFloorTile(ctx, x, y)
       } else if (tile === ".") {
+        if (
+          getLevelTile(x - 1, y + 1) === "_" &&
+          getLevelTile(x - 1, y) === "_" &&
+          getLevelTile(x, y + 1) === "_"
+        )
+          return drawWallFrontRightCorner(ctx, x, y)
+        
+        if (
+          getLevelTile(x + 1, y + 1) === "_" &&
+          getLevelTile(x + 1, y) === "_" &&
+          getLevelTile(x, y + 1) === "_"
+        )
+          return drawWallFrontRightCorner(ctx, x, y)
+
         if (getLevelTile(x, y + 1) === "_") return drawWallTopTile(ctx, x, y)
         if (getLevelTile(x, y - 1) === "_") return drawWallBottomTile(ctx, x, y)
         if (getLevelTile(x + 1, y) === "_") return drawWallLeftTile(ctx, x, y)
@@ -51,6 +65,11 @@ function drawLevel(ctx) {
       }
     })
   )
+}
+
+function drawWallFrontRightCorner(ctx, x, y) {
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_side_front_left", x * TILE_SIZE, y * TILE_SIZE)
 }
 
 function drawFloorTile(ctx, x, y) {
