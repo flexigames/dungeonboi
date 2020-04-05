@@ -1613,7 +1613,7 @@ module.exports = function createGame (options) {
 
 
 },{"gameloop-canvas":"node_modules/crtrdg-gameloop/node_modules/gameloop-canvas/index.js","isarray":"node_modules/crtrdg-gameloop/node_modules/isarray/index.js"}],"level.txt":[function(require,module,exports) {
-module.exports = "................................\n................................\n................................\n................................\n................................\n................................\n................................\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................";
+module.exports = "................................\n................................\n................................\n................................\n................................\n................................\n................................\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________..______________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................";
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -1644,13 +1644,28 @@ function drawBackground(ctx) {
 }
 
 function drawLevel(ctx) {
-  _level.default.split("\n").forEach(function (line, x) {
-    return line.split("").forEach(function (tile, y) {
-      console.log(x, y);
-      ctx.drawImage(tileset, TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  _level.default.split("\n").forEach(function (line, y) {
+    return line.split("").forEach(function (tile, x) {
+      if (tile === "_") {
+        ctx.drawImage(tileset, TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+      }
+
+      if (tile === "-") {
+        ctx.drawImage(tileset, TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+      }
     });
   });
 }
+
+function drawFloorTile(ctx, x, y) {
+  ctx.drawImage(tileset, TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+}
+
+var tiles = {
+  _: function _(ctx, x, y) {
+    return drawFloorTile(ctx, x, y);
+  }
+};
 },{"crtrdg-gameloop":"node_modules/crtrdg-gameloop/index.js","./level.txt":"level.txt"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -1679,7 +1694,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35591" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44231" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
