@@ -21,9 +21,24 @@ game.on("draw", function(ctx, dt) {
   drawUI(ctx)
 })
 
-arrows.on("down", function() {
+game.on('update', function(dt){
+  let horizontal = 0
+  let vertical = 0
+  if (arrows.isDown('left')) {
+    horizontal -= 1
+  }
+  if (arrows.isDown('right')) {
+    horizontal += 1
+  }
+  if (arrows.isDown('up')) {
+    vertical -= 1
+  }
+  if (arrows.isDown('down')) {
+    vertical += 1
+  }
   
-})
+  player.move(horizontal, vertical)
+});
 
 game.start()
 
