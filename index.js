@@ -2,17 +2,6 @@ import createGame from "crtrdg-gameloop";
 import level from "./level.txt";
 import tilesList from "./tiles_list_v1.3.txt";
 
-const sprites = tilesList.split("\n").map(line => {
-  const [name, x, y, width, height] = line.split(" ");
-  return {
-    name,
-    x,
-    y,
-    width,
-    height
-  };
-}).reduce((prev, {name, ...rest}) => ({...prev, }), {})
-
 const TILE_SIZE = 16;
 
 const game = createGame();
@@ -53,128 +42,41 @@ function drawLevel(ctx) {
 }
 
 function drawFloorTile(ctx, x, y) {
-  ctx.drawImage(
-    tileset,
-    TILE_SIZE,
-    4 * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE,
-    x * TILE_SIZE,
-    y * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE
-  );
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
 }
 
 function drawWallTopTile(ctx, x, y) {
-  ctx.drawImage(
-    tileset,
-    2 * TILE_SIZE,
-    1 * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE,
-    x * TILE_SIZE,
-    y * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE
-  );
-  ctx.drawImage(
-    tileset,
-    2 * TILE_SIZE,
-    0 * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE,
-    x * TILE_SIZE,
-    (y - 1) * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE
-  );
-}
-
-function drawWallLeftTile(ctx, x, y) {
-  ctx.drawImage(
-    tileset,
-    2 * TILE_SIZE,
-    1 * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE,
-    x * TILE_SIZE,
-    y * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE
-  );
-  ctx.drawImage(
-    tileset,
-    2 * TILE_SIZE,
-    0 * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE,
-    x * TILE_SIZE,
-    (y - 1) * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE
-  );
+  drawSprite(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_top_mid", x * TILE_SIZE, (y - 1) * TILE_SIZE)
 }
 
 function drawWallRightTile(ctx, x, y) {
-  ctx.drawImage(
-    tileset,
-    TILE_SIZE,
-    4 * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE,
-    x * TILE_SIZE,
-    y * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE
-  );
-  ctx.drawImage(
-    tileset,
-    1 * TILE_SIZE,
-    3 * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE,
-    x * TILE_SIZE,
-    y * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE
-  );
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE)
+  drawSprite(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE)
 }
 
-function drawWallBottomTile(ctx, x, y) {
-  ctx.drawImage(
-    tileset,
-    2 * TILE_SIZE,
-    1 * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE,
-    x * TILE_SIZE,
-    y * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE
-  );
-  ctx.drawImage(
-    tileset,
-    2 * TILE_SIZE,
-    0 * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE,
-    x * TILE_SIZE,
-    (y - 1) * TILE_SIZE,
-    TILE_SIZE,
-    TILE_SIZE
-  );
-}
+const sprites = tilesList.split("\n").map(line => {
+  const [name, sx, sy, swidth, sheight] = line.split(" ");
+  return {
+    name,
+    sx,
+    sy,
+    swidth,
+    sheight
+  };
+}).reduce((prev, {name, ...rest}) => ({...prev, [name]: {...rest}}), {})
 
-function getSpriteDetails(name) {
-  tilesList.split("\n").map(line => {
-    [name, x, y, width, height] = line.split(" ");
-    return {
-      name,
-      x,
-      y,
-      width,
-      height
-    };
-  });
+function drawSprite(ctx, name, x, y) {
+  const {sx, sy, swidth, sheight} = sprites[name]
+  
+  ctx.drawImage(
+    tileset,
+    sx,
+    sy,
+    swidth, sheight,
+    x,
+    y,
+    swidth,
+    sheight
+  )
 }

@@ -1627,6 +1627,16 @@ var _tiles_list_v = _interopRequireDefault(require("./tiles_list_v1.3.txt"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -1638,24 +1648,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-var sprites = _tiles_list_v.default.split("\n").map(function (line) {
-  var _line$split = line.split(" "),
-      _line$split2 = _slicedToArray(_line$split, 5),
-      name = _line$split2[0],
-      x = _line$split2[1],
-      y = _line$split2[2],
-      width = _line$split2[3],
-      height = _line$split2[4];
-
-  return {
-    name: name,
-    x: x,
-    y: y,
-    width: width,
-    height: height
-  };
-});
 
 var TILE_SIZE = 16;
 var game = (0, _crtrdgGameloop.default)();
@@ -1692,48 +1684,49 @@ function drawLevel(ctx) {
 }
 
 function drawFloorTile(ctx, x, y) {
-  ctx.drawImage(tileset, TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
 }
 
 function drawWallTopTile(ctx, x, y) {
-  ctx.drawImage(tileset, 2 * TILE_SIZE, 1 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-  ctx.drawImage(tileset, 2 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-}
-
-function drawWallLeftTile(ctx, x, y) {
-  ctx.drawImage(tileset, 2 * TILE_SIZE, 1 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-  ctx.drawImage(tileset, 2 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  drawSprite(ctx, "wall_mid", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "wall_top_mid", x * TILE_SIZE, (y - 1) * TILE_SIZE);
 }
 
 function drawWallRightTile(ctx, x, y) {
-  ctx.drawImage(tileset, TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-  ctx.drawImage(tileset, 1 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  drawSprite(ctx, "floor_1", x * TILE_SIZE, y * TILE_SIZE);
+  drawSprite(ctx, "wall_side_mid_left", x * TILE_SIZE, y * TILE_SIZE);
 }
 
-function drawWallBottomTile(ctx, x, y) {
-  ctx.drawImage(tileset, 2 * TILE_SIZE, 1 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-  ctx.drawImage(tileset, 2 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE, x * TILE_SIZE, (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-}
+var sprites = _tiles_list_v.default.split("\n").map(function (line) {
+  var _line$split = line.split(" "),
+      _line$split2 = _slicedToArray(_line$split, 5),
+      name = _line$split2[0],
+      sx = _line$split2[1],
+      sy = _line$split2[2],
+      swidth = _line$split2[3],
+      sheight = _line$split2[4];
 
-function getSpriteDetails(name) {
-  _tiles_list_v.default.split("\n").map(function (line) {
-    var _line$split3 = line.split(" ");
+  return {
+    name: name,
+    sx: sx,
+    sy: sy,
+    swidth: swidth,
+    sheight: sheight
+  };
+}).reduce(function (prev, _ref) {
+  var name = _ref.name,
+      rest = _objectWithoutProperties(_ref, ["name"]);
 
-    var _line$split4 = _slicedToArray(_line$split3, 5);
+  return _objectSpread({}, prev, _defineProperty({}, name, _objectSpread({}, rest)));
+}, {});
 
-    name = _line$split4[0];
-    x = _line$split4[1];
-    y = _line$split4[2];
-    width = _line$split4[3];
-    height = _line$split4[4];
-    return {
-      name: name,
-      x: x,
-      y: y,
-      width: width,
-      height: height
-    };
-  });
+function drawSprite(ctx, name, x, y) {
+  var _sprites$name = sprites[name],
+      sx = _sprites$name.sx,
+      sy = _sprites$name.sy,
+      swidth = _sprites$name.swidth,
+      sheight = _sprites$name.sheight;
+  ctx.drawImage(tileset, sx, sy, swidth, sheight, x, y, swidth, sheight);
 }
 },{"crtrdg-gameloop":"node_modules/crtrdg-gameloop/index.js","./level.txt":"level.txt","./tiles_list_v1.3.txt":"tiles_list_v1.3.txt"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -1763,7 +1756,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36728" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44898" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
