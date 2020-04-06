@@ -3,7 +3,7 @@ import Arrows from 'crtrdg-arrows'
 import drawLevel from "./lib/level"
 import { animateSprite } from "./lib/sprite"
 import drawUI from "./lib/ui"
-import Player from "./lib/Player"
+import Player from "./entities/Player"
 
 const game = createGame()
 const arrows = new Arrows()

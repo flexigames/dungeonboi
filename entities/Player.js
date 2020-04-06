@@ -1,4 +1,4 @@
-import { animateSprite } from "./sprite"
+import { animateSprite } from "../lib/sprite"
 
 export default class Player {
   constructor(x, y, speed = 20, flipped = false) {
@@ -14,8 +14,9 @@ export default class Player {
   }
 
   update(dt) {
-    this.x = this.direction[0] * this.speed * dt
-    this.y = this.direction[1] * this.speed * dt
+    const diagonalModifier = this.direction[0] !== 0 && this.direction[1] !== 0 ? 0.7 : 1
+    this.x = diagonalModifier * this.direction[0] * this.speed * dt
+    this.y = diagonalModifier * this.direction[1] * this.speed * dt
   }
   
   setDirection(horizontal, vertical) {
