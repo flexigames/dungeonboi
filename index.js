@@ -1,13 +1,12 @@
 import createGame from "crtrdg-gameloop"
-import Arrows from "crtrdg-arrows"
 import drawLevel from "./lib/level"
 import drawUI from "./lib/ui"
 import Player from "./entities/Player"
 import Enemy from "./entities/Enemy"
+import { initInput, controlPlayer } from "./lib/input"
 import { createEntity, updateEntities, drawEntities } from "./lib/entities"
 
 const game = createGame()
-const arrows = new Arrows()
 
 game.canvas.height = 512
 game.canvas.width = 512
@@ -17,6 +16,7 @@ const enemy = new Enemy(340, 240)
 
 createEntity(player)
 createEntity(enemy)
+initInput(player)
 
 game.on("draw", function (ctx) {
   drawLevel(ctx)
@@ -26,30 +26,7 @@ game.on("draw", function (ctx) {
 
 game.on("update", function (dt) {
   updateEntities(dt)
-  controlPlayer()
+  controlPlayer(player)
 })
-
-window.onclick = () => {
-  player.attack()
-}
-
-export function controlPlayer() {
-  let horizontal = 0
-  let vertical = 0
-  if (arrows.isDown("left")) {
-    horizontal -= 1
-  }
-  if (arrows.isDown("right")) {
-    horizontal += 1
-  }
-  if (arrows.isDown("up")) {
-    vertical -= 1
-  }
-  if (arrows.isDown("down")) {
-    vertical += 1
-  }
-
-  player.setDirection(horizontal, vertical)
-}
 
 game.start()

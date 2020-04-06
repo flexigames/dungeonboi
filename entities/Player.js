@@ -13,27 +13,28 @@ export default class Player {
   }
 
   draw(ctx) {
+    const x = Math.round(this.x)
+    const y = Math.round(this.y)
+    ctx.beginPath()
+    ctx.ellipse(x, y + 1, 5, 3, 0, 0, 2 * Math.PI)
+    ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
+    ctx.fill()
     drawSprite(
       ctx,
       this.isMoving() ? "knight_m_run_anim" : "knight_m_idle_anim",
-      Math.round(this.x),
-      Math.round(this.y),
+      x,
+      y,
       {
         flipped: this.flipped,
         delay: this.isMoving() ? 100 : 200,
+        anchor: [8, 27],
       }
     )
-    drawSprite(
-      ctx,
-      "weapon_regular_sword",
-      Math.round(this.x + 2),
-      Math.round(this.y + 20),
-      {
-        flipped: this.flipped,
-        rotation: this.isAttacking ? 90 : 0,
-        anchor: [5, 18],
-      }
-    )
+    drawSprite(ctx, "weapon_regular_sword", x - 6, y - 7, {
+      flipped: this.flipped,
+      rotation: this.isAttacking ? 90 : 0,
+      anchor: [5, 18],
+    })
   }
 
   update(dt) {
@@ -62,9 +63,9 @@ export default class Player {
 
   attack() {
     this.isAttacking = true
-    setInterval(() => {
+    setTimeout(() => {
       this.isAttacking = false
-    }, 300)
+    }, 100)
 
     const enemies = findEntitiesWithTag("enemy")
 
