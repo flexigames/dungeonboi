@@ -842,7 +842,7 @@ var define;
   }
 }();
 
-},{}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
+},{}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
@@ -1086,7 +1086,7 @@ var process = require("process");
 
 }).call(this);
 
-},{"process":"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/node_modules/process/browser.js"}],"node_modules/crtrdg-gameloop/node_modules/inherits/inherits_browser.js":[function(require,module,exports) {
+},{"process":"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/parcel-bundler/node_modules/process/browser.js"}],"node_modules/crtrdg-gameloop/node_modules/inherits/inherits_browser.js":[function(require,module,exports) {
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -1154,7 +1154,7 @@ var process = require("process");
 
 
 
-},{"process":"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/node_modules/process/browser.js"}],"node_modules/crtrdg-gameloop/node_modules/raf/index.js":[function(require,module,exports) {
+},{"process":"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/parcel-bundler/node_modules/process/browser.js"}],"node_modules/crtrdg-gameloop/node_modules/raf/index.js":[function(require,module,exports) {
 var global = arguments[3];
 var now = require('performance-now')
   , root = typeof window === 'undefined' ? global : window
@@ -1612,7 +1612,530 @@ module.exports = function createGame (options) {
 */
 
 
-},{"gameloop-canvas":"node_modules/crtrdg-gameloop/node_modules/gameloop-canvas/index.js","isarray":"node_modules/crtrdg-gameloop/node_modules/isarray/index.js"}],"level.txt":[function(require,module,exports) {
+},{"gameloop-canvas":"node_modules/crtrdg-gameloop/node_modules/gameloop-canvas/index.js","isarray":"node_modules/crtrdg-gameloop/node_modules/isarray/index.js"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/parcel-bundler/node_modules/events/events.js":[function(require,module,exports) {
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+'use strict';
+
+var R = typeof Reflect === 'object' ? Reflect : null;
+var ReflectApply = R && typeof R.apply === 'function' ? R.apply : function ReflectApply(target, receiver, args) {
+  return Function.prototype.apply.call(target, receiver, args);
+};
+var ReflectOwnKeys;
+
+if (R && typeof R.ownKeys === 'function') {
+  ReflectOwnKeys = R.ownKeys;
+} else if (Object.getOwnPropertySymbols) {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target));
+  };
+} else {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target);
+  };
+}
+
+function ProcessEmitWarning(warning) {
+  if (console && console.warn) console.warn(warning);
+}
+
+var NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {
+  return value !== value;
+};
+
+function EventEmitter() {
+  EventEmitter.init.call(this);
+}
+
+module.exports = EventEmitter; // Backwards-compat with node 0.10.x
+
+EventEmitter.EventEmitter = EventEmitter;
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._eventsCount = 0;
+EventEmitter.prototype._maxListeners = undefined; // By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+
+var defaultMaxListeners = 10;
+
+function checkListener(listener) {
+  if (typeof listener !== 'function') {
+    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+  }
+}
+
+Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
+  enumerable: true,
+  get: function () {
+    return defaultMaxListeners;
+  },
+  set: function (arg) {
+    if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {
+      throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received ' + arg + '.');
+    }
+
+    defaultMaxListeners = arg;
+  }
+});
+
+EventEmitter.init = function () {
+  if (this._events === undefined || this._events === Object.getPrototypeOf(this)._events) {
+    this._events = Object.create(null);
+    this._eventsCount = 0;
+  }
+
+  this._maxListeners = this._maxListeners || undefined;
+}; // Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+
+
+EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
+  if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {
+    throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received ' + n + '.');
+  }
+
+  this._maxListeners = n;
+  return this;
+};
+
+function _getMaxListeners(that) {
+  if (that._maxListeners === undefined) return EventEmitter.defaultMaxListeners;
+  return that._maxListeners;
+}
+
+EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
+  return _getMaxListeners(this);
+};
+
+EventEmitter.prototype.emit = function emit(type) {
+  var args = [];
+
+  for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
+
+  var doError = type === 'error';
+  var events = this._events;
+  if (events !== undefined) doError = doError && events.error === undefined;else if (!doError) return false; // If there is no 'error' event listener then throw.
+
+  if (doError) {
+    var er;
+    if (args.length > 0) er = args[0];
+
+    if (er instanceof Error) {
+      // Note: The comments on the `throw` lines are intentional, they show
+      // up in Node's output if this results in an unhandled exception.
+      throw er; // Unhandled 'error' event
+    } // At least give some kind of context to the user
+
+
+    var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));
+    err.context = er;
+    throw err; // Unhandled 'error' event
+  }
+
+  var handler = events[type];
+  if (handler === undefined) return false;
+
+  if (typeof handler === 'function') {
+    ReflectApply(handler, this, args);
+  } else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+
+    for (var i = 0; i < len; ++i) ReflectApply(listeners[i], this, args);
+  }
+
+  return true;
+};
+
+function _addListener(target, type, listener, prepend) {
+  var m;
+  var events;
+  var existing;
+  checkListener(listener);
+  events = target._events;
+
+  if (events === undefined) {
+    events = target._events = Object.create(null);
+    target._eventsCount = 0;
+  } else {
+    // To avoid recursion in the case that type === "newListener"! Before
+    // adding it to the listeners, first emit "newListener".
+    if (events.newListener !== undefined) {
+      target.emit('newListener', type, listener.listener ? listener.listener : listener); // Re-assign `events` because a newListener handler could have caused the
+      // this._events to be assigned to a new object
+
+      events = target._events;
+    }
+
+    existing = events[type];
+  }
+
+  if (existing === undefined) {
+    // Optimize the case of one listener. Don't need the extra array object.
+    existing = events[type] = listener;
+    ++target._eventsCount;
+  } else {
+    if (typeof existing === 'function') {
+      // Adding the second element, need to change to array.
+      existing = events[type] = prepend ? [listener, existing] : [existing, listener]; // If we've already got an array, just append.
+    } else if (prepend) {
+      existing.unshift(listener);
+    } else {
+      existing.push(listener);
+    } // Check for listener leak
+
+
+    m = _getMaxListeners(target);
+
+    if (m > 0 && existing.length > m && !existing.warned) {
+      existing.warned = true; // No error code for this since it is a Warning
+      // eslint-disable-next-line no-restricted-syntax
+
+      var w = new Error('Possible EventEmitter memory leak detected. ' + existing.length + ' ' + String(type) + ' listeners ' + 'added. Use emitter.setMaxListeners() to ' + 'increase limit');
+      w.name = 'MaxListenersExceededWarning';
+      w.emitter = target;
+      w.type = type;
+      w.count = existing.length;
+      ProcessEmitWarning(w);
+    }
+  }
+
+  return target;
+}
+
+EventEmitter.prototype.addListener = function addListener(type, listener) {
+  return _addListener(this, type, listener, false);
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.prependListener = function prependListener(type, listener) {
+  return _addListener(this, type, listener, true);
+};
+
+function onceWrapper() {
+  if (!this.fired) {
+    this.target.removeListener(this.type, this.wrapFn);
+    this.fired = true;
+    if (arguments.length === 0) return this.listener.call(this.target);
+    return this.listener.apply(this.target, arguments);
+  }
+}
+
+function _onceWrap(target, type, listener) {
+  var state = {
+    fired: false,
+    wrapFn: undefined,
+    target: target,
+    type: type,
+    listener: listener
+  };
+  var wrapped = onceWrapper.bind(state);
+  wrapped.listener = listener;
+  state.wrapFn = wrapped;
+  return wrapped;
+}
+
+EventEmitter.prototype.once = function once(type, listener) {
+  checkListener(listener);
+  this.on(type, _onceWrap(this, type, listener));
+  return this;
+};
+
+EventEmitter.prototype.prependOnceListener = function prependOnceListener(type, listener) {
+  checkListener(listener);
+  this.prependListener(type, _onceWrap(this, type, listener));
+  return this;
+}; // Emits a 'removeListener' event if and only if the listener was removed.
+
+
+EventEmitter.prototype.removeListener = function removeListener(type, listener) {
+  var list, events, position, i, originalListener;
+  checkListener(listener);
+  events = this._events;
+  if (events === undefined) return this;
+  list = events[type];
+  if (list === undefined) return this;
+
+  if (list === listener || list.listener === listener) {
+    if (--this._eventsCount === 0) this._events = Object.create(null);else {
+      delete events[type];
+      if (events.removeListener) this.emit('removeListener', type, list.listener || listener);
+    }
+  } else if (typeof list !== 'function') {
+    position = -1;
+
+    for (i = list.length - 1; i >= 0; i--) {
+      if (list[i] === listener || list[i].listener === listener) {
+        originalListener = list[i].listener;
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0) return this;
+    if (position === 0) list.shift();else {
+      spliceOne(list, position);
+    }
+    if (list.length === 1) events[type] = list[0];
+    if (events.removeListener !== undefined) this.emit('removeListener', type, originalListener || listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+
+EventEmitter.prototype.removeAllListeners = function removeAllListeners(type) {
+  var listeners, events, i;
+  events = this._events;
+  if (events === undefined) return this; // not listening for removeListener, no need to emit
+
+  if (events.removeListener === undefined) {
+    if (arguments.length === 0) {
+      this._events = Object.create(null);
+      this._eventsCount = 0;
+    } else if (events[type] !== undefined) {
+      if (--this._eventsCount === 0) this._events = Object.create(null);else delete events[type];
+    }
+
+    return this;
+  } // emit removeListener for all listeners on all events
+
+
+  if (arguments.length === 0) {
+    var keys = Object.keys(events);
+    var key;
+
+    for (i = 0; i < keys.length; ++i) {
+      key = keys[i];
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+
+    this.removeAllListeners('removeListener');
+    this._events = Object.create(null);
+    this._eventsCount = 0;
+    return this;
+  }
+
+  listeners = events[type];
+
+  if (typeof listeners === 'function') {
+    this.removeListener(type, listeners);
+  } else if (listeners !== undefined) {
+    // LIFO order
+    for (i = listeners.length - 1; i >= 0; i--) {
+      this.removeListener(type, listeners[i]);
+    }
+  }
+
+  return this;
+};
+
+function _listeners(target, type, unwrap) {
+  var events = target._events;
+  if (events === undefined) return [];
+  var evlistener = events[type];
+  if (evlistener === undefined) return [];
+  if (typeof evlistener === 'function') return unwrap ? [evlistener.listener || evlistener] : [evlistener];
+  return unwrap ? unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);
+}
+
+EventEmitter.prototype.listeners = function listeners(type) {
+  return _listeners(this, type, true);
+};
+
+EventEmitter.prototype.rawListeners = function rawListeners(type) {
+  return _listeners(this, type, false);
+};
+
+EventEmitter.listenerCount = function (emitter, type) {
+  if (typeof emitter.listenerCount === 'function') {
+    return emitter.listenerCount(type);
+  } else {
+    return listenerCount.call(emitter, type);
+  }
+};
+
+EventEmitter.prototype.listenerCount = listenerCount;
+
+function listenerCount(type) {
+  var events = this._events;
+
+  if (events !== undefined) {
+    var evlistener = events[type];
+
+    if (typeof evlistener === 'function') {
+      return 1;
+    } else if (evlistener !== undefined) {
+      return evlistener.length;
+    }
+  }
+
+  return 0;
+}
+
+EventEmitter.prototype.eventNames = function eventNames() {
+  return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];
+};
+
+function arrayClone(arr, n) {
+  var copy = new Array(n);
+
+  for (var i = 0; i < n; ++i) copy[i] = arr[i];
+
+  return copy;
+}
+
+function spliceOne(list, index) {
+  for (; index + 1 < list.length; index++) list[index] = list[index + 1];
+
+  list.pop();
+}
+
+function unwrapListeners(arr) {
+  var ret = new Array(arr.length);
+
+  for (var i = 0; i < ret.length; ++i) {
+    ret[i] = arr[i].listener || arr[i];
+  }
+
+  return ret;
+}
+},{}],"node_modules/inherits/inherits_browser.js":[function(require,module,exports) {
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    if (superCtor) {
+      ctor.super_ = superCtor
+      ctor.prototype = Object.create(superCtor.prototype, {
+        constructor: {
+          value: ctor,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      })
+    }
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    if (superCtor) {
+      ctor.super_ = superCtor
+      var TempCtor = function () {}
+      TempCtor.prototype = superCtor.prototype
+      ctor.prototype = new TempCtor()
+      ctor.prototype.constructor = ctor
+    }
+  }
+}
+
+},{}],"node_modules/crtrdg-arrows/index.js":[function(require,module,exports) {
+var EventEmitter = require('events').EventEmitter;
+var inherits = require('inherits');
+
+module.exports = Arrows;
+inherits(Arrows, EventEmitter);
+
+function Arrows(){
+
+  this.arrows = {
+    left: {
+      keyDown: false
+    },
+    right: {
+      keyDown: false
+    },
+    up: {
+      keyDown: false
+    },
+    down: {
+      keyDown: false
+    }
+  };
+  this.useArrowKeys(); // adds keyCodes to this.arrows
+  this.init();
+}
+
+Arrows.prototype.init = function(){
+  var self = this;
+
+  document.addEventListener('keydown', function(e){
+    for (var direction in self.arrows) {
+      var arrow = self.arrows[direction];
+      if (e.keyCode === arrow.keyCode) {
+        e.preventDefault();
+        arrow.keyDown = true;
+        self.emit(direction, e);
+      }
+    }
+  }, false);
+
+  document.addEventListener('keyup', function(e){
+    e.preventDefault();
+    for (var direction in self.arrows) {
+      var arrow = self.arrows[direction];
+      if (e.keyCode == self.arrows[direction].keyCode) {
+        self.emit(direction + 'Up', e);
+        arrow.keyDown = false;
+      }
+    }
+  }, false);
+};
+
+Arrows.prototype.isDown = function (direction) {
+  return this.arrows[direction].keyDown;
+}
+
+Arrows.prototype.down = function () {
+  var arrows = [];
+  for (arrow in this.arrows) {
+    if (this.arrows[arrow].keyDown) {
+      arrows.push(arrow);
+    }
+  }
+  return arrows;
+}
+
+Arrows.prototype.setArrowKeyCodes = function (left, right, up, down) {
+  this.arrows.left.keyCode = left;
+  this.arrows.left.keyDown = false;
+  this.arrows.right.keyCode = right;
+  this.arrows.right.keyDown = false;
+  this.arrows.up.keyCode = up;
+  this.arrows.up.keyDown = false;
+  this.arrows.down.keyCode = down;
+  this.arrows.down.keyDown = false;
+}
+
+Arrows.prototype.useArrowKeys = function () {
+  this.setArrowKeyCodes(37, 39, 38, 40);
+}
+
+Arrows.prototype.useWASD = function () {
+  this.setArrowKeyCodes(65, 68, 87, 83);
+}
+
+},{"events":"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/parcel-bundler/node_modules/events/events.js","inherits":"node_modules/inherits/inherits_browser.js"}],"level.txt":[function(require,module,exports) {
 module.exports = "................................\n......door......................\n......____......................\n......____......................\n..._______________________......\n......____..............._......\n......____..............._......\n......____..............._......\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.______________________________.\n.._____________________________.\n...____________________________.\n....___________________________.\n.....__________________________.\n.............._............_....\n.............._............_....\n.............._............_....\n...........___________________..\n...........______...............\n...........______...............\n................................\n................................";
 },{}],"tiles_list_v1.3.txt":[function(require,module,exports) {
 module.exports = "big_demon_idle_anim  big_demon_idle_anim  big_demon_idle_anim  wall_top_left 16 0 16 16\nwall_top_mid 32 0 16 16\nwall_top_right 48 0 16 16\n\nwall_left 16 16 16 16\nwall_mid 32 16 16 16\nwall_right 48 16 16 16\n\nwall_fountain_top 64 0 16 16\nwall_fountain_mid_red_anim 64 16 16 16 3\nwall_fountain_basin_red_anim 64 32 16 16 3\nwall_fountain_mid_blue_anim 64 48 16 16 3\nwall_fountain_basin_blue_anim 64 64 16 16 3\n\nwall_hole_1 48 32 16 16\nwall_hole_2 48 48 16 16\n\nwall_banner_red 16 32 16 16\nwall_banner_blue 32 32 16 16\nwall_banner_green 16 48 16 16\nwall_banner_yellow 32 48 16 16\n\ncolumn_top 80 80 16 16\ncolumn_mid 80 96 16 16\ncoulmn_base 80 112 16 16\nwall_column_top 96 80 16 16\nwall_column_mid 96 96 16 16\nwall_coulmn_base 96 112 16 16\n\nwall_goo 64 80 16 16\nwall_goo_base 64 96 16 16\n\nfloor_1 16 64 16 16\nfloor_2 32 64 16 16\nfloor_3 48 64 16 16\nfloor_4 16 80 16 16\nfloor_5 32 80 16 16\nfloor_6 48 80 16 16\nfloor_7 16 96 16 16\nfloor_8 32 96 16 16\nfloor_ladder 48 96 16 16\n\nfloor_spikes_anim 16 176 16 16 4\n\nwall_side_top_left 0 112 16 16\nwall_side_top_right 16 112 16 16\nwall_side_mid_left 0 128 16 16\nwall_side_mid_right 16 128 16 16\nwall_side_front_left 0 144 16 16\nwall_side_front_right 16 144 16 16\n\nwall_corner_top_left 32 112 16 16\nwall_corner_top_right 48 112 16 16\nwall_corner_left 32 128 16 16\nwall_corner_right 48 128 16 16\nwall_corner_bottom_left 32 144 16 16\nwall_corner_bottom_right 48 144 16 16\nwall_corner_front_left 32 160 16 16\nwall_corner_front_right 48 160 16 16\n\nwall_inner_corner_l_top_left 80 128 16 16\nwall_inner_corner_l_top_rigth 64 128 16 16\nwall_inner_corner_mid_left 80 144 16 16\nwall_inner_corner_mid_rigth 64 144 16 16\nwall_inner_corner_t_top_left 80 160 16 16\nwallinner_corner_t_top_rigth 64 160 16 16\n\nedge 96 128 16 16\nhole  96 144 16 16\n\ndoors_all 16 221 64 35\ndoors_frame_left 16 224 16 32\ndoors_frame_top 32 221 32 3\ndoors_frame_right 63 224 16 32\ndoors_leaf_closed 32 224 32 32\ndoors_leaf_open 80 224 32 32\n\nchest_empty_open_anim 304 288 16 16 3\nchest_full_open_anim 304 304 16 16 3\nchest_mimic_open_anim 304 320 16 16 3\n\nflask_big_red 288 224 16 16\nflask_big_blue 304 224 16 16\nflask_big_green 320 224 16 16\nflask_big_yellow 336 224 16 16\n\nflask_red 288 240 16 16\nflask_blue 304 240 16 16\nflask_green 320 240 16 16\nflask_yellow 336 240 16 16\n\nskull 288 320 16 16\ncrate 288 298 16 22\n\ncoin_anim 288 272 8 8 4\n\nui_heart_full 288 256 16 16\nui_heart_half 304 256 16 16\nui_heart_empty 320 256 16 16\n\nweapon_knife 293 18 6 13\nweapon_rusty_sword 307 26 10 21\nweapon_regular_sword 323 26 10 21\nweapon_red_gem_sword 339 26 10 21\nweapon_big_hammer 291 42 10 37\nweapon_hammer 307 55 10 24\nweapon_baton_with_spikes 323 57 10 22\nweapon_mace 339 55 10 24\nweapon_katana 293 82 6 29\nweapon_saw_sword 307 86 10 25\nweapon_anime_sword 322 81 12 30\nweapon_axe 341 90 9 21\nweapon_machete 294 121 5 22\nweapon_cleaver 310 124 8 19\nweapon_duel_sword 325 113 9 30\nweapon_knight_sword 339 114 10 29\nweapon_golden_sword 291 153 10 22\nweapon_lavish_sword 307 145 10 30\nweapon_red_magic_staff 324 145 8 30\nweapon_green_magic_staff 340 145 8 30\nweapon_spear 293 177 6 30\n\ntiny_zombie_idle_anim 368 16 16 16 4\ntiny_zombie_run_anim 432 16 16 16 4\ngoblin_idle_anim 368 32 16 16 4\ngoblin_run_anim 432 32 16 16 4\nimp_idle_anim 368 48 16 16 4\nimp_run_anim 432 48 16 16 4\nskelet_idle_anim 368 80 16 16 4\nskelet_run_anim 432 80 16 16 4\nmuddy_idle_anim 368 112 16 16 4\nmuddy_run_anim 368 112 16 16 4\nswampy_idle_anim 432 112 16 16 4\nswampy_run_anim 432 112 16 16 4\nzombie_idle_anim 368 144 16 16 4\nzombie_run_anim 368 144 16 16 4\nice_zombie_idle_anim 432 144 16 16 4\nice_zombie_run_anim 432 144 16 16 4\nmasked_orc_idle_anim 368 172 16 20 4\nmasked_orc_run_anim 432 172 16 20 4\norc_warrior_idle_anim 368 204 16 20 4\norc_warrior_run_anim 432 204 16 20 4\norc_shaman_idle_anim 368 236 16 20 4\norc_shaman_run_anim 432 236 16 20 4\nnecromancer_idle_anim 368 268 16 20 4\nnecromancer_run_anim 368 268 16 20 4\nwogol_idle_anim 368 300 16 20 4\nwogol_run_anim 432 300 16 20 4\nchort_idle_anim 368 328 16 24 4\nchort_run_anim 432 328 16 24 4\nbig_zombie_idle_anim 16 70 32 34 4\nbig_zombie_run_an m 144 270 32 34 big_demon_idle_anim 4\nogre_idle_anim 16 320 32 32 4\nogre_run_anim 144 320 32 32 4\nbig_demon_idle_anim  16 364 32 36 4\nbig_demon_run_anim 144 364 32 36 4\n\nelf_f_idle_anim 128 4 16 28 4\nelf_f_run_anim 192 4 16 28 4\nelf_f_hit_anim 256 4 16 28 1\n\nelf_m_idle_anim 128 36 16 28 4\nelf_m_run_anim 192 36 16 28 4\nelf_m_hit_anim 256 36 16 28 1\n\nknight_f_idle_anim 128 68 16 28 4\nknight_f_run_anim 192 68 16 28 4\nknight_f_hit_anim 256 68 16 28 1\n\nknight_m_idle_anim 128 100 16 28 4\nknight_m_run_anim 192 100 16 28 4\nknight_m_hit_anim 256 100 16 28 1\n\nwizzard_f_idle_anim 128 132 16 28 4\nwizzard_f_run_anim 192 132 16 28 4\nwizzard_f_hit_anim 256 132 16 28 1\n\nwizzard_m_idle_anim 128 164 16 28 4\nwizzard_m_run_anim 192 164 16 28 4\nwizzard_m_hit_anim 256 164 16 28 1\n\nlizard_f_idle_anim 128 196 16 28 4\nlizard_f_run_anim 192 196 16 28 4\nlizard_f_hit_anim 256 196 16 28 1\n\nlizard_m_idle_animanim 256 228 16 28 1\n";
@@ -2371,7 +2894,7 @@ if (module && module.exports) {
 
 
 
-},{}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/_empty.js":[function(require,module,exports) {
+},{}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/parcel-bundler/src/builtins/_empty.js":[function(require,module,exports) {
 
 },{}],"node_modules/seedrandom/seedrandom.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -2630,7 +3153,7 @@ if ((typeof module) == 'object' && module.exports) {
   Math    // math: package containing random, pow, and seedrandom
 );
 
-},{"crypto":"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/_empty.js"}],"node_modules/seedrandom/index.js":[function(require,module,exports) {
+},{"crypto":"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/parcel-bundler/src/builtins/_empty.js"}],"node_modules/seedrandom/index.js":[function(require,module,exports) {
 // A library of seedable RNGs implemented in Javascript.
 //
 // Usage:
@@ -2841,7 +3364,7 @@ function drawUI(ctx) {
 
 var _default = drawUI;
 exports.default = _default;
-},{}],"lib/Player.js":[function(require,module,exports) {
+},{}],"entities/Player.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2849,7 +3372,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _sprite = require("./sprite");
+var _sprite = require("../lib/sprite");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2859,33 +3382,52 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var Player = /*#__PURE__*/function () {
   function Player(x, y) {
-    var flipped = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    var speed = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;
+    var flipped = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
     _classCallCheck(this, Player);
 
     this.x = x;
     this.y = y;
+    this.speed = speed;
+    this.direction = [0, 0];
     this.flipped = flipped;
   }
 
   _createClass(Player, [{
     key: "draw",
     value: function draw(ctx) {
-      (0, _sprite.animateSprite)(ctx, "wizzard_m_idle_anim", 140, 240);
+      (0, _sprite.animateSprite)(ctx, this.isMoving() ? "wizzard_m_idle_anim" : "wizzard_m_run_anim", this.x, this.y, this.flipped);
     }
   }, {
     key: "update",
-    value: function update() {}
+    value: function update(dt) {
+      var diagonalModifier = this.direction[0] !== 0 && this.direction[1] !== 0 ? 0.7 : 1;
+      this.x = diagonalModifier * this.direction[0] * this.speed * dt;
+      this.y = diagonalModifier * this.direction[1] * this.speed * dt;
+    }
+  }, {
+    key: "setDirection",
+    value: function setDirection(horizontal, vertical) {
+      this.direction = [horizontal, vertical];
+    }
+  }, {
+    key: "isMoving",
+    value: function isMoving() {
+      return this.direction[0] === 0 && this.direction[1] === 0;
+    }
   }]);
 
   return Player;
 }();
 
 exports.default = Player;
-},{"./sprite":"lib/sprite.js"}],"index.js":[function(require,module,exports) {
+},{"../lib/sprite":"lib/sprite.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _crtrdgGameloop = _interopRequireDefault(require("crtrdg-gameloop"));
+
+var _crtrdgArrows = _interopRequireDefault(require("crtrdg-arrows"));
 
 var _level = _interopRequireDefault(require("./lib/level"));
 
@@ -2893,11 +3435,12 @@ var _sprite = require("./lib/sprite");
 
 var _ui = _interopRequireDefault(require("./lib/ui"));
 
-var _Player = _interopRequireDefault(require("./lib/Player"));
+var _Player = _interopRequireDefault(require("./entities/Player"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var game = (0, _crtrdgGameloop.default)();
+var arrows = new _crtrdgArrows.default();
 game.canvas.height = 512;
 game.canvas.width = 512;
 var player = new _Player.default(140, 240);
@@ -2907,6 +3450,28 @@ game.on("draw", function (ctx, dt) {
   drawEntities(ctx);
   (0, _ui.default)(ctx);
 });
+game.on('update', function (dt) {
+  var horizontal = 0;
+  var vertical = 0;
+
+  if (arrows.isDown('left')) {
+    horizontal -= 1;
+  }
+
+  if (arrows.isDown('right')) {
+    horizontal += 1;
+  }
+
+  if (arrows.isDown('up')) {
+    vertical -= 1;
+  }
+
+  if (arrows.isDown('down')) {
+    vertical += 1;
+  }
+
+  player.move(horizontal, vertical);
+});
 game.start();
 
 function drawEntities(ctx) {
@@ -2914,7 +3479,7 @@ function drawEntities(ctx) {
     return it.draw(ctx);
   });
 }
-},{"crtrdg-gameloop":"node_modules/crtrdg-gameloop/index.js","./lib/level":"lib/level.js","./lib/sprite":"lib/sprite.js","./lib/ui":"lib/ui.js","./lib/Player":"lib/Player.js"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"crtrdg-gameloop":"node_modules/crtrdg-gameloop/index.js","crtrdg-arrows":"node_modules/crtrdg-arrows/index.js","./lib/level":"lib/level.js","./lib/sprite":"lib/sprite.js","./lib/ui":"lib/ui.js","./entities/Player":"entities/Player.js"}],"../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2942,7 +3507,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42059" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42224" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -3118,5 +3683,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/.registry.npmjs.org/parcel-bundler/1.12.4/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
+},{}]},{},["../rbd/pnpm-volume/8804483f-7435-434d-ab8d-d8d811696a6a/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
 //# sourceMappingURL=/app.e31bb0bc.js.map
