@@ -23,23 +23,8 @@ game.on("draw", function (ctx) {
 })
 
 game.on("update", function (dt) {
-  let horizontal = 0
-  let vertical = 0
-  if (arrows.isDown("left")) {
-    horizontal -= 1
-  }
-  if (arrows.isDown("right")) {
-    horizontal += 1
-  }
-  if (arrows.isDown("up")) {
-    vertical -= 1
-  }
-  if (arrows.isDown("down")) {
-    vertical += 1
-  }
-
-  player.setDirection(horizontal, vertical)
   updateEntities(dt)
+  controlPlayer()
 })
 
 window.onclick = () => {
@@ -56,8 +41,25 @@ function updateEntities(dt) {
   entities.forEach((it) => it.update(dt))
 }
 
-function handleAttacks() {
-  entities.forEach((it) => {
-    // if (it.)
-  })
+function controlPlayer() {
+  let horizontal = 0
+  let vertical = 0
+  if (arrows.isDown("left")) {
+    horizontal -= 1
+  }
+  if (arrows.isDown("right")) {
+    horizontal += 1
+  }
+  if (arrows.isDown("up")) {
+    vertical -= 1
+  }
+  if (arrows.isDown("down")) {
+    vertical += 1
+  }
+
+  player.setDirection(horizontal, vertical)
+}
+
+export function findEntitiesWithTag(tag) {
+  return entities.filter((entity) => entity.tags.some((it) => it === tag))
 }

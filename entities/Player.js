@@ -1,4 +1,5 @@
 import drawSprite from "../lib/sprite"
+import { findEntitiesWithTag } from "../index"
 
 export default class Player {
   constructor(x, y, speed = 100, flipped = true) {
@@ -8,6 +9,7 @@ export default class Player {
     this.direction = [0, 0]
     this.flipped = flipped
     this.isAttacking = false
+    this.tags = ["player"]
   }
 
   draw(ctx) {
@@ -63,5 +65,13 @@ export default class Player {
     setInterval(() => {
       this.isAttacking = false
     }, 300)
+
+    const enemies = findEntitiesWithTag("enemy")
+
+    const enemiesInRange = enemies.filter((enemy) => {
+      return Math.abs(this.x - enemy.x) < 20 && Math.abs(this.y - enemy.y)
+    })
+
+    enemiesInRange.forEach((enemy) => enemy.takeHit())
   }
 }

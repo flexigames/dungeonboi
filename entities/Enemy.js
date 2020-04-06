@@ -1,4 +1,5 @@
 import drawSprite from "../lib/sprite"
+import { findEntitiesWithTag } from "../index"
 
 export default class Enemy {
   constructor(x, y, health = 1, flipped = true) {
@@ -6,6 +7,7 @@ export default class Enemy {
     this.y = y
     this.health = health
     this.flipped = flipped
+    this.tags = ["enemy"]
   }
 
   draw(ctx) {
@@ -26,7 +28,9 @@ export default class Enemy {
     )
   }
 
-  takeHit() {}
+  takeHit() {
+    this.health = 0
+  }
 
   update(dt) {}
 }
