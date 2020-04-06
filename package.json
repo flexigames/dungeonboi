@@ -4,7 +4,7 @@
   "description": "a dungeon crawler",
   "main": "index.html",
   "scripts": {
-    "start": "parcel index.html --port $PORT"
+    "start": "parcel index.html"
   },
   "dependencies": {
     "crtrdg-gameloop": "1.0.3",

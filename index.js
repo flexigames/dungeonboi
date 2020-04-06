@@ -1,5 +1,5 @@
 import createGame from "crtrdg-gameloop"
-import Arrows from 'crtrdg-arrows'
+import Arrows from "crtrdg-arrows"
 import drawLevel from "./lib/level"
 import { animateSprite } from "./lib/sprite"
 import drawUI from "./lib/ui"
@@ -15,33 +15,42 @@ const player = new Player(140, 240)
 
 const entities = [player]
 
-game.on("draw", function(ctx, dt) {
+game.on("draw", function (ctx, dt) {
   drawLevel(ctx)
   drawEntities(ctx)
   drawUI(ctx)
 })
 
-game.on('update', function(dt){
+game.on("update", function (dt) {
   let horizontal = 0
   let vertical = 0
-  if (arrows.isDown('left')) {
+  if (arrows.isDown("left")) {
     horizontal -= 1
   }
-  if (arrows.isDown('right')) {
+  if (arrows.isDown("right")) {
     horizontal += 1
   }
-  if (arrows.isDown('up')) {
+  if (arrows.isDown("up")) {
     vertical -= 1
   }
-  if (arrows.isDown('down')) {
+  if (arrows.isDown("down")) {
     vertical += 1
   }
-  
-  player.move(horizontal, vertical)
-});
+
+  player.setDirection(horizontal, vertical)
+  updateEntities(dt)
+})
+
+window.onclick = () => {
+  player.flip()
+}
 
 game.start()
 
 function drawEntities(ctx) {
-  entities.forEach(it => it.draw(ctx))
+  entities.forEach((it) => it.draw(ctx))
+}
+
+function updateEntities(dt) {
+  entities.forEach((it) => it.update(dt))
 }
