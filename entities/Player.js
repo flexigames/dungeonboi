@@ -1,5 +1,5 @@
 import drawSprite from "../lib/sprite"
-import { findEntitiesWithTag } from "../index"
+import { findEntitiesWithTag } from "../lib/entities"
 
 export default class Player {
   constructor(x, y, speed = 100, flipped = true) {

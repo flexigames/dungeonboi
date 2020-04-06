@@ -1,5 +1,4 @@
 import drawSprite from "../lib/sprite"
-import { findEntitiesWithTag } from "../index"
 
 export default class Enemy {
   constructor(x, y, health = 1, flipped = true) {

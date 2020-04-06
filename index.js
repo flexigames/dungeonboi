@@ -4,6 +4,7 @@ import drawLevel from "./lib/level"
 import drawUI from "./lib/ui"
 import Player from "./entities/Player"
 import Enemy from "./entities/Enemy"
+import { createEntity, updateEntities, drawEntities } from "./lib/entities"
 
 const game = createGame()
 const arrows = new Arrows()
@@ -14,7 +15,8 @@ game.canvas.width = 512
 const player = new Player(140, 240)
 const enemy = new Enemy(340, 240)
 
-const entities = [player, enemy]
+createEntity(player)
+createEntity(enemy)
 
 game.on("draw", function (ctx) {
   drawLevel(ctx)
@@ -31,17 +33,7 @@ window.onclick = () => {
   player.attack()
 }
 
-game.start()
-
-function drawEntities(ctx) {
-  entities.forEach((it) => it.draw(ctx))
-}
-
-function updateEntities(dt) {
-  entities.forEach((it) => it.update(dt))
-}
-
-function controlPlayer() {
+export function controlPlayer() {
   let horizontal = 0
   let vertical = 0
   if (arrows.isDown("left")) {
@@ -60,6 +52,4 @@ function controlPlayer() {
   player.setDirection(horizontal, vertical)
 }
 
-export function findEntitiesWithTag(tag) {
-  return entities.filter((entity) => entity.tags.some((it) => it === tag))
-}
+game.start()
