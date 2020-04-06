@@ -10,26 +10,33 @@ export default class Player {
   }
 
   draw(ctx) {
-    animateSprite(ctx, "wizzard_m_idle_anim", this.x, this.y, this.flipped)
+    animateSprite(
+      ctx,
+      this.isMoving() ? "wizzard_m_idle_anim" : "wizzard_m_run_anim",
+      Math.round(this.x),
+      Math.round(this.y),
+      this.flipped,
+      this.isMoving() ? 100 : 200
+    )
   }
 
   update(dt) {
-    const diagonalModifier =
-      this.direction[0] !== 0 && this.direction[1] !== 0 ? 0.7 : 1
-    this.x +=
-      (this.flipped ? -1 : 1) *
-      diagonalModifier *
-      this.direction[0] *
-      this.speed *
-      dt
-    this.y += diagonalModifier * this.direction[1] * this.speed * dt
+    const isMovingDiagonally =
+      this.direction[0] !== 0 && this.direction[1] !== 0
+    const diagonalModifier = isMovingDiagonally ? 1 / Math.sqrt(2) : 1
+
+    this.x = this.x + diagonalModifier * this.direction[0] * this.speed * dt
+
+    this.y = this.y + diagonalModifier * this.direction[1] * this.speed * dt
   }
 
-  flip() {
-    this.flipped = !this.flipped
+  isMoving() {
+    return this.direction[0] !== 0 || this.direction[1] !== 0
   }
 
   setDirection(horizontal, vertical) {
+    if (horizontal === 1) this.flipped = false
+    if (horizontal === -1) this.flipped = true
     this.direction = [horizontal, vertical]
   }
 }

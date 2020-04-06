@@ -41,10 +41,6 @@ game.on("update", function (dt) {
   updateEntities(dt)
 })
 
-window.onclick = () => {
-  player.flip()
-}
-
 game.start()
 
 function drawEntities(ctx) {
