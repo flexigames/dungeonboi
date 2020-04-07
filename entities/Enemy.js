@@ -70,7 +70,10 @@ export default class Enemy extends Entity {
       Math.abs(player.x - this.x) < HIT_RADIUS &&
       Math.abs(player.y - this.y) < HIT_RADIUS
     ) {
-      player.takeHit(1)
+      const dx = player.x - this.x
+      const dy = player.y - this.y
+      const vectorLength = Math.sqrt(dx * dx + dy * dy)
+      player.takeHit(DAMAGE, [dx / vectorLength, dy / vectorLength])
     }
   }
 }

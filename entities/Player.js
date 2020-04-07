@@ -13,6 +13,9 @@ export default class Player extends Entity {
     this.health = this.maxHealth
     this.tags = ["player"]
     this.immuneUntil = Date.now()
+
+    this.velocity = [0, 0]
+    this.friction = 0.92
   }
 
   draw(ctx) {
@@ -43,7 +46,20 @@ export default class Player extends Entity {
   }
 
   update(dt) {
-    this.handleMove(dt)
+    this.x = Math.round(this.x + this.velocity[0] * dt)
+    this.y = Math.round(this.y + this.velocity[1] * dt)
+
+    if (
+      Math.abs(Math.round(this.velocity[0] * dt)) < 10 &&
+      Math.abs(Math.round(this.velocity[1] * dt)) < 10
+    ) {
+      this.handleMove(dt)
+    }
+
+    this.velocity = [
+      this.velocity[0] * this.friction,
+      this.velocity[1] * this.friction,
+    ]
   }
 
   isMoving() {
@@ -81,10 +97,11 @@ export default class Player extends Entity {
     enemiesInRange.forEach((enemy) => enemy.takeHit())
   }
 
-  takeHit(damage) {
+  takeHit(damage, fromDirection) {
     if (Date.now() > this.immuneUntil) {
       this.health -= damage
       this.immuneUntil = Date.now() + 1000
+      this.velocity = [fromDirection[0] * 200, fromDirection[1] * 200]
     }
   }
 }
