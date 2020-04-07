@@ -17,17 +17,47 @@ export default class Player extends Entity {
 
     this.velocity = V(0, 0)
     this.friction = 0.92
+    this.attackRadius = 15
+    this.immunityTime = 500
+  }
+
+  drawDebugAttackRadius() {
+    const attackPoint = this.getAttackPoint()
+    ctx.beginPath()
+    ctx.ellipse(
+      attackPoint.x,
+      attackPoint.y,
+      this.attackRadius,
+      this.attackRadius,
+      0,
+      0,
+      2 * Math.PI
+    )
+    ctx.fillStyle = "rgba(255, 0, 0, 0.9)"
+    ctx.fill()
   }
 
   draw(ctx) {
     const x = Math.round(this.pos.x)
     const y = Math.round(this.pos.y)
 
+    this.drawShadow(ctx, x, y)
+    this.drawKnight(ctx, x, y)
+    this.drawSword(ctx, x, y)
+  }
+
+  drawShadow(ctx, x, y) {
     ctx.beginPath()
     ctx.ellipse(x, y + 1, 5, 3, 0, 0, 2 * Math.PI)
     ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
     ctx.fill()
+  }
 
+  drawKnight(ctx, x, y) {
+    ctx.save()
+    if (Date.now() < this.immuneUntil) {
+      ctx.filter = "invert()"
+    }
     drawSprite(
       ctx,
       this.isMoving() ? "knight_m_run_anim" : "knight_m_idle_anim",
@@ -39,11 +69,26 @@ export default class Player extends Entity {
         anchor: [8, 27],
       }
     )
-    drawSprite(ctx, "weapon_regular_sword", x - 6, y - 7, {
-      flipped: this.flipped,
-      rotation: this.isAttacking ? 90 : 0,
-      anchor: [5, 18],
-    })
+    ctx.restore()
+  }
+
+  drawSword(ctx, x, y) {
+    ctx.save()
+    if (Date.now() < this.immuneUntil) {
+      ctx.filter = "invert()"
+    }
+    drawSprite(
+      ctx,
+      "weapon_regular_sword",
+      x + (this.flipped ? 1 : -1) * 3,
+      y - 7,
+      {
+        flipped: this.flipped,
+        rotation: this.isAttacking ? 90 : 0,
+        anchor: [5, 18],
+      }
+    )
+    ctx.restore()
   }
 
   update(dt) {
@@ -84,18 +129,28 @@ export default class Player extends Entity {
 
     const enemies = findEntities("enemy")
 
+    const attackPoint = this.getAttackPoint()
+
     const enemiesInRange = enemies.filter(
-      (enemy) => this.pos.distance(enemy.pos) < 20
+      (enemy) => attackPoint.distance(enemy.pos) < this.attackRadius
     )
 
     enemiesInRange.forEach((enemy) => enemy.takeHit())
   }
 
+  getAttackPoint() {
+    return this.pos.add(V(this.flipped ? -1 : 1, 0).multiply(8)).add(V(0, -7))
+  }
+
   takeHit(damage, fromDirection) {
     if (Date.now() > this.immuneUntil) {
-      this.health -= damage
-      this.immuneUntil = Date.now() + 1000
+      this.health = Math.max(0, this.health - damage)
+      this.immuneUntil = Date.now() + this.immunityTime
       this.velocity = fromDirection.multiply(-1).normalize().multiply(200)
     }
+  }
+
+  gainHealth(points = 1) {
+    this.health = Math.min(this.health + points, this.maxHealth)
   }
 }

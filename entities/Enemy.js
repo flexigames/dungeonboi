@@ -1,6 +1,7 @@
 import drawSprite from "../lib/sprite"
 import { findEntities, destroyEntity } from "../lib/entities"
 import Entity from "./Entity"
+import V from "../lib/vec2"
 
 export default class Enemy extends Entity {
   constructor(x, y, health = 1, flipped = true) {
@@ -10,6 +11,8 @@ export default class Enemy extends Entity {
     this.flipped = flipped
     this.speed = 20
     this.tags = ["enemy"]
+    this.direction = V(0, 0)
+    this.followDistance = 150
   }
 
   draw(ctx) {
@@ -21,10 +24,17 @@ export default class Enemy extends Entity {
     ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
     ctx.fill()
 
-    drawSprite(ctx, "necromancer_idle_anim", x, y, {
-      flipped: this.flipped,
-      anchor: [8, 20],
-    })
+    drawSprite(
+      ctx,
+      this.isMoving() ? "necromancer_run_anim" : "necromancer_idle_anim",
+      x,
+      y,
+      {
+        flipped: this.flipped,
+        anchor: [8, 20],
+        delay: this.isMoving() ? 100 : 200,
+      }
+    )
     drawSprite(
       ctx,
       this.health === 1 ? "ui_heart_full" : "ui_heart_empty",
@@ -39,19 +49,30 @@ export default class Enemy extends Entity {
   }
 
   update(dt) {
-    this.moveTowardsPlayer(dt)
+    this.controlEnemy()
+    this.handleMove(dt)
     this.checkPlayerHit()
   }
 
-  moveTowardsPlayer(dt) {
+  controlEnemy() {
     const player = findEntities("player")[0]
-    if (player) {
-      const direction = player.pos.subtract(this.pos)
-      if (direction.x > 0) this.flipped = false
-      if (direction.x < 0) this.flipped = true
-
-      this.pos = this.pos.add(direction.normalize().multiply(this.speed * dt))
+    if (player && this.pos.distance(player.pos) < this.followDistance) {
+      this.direction = player.pos.subtract(this.pos)
+      if (this.direction.x > 0) this.flipped = false
+      if (this.direction.x < 0) this.flipped = true
+    } else {
+      this.direction = V(0, 0)
     }
+  }
+
+  handleMove(dt) {
+    this.pos = this.pos.add(
+      this.direction.normalize().multiply(this.speed * dt)
+    )
+  }
+
+  isMoving() {
+    return !this.direction.equals(V(0, 0))
   }
 
   checkPlayerHit() {
