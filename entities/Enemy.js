@@ -1,17 +1,12 @@
 import drawSprite from "../lib/sprite"
 import { findEntities, destroyEntity } from "../lib/entities"
-import Entity from "./Entity"
+import Character from "./Character"
 import V from "../lib/vec2"
 
-export default class Enemy extends Entity {
-  constructor(x, y, health = 1, flipped = true) {
-    super(x, y)
-    this.health = health
-    this.maxHealth = health
-    this.flipped = flipped
-    this.speed = 20
+export default class Enemy extends Character {
+  constructor(x, y) {
+    super(x, y, { speed: 20 })
     this.tags = ["enemy"]
-    this.direction = V(0, 0)
     this.followDistance = 150
   }
 
@@ -43,11 +38,6 @@ export default class Enemy extends Entity {
     )
   }
 
-  takeHit() {
-    this.health = 0
-    destroyEntity(this)
-  }
-
   update(dt) {
     this.controlEnemy()
     this.handleMove(dt)
@@ -57,22 +47,11 @@ export default class Enemy extends Entity {
   controlEnemy() {
     const player = findEntities("player")[0]
     if (player && this.pos.distance(player.pos) < this.followDistance) {
-      this.direction = player.pos.subtract(this.pos)
-      if (this.direction.x > 0) this.flipped = false
-      if (this.direction.x < 0) this.flipped = true
+      const direction = player.pos.subtract(this.pos)
+      this.setDirection(direction.x, direction.y)
     } else {
       this.direction = V(0, 0)
     }
-  }
-
-  handleMove(dt) {
-    this.pos = this.pos.add(
-      this.direction.normalize().multiply(this.speed * dt)
-    )
-  }
-
-  isMoving() {
-    return !this.direction.equals(V(0, 0))
   }
 
   checkPlayerHit() {

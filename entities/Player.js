@@ -1,40 +1,14 @@
 import drawSprite from "../lib/sprite"
 import { findEntities } from "../lib/entities"
-import Entity from "./Entity"
+import Character from "./Character"
 import V from "../lib/vec2"
 
-export default class Player extends Entity {
-  constructor(x, y, speed = 100, flipped = true) {
-    super(x, y)
-    this.speed = speed
-    this.direction = V(0, 0)
-    this.flipped = flipped
-    this.isAttacking = false
-    this.maxHealth = 3
-    this.health = this.maxHealth
+export default class Player extends Character {
+  constructor(x, y) {
+    super(x, y, { maxHealth: 3 })
     this.tags = ["player"]
-    this.immuneUntil = Date.now()
-
-    this.velocity = V(0, 0)
-    this.friction = 0.92
+    this.isAttacking = false
     this.attackRadius = 15
-    this.immunityTime = 500
-  }
-
-  drawDebugAttackRadius() {
-    const attackPoint = this.getAttackPoint()
-    ctx.beginPath()
-    ctx.ellipse(
-      attackPoint.x,
-      attackPoint.y,
-      this.attackRadius,
-      this.attackRadius,
-      0,
-      0,
-      2 * Math.PI
-    )
-    ctx.fillStyle = "rgba(255, 0, 0, 0.9)"
-    ctx.fill()
   }
 
   draw(ctx) {
@@ -91,6 +65,22 @@ export default class Player extends Entity {
     ctx.restore()
   }
 
+  drawDebugAttackRadius() {
+    const attackPoint = this.getAttackPoint()
+    ctx.beginPath()
+    ctx.ellipse(
+      attackPoint.x,
+      attackPoint.y,
+      this.attackRadius,
+      this.attackRadius,
+      0,
+      0,
+      2 * Math.PI
+    )
+    ctx.fillStyle = "rgba(255, 0, 0, 0.9)"
+    ctx.fill()
+  }
+
   update(dt) {
     this.pos = this.pos.add(this.velocity.multiply(dt))
 
@@ -100,25 +90,7 @@ export default class Player extends Entity {
     ) {
       this.handleMove(dt)
     }
-
     this.velocity = this.velocity.multiply(this.friction)
-  }
-
-  isMoving() {
-    return !this.direction.equals(V(0, 0))
-  }
-
-  setDirection(horizontal, vertical) {
-    if (horizontal === 1) this.flipped = false
-    if (horizontal === -1) this.flipped = true
-    this.direction =
-      horizontal === 0 && vertical === 0
-        ? V(0, 0)
-        : V(horizontal, vertical).normalize()
-  }
-
-  handleMove(dt) {
-    this.pos = this.pos.add(this.direction.multiply(this.speed * dt))
   }
 
   attack() {
@@ -140,17 +112,5 @@ export default class Player extends Entity {
 
   getAttackPoint() {
     return this.pos.add(V(this.flipped ? -1 : 1, 0).multiply(8)).add(V(0, -7))
-  }
-
-  takeHit(damage, fromDirection) {
-    if (Date.now() > this.immuneUntil) {
-      this.health = Math.max(0, this.health - damage)
-      this.immuneUntil = Date.now() + this.immunityTime
-      this.velocity = fromDirection.multiply(-1).normalize().multiply(200)
-    }
-  }
-
-  gainHealth(points = 1) {
-    this.health = Math.min(this.health + points, this.maxHealth)
   }
 }
