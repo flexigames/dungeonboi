@@ -11,8 +11,10 @@
     "crtrdg-arrows": "0.0.2"
   },
   "devDependencies": {
-    "browserify": "16.5.1",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "bankai": "9.15.3",
+    "browserify": "16.5.1",
     "parcel-bundler": "*",
     "parcel-plugin-txt": "*",
     "seedrandom": "3.0.5"

@@ -1,10 +1,10 @@
 import drawSprite from "../lib/sprite"
-import { findEntitiesWithTag } from "../lib/entities"
+import { findEntities } from "../lib/entities"
+import Entity from "./Entity"
 
-export default class Player {
+export default class Player extends Entity {
   constructor(x, y, speed = 100, flipped = true) {
-    this.x = x
-    this.y = y
+    super(x, y)
     this.speed = speed
     this.direction = [0, 0]
     this.flipped = flipped
@@ -15,10 +15,12 @@ export default class Player {
   draw(ctx) {
     const x = Math.round(this.x)
     const y = Math.round(this.y)
+
     ctx.beginPath()
     ctx.ellipse(x, y + 1, 5, 3, 0, 0, 2 * Math.PI)
     ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
     ctx.fill()
+
     drawSprite(
       ctx,
       this.isMoving() ? "knight_m_run_anim" : "knight_m_idle_anim",
@@ -67,7 +69,7 @@ export default class Player {
       this.isAttacking = false
     }, 100)
 
-    const enemies = findEntitiesWithTag("enemy")
+    const enemies = findEntities("enemy")
 
     const enemiesInRange = enemies.filter((enemy) => {
       return Math.abs(this.x - enemy.x) < 20 && Math.abs(this.y - enemy.y)

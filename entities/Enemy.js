@@ -1,10 +1,10 @@
 import drawSprite from "../lib/sprite"
-import { findEntitiesWithTag } from "../lib/entities"
+import { findEntities } from "../lib/entities"
+import Entity from "./Entity"
 
-export default class Enemy {
+export default class Enemy extends Entity {
   constructor(x, y, health = 1, flipped = true) {
-    this.x = x
-    this.y = y
+    super(x, y)
     this.health = health
     this.flipped = flipped
     this.speed = 20
@@ -12,20 +12,23 @@ export default class Enemy {
   }
 
   draw(ctx) {
-    drawSprite(
-      ctx,
-      "necromancer_idle_anim",
-      Math.round(this.x),
-      Math.round(this.y),
-      {
-        flipped: this.flipped,
-      }
-    )
+    const x = Math.round(this.x)
+    const y = Math.round(this.y)
+
+    ctx.beginPath()
+    ctx.ellipse(x, y, 6, 3, 0, 0, 2 * Math.PI)
+    ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
+    ctx.fill()
+
+    drawSprite(ctx, "necromancer_idle_anim", x, y, {
+      flipped: this.flipped,
+      anchor: [8, 20],
+    })
     drawSprite(
       ctx,
       this.health === 1 ? "ui_heart_full" : "ui_heart_empty",
-      Math.round(this.x),
-      Math.round(this.y - 12)
+      x - 8,
+      y - 33
     )
   }
 
@@ -34,10 +37,17 @@ export default class Enemy {
   }
 
   update(dt) {
-    const player = findEntitiesWithTag("player")[0]
+    this.moveTowardsPlayer(dt)
+  }
+
+  moveTowardsPlayer(dt) {
+    const player = findEntities("player")[0]
     if (player) {
       const horizontal = this.x > player.x ? -1 : this.x < player.x ? 1 : 0
-      const vertical = this.y > player.x ? -1 : this.y < player.y ? 1 : 0
+      const vertical = this.y > player.y ? -1 : this.y < player.y ? 1 : 0
+
+      if (horizontal === 1) this.flipped = false
+      if (horizontal === -1) this.flipped = true
 
       const isMovingDiagonally = horizontal !== 0 && vertical !== 0
       const diagonalModifier = isMovingDiagonally ? 1 / Math.sqrt(2) : 1
