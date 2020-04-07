@@ -5,6 +5,6 @@ export default class Potion extends Entity {
   tags = ["potion"]
 
   draw(ctx) {
-    drawSprite(ctx, "flask_red", this.x, this.y)
+    drawSprite(ctx, "flask_red", this.pos.x, this.pos.y, { anchor: [8, 14] })
   }
 }

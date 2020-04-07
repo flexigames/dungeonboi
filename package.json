@@ -9,7 +9,6 @@
   "dependencies": {
     "crtrdg-arrows": "0.0.2",
     "crtrdg-gameloop": "1.0.3",
-    "loadsh": "0.0.4",
     "lodash": "^4.17.15"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 import drawSprite from "../lib/sprite"
-import { findEntities } from "../lib/entities"
+import { findEntities, destroyEntity } from "../lib/entities"
 import Entity from "./Entity"
 
 export default class Enemy extends Entity {
@@ -13,8 +13,8 @@ export default class Enemy extends Entity {
   }
 
   draw(ctx) {
-    const x = Math.round(this.x)
-    const y = Math.round(this.y)
+    const x = Math.round(this.pos.x)
+    const y = Math.round(this.pos.y)
 
     ctx.beginPath()
     ctx.ellipse(x, y, 6, 3, 0, 0, 2 * Math.PI)
@@ -35,6 +35,7 @@ export default class Enemy extends Entity {
 
   takeHit() {
     this.health = 0
+    destroyEntity(this)
   }
 
   update(dt) {
@@ -45,35 +46,21 @@ export default class Enemy extends Entity {
   moveTowardsPlayer(dt) {
     const player = findEntities("player")[0]
     if (player) {
-      const horizontal = this.x > player.x ? -1 : this.x < player.x ? 1 : 0
-      const vertical = this.y > player.y ? -1 : this.y < player.y ? 1 : 0
+      const direction = player.pos.subtract(this.pos)
+      if (direction.x > 0) this.flipped = false
+      if (direction.x < 0) this.flipped = true
 
-      if (horizontal === 1) this.flipped = false
-      if (horizontal === -1) this.flipped = true
-
-      const isMovingDiagonally = horizontal !== 0 && vertical !== 0
-      const diagonalModifier = isMovingDiagonally ? 1 / Math.sqrt(2) : 1
-
-      this.x = this.x + diagonalModifier * horizontal * this.speed * dt
-
-      this.y = this.y + diagonalModifier * vertical * this.speed * dt
+      this.pos = this.pos.add(direction.normalize().multiply(this.speed * dt))
     }
   }
 
   checkPlayerHit() {
     const player = findEntities("player")[0]
-    const HIT_RADIUS = 20
+    const HIT_RADIUS = 10
     const DAMAGE = 1
 
-    if (
-      player &&
-      Math.abs(player.x - this.x) < HIT_RADIUS &&
-      Math.abs(player.y - this.y) < HIT_RADIUS
-    ) {
-      const dx = player.x - this.x
-      const dy = player.y - this.y
-      const vectorLength = Math.sqrt(dx * dx + dy * dy)
-      player.takeHit(DAMAGE, [dx / vectorLength, dy / vectorLength])
+    if (player && this.pos.distance(player.pos) < HIT_RADIUS) {
+      player.takeHit(DAMAGE, this.pos.subtract(player.pos).normalize())
     }
   }
 }

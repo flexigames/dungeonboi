@@ -1,7 +1,8 @@
+import V from "../lib/vec2"
+
 export default class Entity {
   constructor(x, y) {
-    this.x = x
-    this.y = y
+    this.pos = V(x, y)
     this.tags = []
   }
 

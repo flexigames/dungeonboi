@@ -1,12 +1,13 @@
 import drawSprite from "../lib/sprite"
 import { findEntities } from "../lib/entities"
 import Entity from "./Entity"
+import V from "../lib/vec2"
 
 export default class Player extends Entity {
   constructor(x, y, speed = 100, flipped = true) {
     super(x, y)
     this.speed = speed
-    this.direction = [0, 0]
+    this.direction = V(0, 0)
     this.flipped = flipped
     this.isAttacking = false
     this.maxHealth = 3
@@ -14,13 +15,13 @@ export default class Player extends Entity {
     this.tags = ["player"]
     this.immuneUntil = Date.now()
 
-    this.velocity = [0, 0]
+    this.velocity = V(0, 0)
     this.friction = 0.92
   }
 
   draw(ctx) {
-    const x = Math.round(this.x)
-    const y = Math.round(this.y)
+    const x = Math.round(this.pos.x)
+    const y = Math.round(this.pos.y)
 
     ctx.beginPath()
     ctx.ellipse(x, y + 1, 5, 3, 0, 0, 2 * Math.PI)
@@ -46,40 +47,33 @@ export default class Player extends Entity {
   }
 
   update(dt) {
-    this.x = Math.round(this.x + this.velocity[0] * dt)
-    this.y = Math.round(this.y + this.velocity[1] * dt)
+    this.pos = this.pos.add(this.velocity.multiply(dt))
 
     if (
-      Math.abs(Math.round(this.velocity[0] * dt)) < 10 &&
-      Math.abs(Math.round(this.velocity[1] * dt)) < 10
+      Math.abs(Math.round(this.velocity.x * dt)) < 10 &&
+      Math.abs(Math.round(this.velocity.y * dt)) < 10
     ) {
       this.handleMove(dt)
     }
 
-    this.velocity = [
-      this.velocity[0] * this.friction,
-      this.velocity[1] * this.friction,
-    ]
+    this.velocity = this.velocity.multiply(this.friction)
   }
 
   isMoving() {
-    return this.direction[0] !== 0 || this.direction[1] !== 0
+    return !this.direction.equals(V(0, 0))
   }
 
   setDirection(horizontal, vertical) {
     if (horizontal === 1) this.flipped = false
     if (horizontal === -1) this.flipped = true
-    this.direction = [horizontal, vertical]
+    this.direction =
+      horizontal === 0 && vertical === 0
+        ? V(0, 0)
+        : V(horizontal, vertical).normalize()
   }
 
   handleMove(dt) {
-    const isMovingDiagonally =
-      this.direction[0] !== 0 && this.direction[1] !== 0
-    const diagonalModifier = isMovingDiagonally ? 1 / Math.sqrt(2) : 1
-
-    this.x = this.x + diagonalModifier * this.direction[0] * this.speed * dt
-
-    this.y = this.y + diagonalModifier * this.direction[1] * this.speed * dt
+    this.pos = this.pos.add(this.direction.multiply(this.speed * dt))
   }
 
   attack() {
@@ -90,9 +84,9 @@ export default class Player extends Entity {
 
     const enemies = findEntities("enemy")
 
-    const enemiesInRange = enemies.filter((enemy) => {
-      return Math.abs(this.x - enemy.x) < 20 && Math.abs(this.y - enemy.y)
-    })
+    const enemiesInRange = enemies.filter(
+      (enemy) => this.pos.distance(enemy.pos) < 20
+    )
 
     enemiesInRange.forEach((enemy) => enemy.takeHit())
   }
@@ -101,7 +95,7 @@ export default class Player extends Entity {
     if (Date.now() > this.immuneUntil) {
       this.health -= damage
       this.immuneUntil = Date.now() + 1000
-      this.velocity = [fromDirection[0] * 200, fromDirection[1] * 200]
+      this.velocity = fromDirection.multiply(-1).normalize().multiply(200)
     }
   }
 }
