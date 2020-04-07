@@ -6,6 +6,7 @@ export default class Enemy extends Entity {
   constructor(x, y, health = 1, flipped = true) {
     super(x, y)
     this.health = health
+    this.maxHealth = health
     this.flipped = flipped
     this.speed = 20
     this.tags = ["enemy"]
@@ -38,6 +39,7 @@ export default class Enemy extends Entity {
 
   update(dt) {
     this.moveTowardsPlayer(dt)
+    this.checkPlayerHit()
   }
 
   moveTowardsPlayer(dt) {
@@ -55,6 +57,20 @@ export default class Enemy extends Entity {
       this.x = this.x + diagonalModifier * horizontal * this.speed * dt
 
       this.y = this.y + diagonalModifier * vertical * this.speed * dt
+    }
+  }
+
+  checkPlayerHit() {
+    const player = findEntities("player")[0]
+    const HIT_RADIUS = 20
+    const DAMAGE = 1
+
+    if (
+      player &&
+      Math.abs(player.x - this.x) < HIT_RADIUS &&
+      Math.abs(player.y - this.y) < HIT_RADIUS
+    ) {
+      player.takeHit(1)
     }
   }
 }

@@ -9,7 +9,10 @@ export default class Player extends Entity {
     this.direction = [0, 0]
     this.flipped = flipped
     this.isAttacking = false
+    this.maxHealth = 3
+    this.health = this.maxHealth
     this.tags = ["player"]
+    this.immuneUntil = Date.now()
   }
 
   draw(ctx) {
@@ -76,5 +79,12 @@ export default class Player extends Entity {
     })
 
     enemiesInRange.forEach((enemy) => enemy.takeHit())
+  }
+
+  takeHit(damage) {
+    if (Date.now() > this.immuneUntil) {
+      this.health -= damage
+      this.immuneUntil = Date.now() + 1000
+    }
   }
 }

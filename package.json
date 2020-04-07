@@ -7,8 +7,10 @@
     "start": "parcel index.html"
   },
   "dependencies": {
+    "crtrdg-arrows": "0.0.2",
     "crtrdg-gameloop": "1.0.3",
-    "crtrdg-arrows": "0.0.2"
+    "loadsh": "0.0.4",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
