@@ -10,6 +10,7 @@ export default class Potion extends Entity {
   }
 
   draw(ctx) {
+    this.drawShadow(ctx, 3)
     drawSprite(ctx, "flask_red", this.pos.x, this.pos.y, { anchor: [8, 14] })
   }
 

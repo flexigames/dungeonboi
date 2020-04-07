@@ -12,7 +12,7 @@ export default class Character extends Entity {
     } = opts
     super(x, y)
     this.maxHealth = maxHealth
-    this.health = this.maxHealth
+    this.health = maxHealth
     this.flipped = flipped
     this.speed = speed
     this.direction = V(0, 0)
@@ -20,6 +20,16 @@ export default class Character extends Entity {
     this.immunityTime = immunityTime
     this.velocity = V(0, 0)
     this.friction = 0.92
+  }
+
+  update(dt) {
+    this.updateVelocity(dt)
+    this.handleMove(dt)
+  }
+
+  updateVelocity(dt) {
+    this.pos = this.pos.add(this.velocity.multiply(dt))
+    this.velocity = this.velocity.multiply(this.friction)
   }
 
   isMoving() {
@@ -39,11 +49,13 @@ export default class Character extends Entity {
         : V(horizontal, vertical).normalize()
   }
 
-  takeHit(damage, fromDirection) {
+  takeHit(damage = 1, attackerPos) {
     if (Date.now() > this.immuneUntil && this.health - damage > 0) {
       this.health = Math.max(0, this.health - damage)
       this.immuneUntil = Date.now() + this.immunityTime
+      const fromDirection = attackerPos.subtract(this.pos).normalize()
       this.velocity = fromDirection.multiply(-1).normalize().multiply(200)
+      console.log(this.velocity)
     } else {
       destroyEntity(this)
     }

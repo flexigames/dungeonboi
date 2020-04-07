@@ -15,16 +15,9 @@ export default class Player extends Character {
     const x = Math.round(this.pos.x)
     const y = Math.round(this.pos.y)
 
-    this.drawShadow(ctx, x, y)
+    this.drawShadow(ctx, 5)
     this.drawKnight(ctx, x, y)
     this.drawSword(ctx, x, y)
-  }
-
-  drawShadow(ctx, x, y) {
-    ctx.beginPath()
-    ctx.ellipse(x, y + 1, 5, 3, 0, 0, 2 * Math.PI)
-    ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
-    ctx.fill()
   }
 
   drawKnight(ctx, x, y) {
@@ -82,7 +75,7 @@ export default class Player extends Character {
   }
 
   update(dt) {
-    this.pos = this.pos.add(this.velocity.multiply(dt))
+    this.updateVelocity(dt)
 
     if (
       Math.abs(Math.round(this.velocity.x * dt)) < 10 &&
@@ -90,7 +83,6 @@ export default class Player extends Character {
     ) {
       this.handleMove(dt)
     }
-    this.velocity = this.velocity.multiply(this.friction)
   }
 
   attack() {
@@ -107,7 +99,7 @@ export default class Player extends Character {
       (enemy) => attackPoint.distance(enemy.pos) < this.attackRadius
     )
 
-    enemiesInRange.forEach((enemy) => enemy.takeHit())
+    enemiesInRange.forEach((enemy) => enemy.takeHit(1, this.pos))
   }
 
   getAttackPoint() {

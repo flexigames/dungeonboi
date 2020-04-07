@@ -5,7 +5,7 @@ import V from "../lib/vec2"
 
 export default class Enemy extends Character {
   constructor(x, y) {
-    super(x, y, { speed: 20 })
+    super(x, y, { speed: 20, maxHealth: 2 })
     this.tags = ["enemy"]
     this.followDistance = 150
   }
@@ -14,11 +14,12 @@ export default class Enemy extends Character {
     const x = Math.round(this.pos.x)
     const y = Math.round(this.pos.y)
 
-    ctx.beginPath()
-    ctx.ellipse(x, y, 6, 3, 0, 0, 2 * Math.PI)
-    ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
-    ctx.fill()
+    this.drawShadow(ctx, 6)
+    this.drawNecromancer(ctx, x, y)
+    this.drawHeart(ctx, x, y)
+  }
 
+  drawNecromancer(ctx, x, y) {
     drawSprite(
       ctx,
       this.isMoving() ? "necromancer_run_anim" : "necromancer_idle_anim",
@@ -30,17 +31,27 @@ export default class Enemy extends Character {
         delay: this.isMoving() ? 100 : 200,
       }
     )
+  }
+
+  drawHeart(ctx, x, y) {
     drawSprite(
       ctx,
-      this.health === 1 ? "ui_heart_full" : "ui_heart_empty",
-      x - 8,
+      this.health > 0 ? "ui_heart_full" : "ui_heart_empty",
+      x,
+      y - 33
+    )
+    drawSprite(
+      ctx,
+      this.health > 1 ? "ui_heart_full" : "ui_heart_empty",
+      x - 16,
       y - 33
     )
   }
 
   update(dt) {
+    super.update(dt)
+
     this.controlEnemy()
-    this.handleMove(dt)
     this.checkPlayerHit()
   }
 
@@ -60,7 +71,7 @@ export default class Enemy extends Character {
     const DAMAGE = 1
 
     if (player && this.pos.distance(player.pos) < HIT_RADIUS) {
-      player.takeHit(DAMAGE, this.pos.subtract(player.pos).normalize())
+      player.takeHit(DAMAGE, this.pos)
     }
   }
 }
