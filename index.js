@@ -10,7 +10,7 @@ const game = createGame()
 game.canvas.height = 512
 game.canvas.width = 512
 
-const player = new Player(140, 240)
+const player = new Player(250, 240)
 
 createEntity(player)
 initInput(player)
