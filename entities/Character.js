@@ -26,9 +26,12 @@ export default class Character extends Entity {
     this.updateVelocity(dt)
     this.handleMove(dt)
     if (this.health <= 0 && !this.isStunned()) {
+      this.onDeath()
       destroyEntity(this)
     }
   }
+
+  onDeath() {}
 
   updateVelocity(dt) {
     this.pos = this.pos.add(this.velocity.multiply(dt))

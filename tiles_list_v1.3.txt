@@ -127,6 +127,7 @@ goblin_run_anim 432 32 16 16 4
 imp_idle_anim 368 48 16 16 4
 imp_run_anim 432 48 16 16 4
 skelet_idle_anim 368 80 16 16 4
+skelet_dead 400 80 16 16
 skelet_run_anim 432 80 16 16 4
 muddy_idle_anim 368 112 16 16 4
 muddy_run_anim 368 112 16 16 4

@@ -1,6 +1,7 @@
 import drawSprite from "../lib/sprite"
-import { findEntities, destroyEntity } from "../lib/entities"
+import { findEntities, destroyEntity, createEntity } from "../lib/entities"
 import Character from "./Character"
+import DeadEnemy from "./DeadEnemy"
 import V from "../lib/vec2"
 
 export default class Enemy extends Character {
@@ -17,6 +18,11 @@ export default class Enemy extends Character {
     this.drawShadow(ctx, 6)
     this.drawNecromancer(ctx, x, y)
     this.drawHeart(ctx, x, y)
+  }
+
+  onDeath() {
+    const dead = new DeadEnemy(this.pos.x, this.pos.y)
+    createEntity(dead)
   }
 
   drawNecromancer(ctx, x, y) {
