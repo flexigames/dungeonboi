@@ -20,6 +20,10 @@ export default class Enemy extends Character {
   }
 
   drawNecromancer(ctx, x, y) {
+    ctx.save()
+    if (this.isStunned()) {
+      ctx.filter = "invert()"
+    }
     drawSprite(
       ctx,
       this.isMoving() ? "necromancer_run_anim" : "necromancer_idle_anim",
@@ -31,6 +35,7 @@ export default class Enemy extends Character {
         delay: this.isMoving() ? 100 : 200,
       }
     )
+    ctx.restore()
   }
 
   drawHeart(ctx, x, y) {
@@ -70,7 +75,11 @@ export default class Enemy extends Character {
     const HIT_RADIUS = 10
     const DAMAGE = 1
 
-    if (player && this.pos.distance(player.pos) < HIT_RADIUS) {
+    if (
+      player &&
+      this.pos.distance(player.pos) < HIT_RADIUS &&
+      Date.now() > this.immuneUntil
+    ) {
       player.takeHit(DAMAGE, this.pos)
     }
   }

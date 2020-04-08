@@ -25,6 +25,9 @@ export default class Character extends Entity {
   update(dt) {
     this.updateVelocity(dt)
     this.handleMove(dt)
+    if (this.health <= 0 && !this.isStunned()) {
+      destroyEntity(this)
+    }
   }
 
   updateVelocity(dt) {
@@ -50,18 +53,19 @@ export default class Character extends Entity {
   }
 
   takeHit(damage = 1, attackerPos) {
-    if (Date.now() > this.immuneUntil && this.health - damage > 0) {
+    if (Date.now() > this.immuneUntil) {
       this.health = Math.max(0, this.health - damage)
       this.immuneUntil = Date.now() + this.immunityTime
       const fromDirection = attackerPos.subtract(this.pos).normalize()
       this.velocity = fromDirection.multiply(-1).normalize().multiply(200)
-      console.log(this.velocity)
-    } else {
-      destroyEntity(this)
     }
   }
 
   gainHealth(points = 1) {
     this.health = Math.min(this.health + points, this.maxHealth)
+  }
+
+  isStunned() {
+    return Date.now() < this.immuneUntil
   }
 }

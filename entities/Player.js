@@ -22,9 +22,9 @@ export default class Player extends Character {
 
   drawKnight(ctx, x, y) {
     ctx.save()
-    if (Date.now() < this.immuneUntil) {
-      ctx.filter = "invert()"
-    }
+      if (this.isStunned()) {
+        ctx.filter = "invert()"
+      }
     drawSprite(
       ctx,
       this.isMoving() ? "knight_m_run_anim" : "knight_m_idle_anim",
