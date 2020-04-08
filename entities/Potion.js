@@ -5,6 +5,7 @@ import { Howl } from "howler"
 
 export default class Potion extends Entity {
   tags = ["potion"]
+  pickupRadius = 8
 
   update() {
     this.checkPlayerCollision()
@@ -17,9 +18,8 @@ export default class Potion extends Entity {
 
   checkPlayerCollision() {
     const player = findEntities("player")[0]
-    const RADIUS = 4
 
-    if (player && this.pos.distance(player.pos) < RADIUS) {
+    if (player && this.pos.distance(player.pos) < this.pickupRadius) {
       new Howl({
         src: "assets/audio/potion.wav",
         volume: 0.3,
