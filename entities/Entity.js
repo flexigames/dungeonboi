@@ -3,6 +3,7 @@ import state from "../lib/state"
 import { createSprite } from "../lib/sprite"
 import { destroyEntity } from "../lib/entities"
 import { isObject } from "lodash"
+import * as PIXI from "pixi.js"
 
 export default class Entity {
   constructor(x, y, opts = {}) {
@@ -27,7 +28,7 @@ export default class Entity {
     Object.values(this.sprites).forEach((sprite) => {
       sprite.x = this.pos.x
       sprite.y = this.pos.y
-      sprite.zIndex = this.pos.y
+      sprite.zIndex = this.zIndex || this.pos.y
     })
   }
 

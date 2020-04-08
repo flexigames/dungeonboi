@@ -11,7 +11,10 @@ import HUD from "./lib/hud"
 const app = createApp()
 const viewport = createViewport()
 
-app.loader.add("tileset", "assets/img/dungeon_tileset.png").load(setup)
+app.loader
+  .add("tileset", "assets/img/dungeon_tileset.png")
+  .add("ui", "assets/img/dungeon_ui.png")
+  .load(setup)
 
 function setup(loader, resources) {
   const textures = createTextures(resources.tileset.texture)
