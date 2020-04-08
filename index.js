@@ -6,6 +6,7 @@ import * as PIXI from "pixi.js"
 import { Viewport } from "pixi-viewport"
 import { createTextures } from "./lib/sprite"
 import state from "./lib/state"
+import HUD from "./lib/hud"
 
 const app = createApp()
 const viewport = createViewport()
@@ -16,7 +17,8 @@ function setup(loader, resources) {
   const textures = createTextures(resources.tileset.texture)
 
   state.textures = textures
-  state.stage = viewport
+  state.viewport = viewport
+  state.app = app
 
   createLevel()
   populateLevel()
@@ -25,14 +27,17 @@ function setup(loader, resources) {
   createEntity(player)
   initInput(player)
 
-  app.ticker.add(createGameLoop(player))
+  const hud = new HUD(player)
+
+  app.ticker.add(createGameLoop(player, hud))
 }
 
-function createGameLoop(player) {
+function createGameLoop(player, hud) {
   return function gameLoop(dt) {
     controlPlayer(player)
     updateViewport(player)
     updateEntities(dt)
+    hud.update()
   }
 }
 
