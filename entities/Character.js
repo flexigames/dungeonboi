@@ -1,6 +1,7 @@
 import V from "../lib/vec2"
 import { destroyEntity } from "../lib/entities"
 import Entity from "./Entity"
+import { Howl } from "howler"
 
 export default class Character extends Entity {
   constructor(x, y, opts = {}) {
@@ -57,6 +58,7 @@ export default class Character extends Entity {
 
   takeHit(damage = 1, attackerPos) {
     if (Date.now() > this.immuneUntil) {
+      new Howl({ src: "assets/audio/hit.wav", volume: 0.2 }).play()
       this.health = Math.max(0, this.health - damage)
       this.immuneUntil = Date.now() + this.immunityTime
       const fromDirection = attackerPos.subtract(this.pos).normalize()

@@ -9,6 +9,7 @@
   "dependencies": {
     "crtrdg-arrows": "0.0.2",
     "crtrdg-gameloop": "1.0.3",
+    "howler": "^2.1.3",
     "loadsh": "0.0.4",
     "lodash": "^4.17.15"
   },
@@ -18,7 +19,16 @@
     "bankai": "9.15.3",
     "browserify": "16.5.1",
     "parcel-bundler": "*",
+    "parcel-plugin-static-files-copy": "^2.3.1",
     "parcel-plugin-txt": "*",
     "seedrandom": "3.0.5"
+  },
+  "staticFiles": {
+    "staticPath": [
+      {
+        "staticOutDir": "assets",
+        "staticPath": "assets"
+      }
+    ]
   }
 }

@@ -2,6 +2,7 @@ import drawSprite from "../lib/sprite"
 import { findEntities } from "../lib/entities"
 import Character from "./Character"
 import V from "../lib/vec2"
+import { Howl } from "howler"
 
 export default class Player extends Character {
   constructor(x, y) {
@@ -22,9 +23,9 @@ export default class Player extends Character {
 
   drawKnight(ctx, x, y) {
     ctx.save()
-      if (this.isStunned()) {
-        ctx.filter = "invert()"
-      }
+    if (this.isStunned()) {
+      ctx.filter = "invert()"
+    }
     drawSprite(
       ctx,
       this.isMoving() ? "knight_m_run_anim" : "knight_m_idle_anim",
@@ -98,6 +99,10 @@ export default class Player extends Character {
     const enemiesInRange = enemies.filter(
       (enemy) => attackPoint.distance(enemy.pos) < this.attackRadius
     )
+
+    new Howl({
+      src: "assets/audio/sword.mp3",
+    }).play()
 
     enemiesInRange.forEach((enemy) => enemy.takeHit(1, this.pos))
   }
