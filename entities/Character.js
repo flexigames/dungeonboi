@@ -32,7 +32,9 @@ export default class Character extends Entity {
     }
   }
 
-  onDeath() {}
+  onDeath() {
+    new Howl({ src: "assets/audio/death.wav" }).play()
+  }
 
   updateVelocity(dt) {
     this.pos = this.pos.add(this.velocity.multiply(dt))

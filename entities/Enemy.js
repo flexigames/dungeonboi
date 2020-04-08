@@ -21,6 +21,7 @@ export default class Enemy extends Character {
   }
 
   onDeath() {
+    super.onDeath()
     const dead = new Corpse(this.pos.x, this.pos.y)
     createEntity(dead)
   }
