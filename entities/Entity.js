@@ -1,19 +1,40 @@
 import V from "../lib/vec2"
+import state from "../lib/state"
+import { createSprite } from "../lib/sprite"
+import { destroyEntity } from "../lib/entities"
+import { isObject } from "lodash"
 
 export default class Entity {
-  constructor(x, y) {
+  constructor(x, y, opts = {}) {
+    let { sprites } = opts
     this.pos = V(x, y)
     this.tags = []
+
+    if (!isObject(sprites)) sprites = { main: sprites }
+
+    this.sprites = {}
+
+    Object.entries(sprites).forEach(([spriteId, spriteName]) => {
+      const sprite = createSprite(spriteName, this.pos.x, this.pos.y, {
+        anchor: [0.5, 1],
+      })
+
+      this.sprites[spriteId] = sprite
+    })
   }
 
-  draw(ctx) {}
+  update(dt) {
+    Object.values(this.sprites).forEach((sprite) => {
+      sprite.x = this.pos.x
+      sprite.y = this.pos.y
+      sprite.zIndex = this.pos.y
+    })
+  }
 
-  update(dt) {}
-
-  drawShadow(ctx, shadowWidth = 5) {
-    ctx.beginPath()
-    ctx.ellipse(Math.round(this.pos.x), Math.round(this.pos.y), shadowWidth, 3, 0, 0, 2 * Math.PI)
-    ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
-    ctx.fill()
+  destroy() {
+    destroyEntity(this)
+    Object.values(this.sprites).forEach((sprite) =>
+      state.app.stage.removeChild(sprite)
+    )
   }
 }

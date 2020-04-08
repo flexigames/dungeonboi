@@ -1,17 +1,18 @@
 import V from "../lib/vec2"
-import { destroyEntity } from "../lib/entities"
 import Entity from "./Entity"
 import { Howl } from "howler"
+import * as PIXI from "pixi.js"
 
 export default class Character extends Entity {
   constructor(x, y, opts = {}) {
     const {
       maxHealth = 1,
       flipped = false,
-      speed = 100,
+      speed = 2,
       immunityTime = 500,
+      sprites,
     } = opts
-    super(x, y)
+    super(x, y, { sprites })
     this.maxHealth = maxHealth
     this.health = maxHealth
     this.flipped = flipped
@@ -21,15 +22,21 @@ export default class Character extends Entity {
     this.immunityTime = immunityTime
     this.velocity = V(0, 0)
     this.friction = 0.92
+    this.knockBackSpeed = 4
   }
 
   update(dt) {
+    super.update(dt)
     this.updateVelocity(dt)
     this.handleMove(dt)
     if (this.health <= 0 && !this.isStunned()) {
       this.onDeath()
-      destroyEntity(this)
+      this.destroy()
     }
+
+    Object.values(this.sprites).forEach(
+      (sprite) => (sprite.scale.x = this.flipped ? -1 : 1)
+    )
   }
 
   onDeath() {
@@ -58,13 +65,33 @@ export default class Character extends Entity {
         : V(horizontal, vertical).normalize()
   }
 
+  setSpriteStunned() {
+    const negativeFilter = new PIXI.filters.ColorMatrixFilter()
+    negativeFilter.negative()
+    Object.values(this.sprites).forEach(
+      (sprite) => (sprite.filters = [negativeFilter])
+    )
+  }
+
   takeHit(damage = 1, attackerPos) {
+    this.setSpriteStunned()
+
     if (Date.now() > this.immuneUntil) {
       new Howl({ src: "assets/audio/hit.wav", volume: 0.2 }).play()
       this.health = Math.max(0, this.health - damage)
       this.immuneUntil = Date.now() + this.immunityTime
+      setTimeout(
+        () =>
+          Object.values(this.sprites).forEach(
+            (sprite) => (sprite.filters = [])
+          ),
+        this.immunityTime
+      )
       const fromDirection = attackerPos.subtract(this.pos).normalize()
-      this.velocity = fromDirection.multiply(-1).normalize().multiply(200)
+      this.velocity = fromDirection
+        .multiply(-1)
+        .normalize()
+        .multiply(this.knockBackSpeed)
     }
   }
 

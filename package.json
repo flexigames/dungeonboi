@@ -7,11 +7,9 @@
     "start": "parcel index.html"
   },
   "dependencies": {
-    "crtrdg-arrows": "0.0.2",
-    "crtrdg-gameloop": "1.0.3",
     "howler": "^2.1.3",
-    "loadsh": "0.0.4",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "pixi.js": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

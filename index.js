@@ -1,46 +1,51 @@
-import createGame from "crtrdg-gameloop"
-import { populateLevel, drawLevel } from "./lib/level"
-import drawUI from "./lib/ui"
+import { createLevel, populateLevel } from "./lib/level"
 import Player from "./entities/Player"
 import { initInput, controlPlayer } from "./lib/input"
-import { createEntity, updateEntities, drawEntities } from "./lib/entities"
-import Camera from "./lib/camera"
+import { createEntity, updateEntities } from "./lib/entities"
+import * as PIXI from "pixi.js"
+import { createTextures } from "./lib/sprite"
+import state from "./lib/state"
 
-const game = createGame()
+const app = createGame()
 
-game.canvas.height = 512
-game.canvas.width = 512
+app.loader.add("tileset", "assets/img/dungeon_tileset.png").load(setup)
 
-const player = new Player(250, 240)
+function setup(loader, resources) {
+  const textures = createTextures(resources.tileset.texture)
 
-createEntity(player)
-initInput(player)
-populateLevel()
+  state.textures = textures
+  state.app = app
 
-let camera
+  createLevel()
+  populateLevel()
 
-game.on("draw", function (ctx) {
-  if (!camera) {
-    camera = new Camera(ctx)
-    camera.zoomTo(512)
-    ctx.imageSmoothingEnabled = false
+  const player = new Player(250, 240)
+  createEntity(player)
+  initInput(player)
+
+  app.ticker.add(createGameLoop(player))
+}
+
+function createGameLoop(player) {
+  return function gameLoop(dt) {
+    controlPlayer(player)
+    updateEntities(dt)
   }
+}
 
-  camera.begin()
+function createGame() {
+  const app = new PIXI.Application({
+    width: 512,
+    height: 512,
+    backgroundColor: 0x222222,
+    antialias: false,
+  })
 
-  camera.moveTo(player.pos.x, player.pos.y)
+  document.body.appendChild(app.view)
 
-  drawLevel(ctx)
-  drawEntities(ctx)
+  PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
-  camera.end()
+  app.stage.sortableChildren = true
 
-  drawUI(ctx)
-})
-
-game.on("update", function (dt) {
-  updateEntities(dt)
-  controlPlayer(player)
-})
-
-game.start()
+  return app
+}
