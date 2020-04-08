@@ -3,10 +3,12 @@ import Player from "./entities/Player"
 import { initInput, controlPlayer } from "./lib/input"
 import { createEntity, updateEntities } from "./lib/entities"
 import * as PIXI from "pixi.js"
+import { Viewport } from "pixi-viewport"
 import { createTextures } from "./lib/sprite"
 import state from "./lib/state"
 
-const app = createGame()
+const app = createApp()
+const viewport = createViewport()
 
 app.loader.add("tileset", "assets/img/dungeon_tileset.png").load(setup)
 
@@ -14,7 +16,7 @@ function setup(loader, resources) {
   const textures = createTextures(resources.tileset.texture)
 
   state.textures = textures
-  state.app = app
+  state.stage = viewport
 
   createLevel()
   populateLevel()
@@ -29,11 +31,12 @@ function setup(loader, resources) {
 function createGameLoop(player) {
   return function gameLoop(dt) {
     controlPlayer(player)
+    updateViewport(player)
     updateEntities(dt)
   }
 }
 
-function createGame() {
+function createApp() {
   const app = new PIXI.Application({
     width: 512,
     height: 512,
@@ -45,7 +48,21 @@ function createGame() {
 
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
-  app.stage.sortableChildren = true
-
   return app
+}
+
+function createViewport() {
+  const viewport = new Viewport({
+    interaction: app.renderer.plugins.interaction,
+  })
+
+  viewport.sortableChildren = true
+  app.stage.addChild(viewport)
+
+  return viewport
+}
+
+function updateViewport(player) {
+  viewport.x = -player.pos.x + 256
+  viewport.y = -player.pos.y + 256
 }

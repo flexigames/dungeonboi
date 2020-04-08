@@ -34,7 +34,7 @@ export default class Entity {
   destroy() {
     destroyEntity(this)
     Object.values(this.sprites).forEach((sprite) =>
-      state.app.stage.removeChild(sprite)
+      state.stage.removeChild(sprite)
     )
   }
 }

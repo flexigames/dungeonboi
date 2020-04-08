@@ -1,4 +1,3 @@
-import drawSprite from "../lib/sprite"
 import { findEntities, createEntity } from "../lib/entities"
 import Character from "./Character"
 import Corpse from "./Corpse"
