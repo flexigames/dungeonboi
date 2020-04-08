@@ -9,7 +9,8 @@ export default class Player extends Character {
     super(x, y, { maxHealth: 3 })
     this.tags = ["player"]
     this.isAttacking = false
-    this.attackRadius = 15
+    this.attackRadius = 17
+    this.debug = false
   }
 
   draw(ctx) {
@@ -19,6 +20,8 @@ export default class Player extends Character {
     this.drawShadow(ctx, 5)
     this.drawKnight(ctx, x, y)
     this.drawSword(ctx, x, y)
+
+    if (this.debug) this.drawDebugAttackRadius(ctx)
   }
 
   drawKnight(ctx, x, y) {
@@ -59,7 +62,7 @@ export default class Player extends Character {
     ctx.restore()
   }
 
-  drawDebugAttackRadius() {
+  drawDebugAttackRadius(ctx) {
     const attackPoint = this.getAttackPoint()
     ctx.beginPath()
     ctx.ellipse(

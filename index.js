@@ -4,6 +4,7 @@ import drawUI from "./lib/ui"
 import Player from "./entities/Player"
 import { initInput, controlPlayer } from "./lib/input"
 import { createEntity, updateEntities, drawEntities } from "./lib/entities"
+import Camera from "./lib/camera"
 
 const game = createGame()
 
@@ -16,9 +17,24 @@ createEntity(player)
 initInput(player)
 populateLevel()
 
+let camera
+
 game.on("draw", function (ctx) {
+  if (!camera) {
+    camera = new Camera(ctx)
+    camera.zoomTo(512)
+    ctx.imageSmoothingEnabled = false
+  }
+
+  camera.begin()
+
+  camera.moveTo(player.pos.x, player.pos.y)
+
   drawLevel(ctx)
   drawEntities(ctx)
+
+  camera.end()
+
   drawUI(ctx)
 })
 

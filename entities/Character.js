@@ -50,8 +50,8 @@ export default class Character extends Entity {
   }
 
   setDirection(horizontal, vertical) {
-    if (horizontal === 1) this.flipped = false
-    if (horizontal === -1) this.flipped = true
+    if (horizontal > 0) this.flipped = false
+    if (horizontal < 0) this.flipped = true
     this.direction =
       horizontal === 0 && vertical === 0
         ? V(0, 0)
