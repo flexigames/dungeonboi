@@ -44,7 +44,7 @@ export default class Character extends Entity {
     new Howl({ src: "assets/audio/death.wav" }).play()
   }
 
-  updateVelocity(dt) {
+  updateVelocity(dt) { 
     this.setPosition(this.pos.add(this.velocity.multiply(dt)))
     this.velocity = this.velocity.multiply(this.friction)
   }
@@ -58,8 +58,12 @@ export default class Character extends Entity {
   }
 
   setPosition(newPos) {
-    if (state.walkableTiles[Math.floor(newPos.y / 16)][Math.floor(newPos.x / 16)]) {
+    if (isWalkable(newPos.x, newPos.y)) {
       this.pos = newPos
+    } else if (isWalkable(newPos.x, this.pos.y)) {
+      this.pos.x = newPos.x
+    } else if (isWalkable(this.pos.x, newPos.y)) {
+      this.pos.y = newPos.y
     }
   }
 
@@ -109,4 +113,8 @@ export default class Character extends Entity {
   isStunned() {
     return Date.now() < this.immuneUntil
   }
+}
+
+function isWalkable(x, y) {
+  return state.walkableTiles[Math.floor(y / 16)][Math.floor(x / 16)]
 }
