@@ -7,6 +7,9 @@ import { Viewport } from "pixi-viewport"
 import { createTextures } from "./lib/sprite"
 import state from "./lib/state"
 import HUD from "./lib/hud"
+import generateDungeon from "./lib/dungeon"
+
+const VIEWPORT_DEBUG = false
 
 const app = createApp()
 const viewport = createViewport()
@@ -22,14 +25,16 @@ function setup(loader, resources) {
   state.textures = textures
   state.viewport = viewport
   state.app = app
-  state.walkableTiles = createWalkableLevelMap()
 
-  createLevel()
-  populateLevel()
+  const tiles = generateDungeon()
 
-  const player = new Player(250, 240)
-  createEntity(player)
+  state.tiles = tiles
+  state.walkableTiles = createWalkableLevelMap(tiles, 100, 100)
+
+  const player = createEntity(new Player(250, 240))
   initInput(player)
+
+  createLevel(tiles, player)
 
   const hud = new HUD(player)
 
@@ -65,6 +70,8 @@ function createViewport() {
     interaction: app.renderer.plugins.interaction,
   })
 
+  if (VIEWPORT_DEBUG) viewport.drag().pinch()
+
   viewport.sortableChildren = true
   app.stage.addChild(viewport)
 
@@ -72,6 +79,8 @@ function createViewport() {
 }
 
 function updateViewport(player) {
-  viewport.x = -player.pos.x + 256
-  viewport.y = -player.pos.y + 256
+  if (!VIEWPORT_DEBUG) {
+    viewport.x = -player.pos.x + 256
+    viewport.y = -player.pos.y + 256
+  }
 }
