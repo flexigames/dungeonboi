@@ -2,6 +2,7 @@ import V from "../lib/vec2"
 import Entity from "./Entity"
 import { Howl } from "howler"
 import * as PIXI from "pixi.js"
+import state from '../lib/state'
 
 export default class Character extends Entity {
   constructor(x, y, opts = {}) {
@@ -44,7 +45,7 @@ export default class Character extends Entity {
   }
 
   updateVelocity(dt) {
-    this.pos = this.pos.add(this.velocity.multiply(dt))
+    this.setPosition(this.pos.add(this.velocity.multiply(dt)))
     this.velocity = this.velocity.multiply(this.friction)
   }
 
@@ -53,7 +54,13 @@ export default class Character extends Entity {
   }
 
   handleMove(dt) {
-    this.pos = this.pos.add(this.direction.multiply(this.speed * dt))
+    this.setPosition(this.pos.add(this.direction.multiply(this.speed * dt)))
+  }
+
+  setPosition(newPos) {
+    if (state.walkableTiles[Math.floor(newPos.y / 16)][Math.floor(newPos.x / 16)]) {
+      this.pos = newPos
+    }
   }
 
   setDirection(horizontal, vertical) {

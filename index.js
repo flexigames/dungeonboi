@@ -1,4 +1,4 @@
-import { createLevel, populateLevel } from "./lib/level"
+import { createLevel, populateLevel, createWalkableLevelMap } from "./lib/level"
 import Player from "./entities/Player"
 import { initInput, controlPlayer } from "./lib/input"
 import { createEntity, updateEntities } from "./lib/entities"
@@ -22,6 +22,7 @@ function setup(loader, resources) {
   state.textures = textures
   state.viewport = viewport
   state.app = app
+  state.walkableTiles = createWalkableLevelMap()
 
   createLevel()
   populateLevel()
