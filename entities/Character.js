@@ -45,7 +45,7 @@ export default class Character extends Entity {
   }
 
   updateVelocity(dt) { 
-    this.setPosition(this.pos.add(this.velocity.multiply(dt)))
+    this.move(this.velocity.multiply(dt))
     this.velocity = this.velocity.multiply(this.friction)
   }
 
@@ -54,15 +54,20 @@ export default class Character extends Entity {
   }
 
   handleMove(dt) {
-    this.setPosition(this.pos.add(this.direction.multiply(this.speed * dt)))
+    this.move(this.direction.multiply(this.speed * dt))
   }
 
-  setPosition(newPos) {
-    if (isWalkable(newPos.x, newPos.y)) {
+  move(direction) {
+    const newPos = this.pos.add(direction)
+
+    const checkPosBack = direction.x === 0 ? newPos : newPos.add(V((direction.x < 0 ? 6 : -6), 0))
+    const checkPosFront = direction.x === 0 ? newPos : newPos.add(V((direction.x < 0 ? -6 : 6), 0))
+
+    if (isWalkable(checkPosFront) || isWalkable(checkPosBack)) {
       this.pos = newPos
-    } else if (isWalkable(newPos.x, this.pos.y)) {
+    } else if (isWalkable(V(newPos.x, this.pos.y))) {
       this.pos.x = newPos.x
-    } else if (isWalkable(this.pos.x, newPos.y)) {
+    } else if (isWalkable(V(this.pos.x - 6, newPos.y)) || isWalkable(V(this.pos.x + 6, newPos.y))) {
       this.pos.y = newPos.y
     }
   }
@@ -115,6 +120,8 @@ export default class Character extends Entity {
   }
 }
 
-function isWalkable(x, y) {
-  return state.walkableTiles[Math.floor(y / 16)][Math.floor(x / 16)]
+function isWalkable(pos) {
+  const xTiles = state.walkableTiles[Math.floor(pos.y / 16)]
+  if (!xTiles) return false
+  return xTiles[Math.floor(pos.x / 16)]
 }
