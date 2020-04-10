@@ -12,10 +12,13 @@ export default class Enemy extends Character {
     })
     this.tags = ["enemy"]
     this.followDistance = 150
+    this.xpGain = 10
   }
 
   onDeath() {
     super.onDeath()
+    const player = findEntities("player")[0]
+    player.increaseXP(this.xpGain)
     createEntity(new Corpse(this.pos.x, this.pos.y))
   }
 

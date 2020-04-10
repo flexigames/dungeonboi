@@ -10,6 +10,7 @@ export default class Player extends Character {
     })
     this.tags = ["player"]
     this.pickupIntent = false
+    this.xp = 0
   }
 
   update(dt) {
@@ -32,5 +33,9 @@ export default class Player extends Character {
 
   attack() {
     if (this.weapon) this.weapon.attack("enemy")
+  }
+
+  increaseXP(amount) {
+    this.xp += amount
   }
 }
