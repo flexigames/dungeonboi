@@ -1,6 +1,15 @@
 import Entity from "./Entity"
 import { findEntities } from "../lib/entities"
 import V from "../lib/vec2"
+import {sample} from 'lodash'
+
+const weapons = [
+  {sprites: 'weapon_regular_sword', attackRadius: 17, damage: 1},
+  {sprites: 'weapon_big_hammer', attackRadius: 32, damage: 1},
+  {sprites: 'weapon_axe', attackRadius: 17, damage: 2},
+  {sprites: 'weapon_knife', attackRadius: 12, damage: 2},
+  {sprites: 'weapon_baton_with_spikes', attackRadius: 17, damage: 2}
+]
 
 export default class Weapon extends Entity {
   constructor(x, y, opts = {}) {
@@ -24,8 +33,14 @@ export default class Weapon extends Entity {
     this.carried = false
   }
 
+  static createRandom(x, y) {
+    return new Weapon(x, y, sample(weapons))
+  }
+
   update(dt) {
     super.update(dt)
+
+    this.sprites.main.scale.x = this.attackLeft ? -1 : 1
 
     this.sprites.main.angle = this.isAttacking
       ? this.attackLeft

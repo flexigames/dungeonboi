@@ -14,7 +14,7 @@ export default class Player extends Character {
     this.xpLimit = 100
     this.previousXpLimit = 0
 
-    this.weapon = createEntity(new Weapon(this.pos.x, this.pos.y))
+    // this.weapon = createEntity(new Weapon(this.pos.x, this.pos.y))
     this.maxHealthLimit = 10
   }
 
