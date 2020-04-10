@@ -4,7 +4,10 @@ import V from "../lib/vec2"
 
 export default class Weapon extends Entity {
   constructor(x, y, opts = {}) {
-    super(x, y, opts)
+    super(x, y, {
+      sprites: "weapon_regular_sword",
+      ...opts
+    })
 
     const {
       damage = 1,

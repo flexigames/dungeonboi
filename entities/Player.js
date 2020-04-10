@@ -11,6 +11,11 @@ export default class Player extends Character {
     this.tags = ["player"]
     this.pickupIntent = false
     this.xp = 0
+    this.xpLimit = 100
+    this.previousXpLimit = 0
+
+    this.weapon = createEntity(new Weapon(this.pos.x, this.pos.y))
+    this.maxHealthLimit = 10
   }
 
   update(dt) {
@@ -37,5 +42,11 @@ export default class Player extends Character {
 
   increaseXP(amount) {
     this.xp += amount
+    if (this.xp >= this.xpLimit) {
+      this.maxHealth = Math.min(this.maxHealthLimit, this.maxHealth + 1)
+      this.health = this.maxHealth
+      this.previousXpLimit = this.xpLimit
+      this.xpLimit = this.xpLimit + this.xpLimit * 2
+    }
   }
 }
