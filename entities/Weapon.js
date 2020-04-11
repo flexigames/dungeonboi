@@ -1,29 +1,68 @@
 import Entity from "./Entity"
 import { findEntities } from "../lib/entities"
 import V from "../lib/vec2"
-import {sample} from 'lodash'
+import { random, round, slice, sample } from "lodash"
+import state from "../lib/state"
 
-const weapons = [
-  {sprites: 'weapon_regular_sword', attackRadius: 17, damage: 1},
-  {sprites: 'weapon_big_hammer', attackRadius: 32, damage: 1},
-  {sprites: 'weapon_axe', attackRadius: 17, damage: 2},
-  {sprites: 'weapon_knife', attackRadius: 12, damage: 2},
-  {sprites: 'weapon_baton_with_spikes', attackRadius: 17, damage: 2}
+const adjectives = [
+  "Lousy",
+  "Rusty",
+  "Sticky",
+  "Regular",
+  "Shining",
+  "Formidable",
+  "Mighty",
+  "Powerful",
+]
+
+const weaponTypes = [
+  {
+    name: "Sword",
+    sprites: "weapon_regular_sword",
+    attackRadius: 16,
+    damageMultiplier: 1,
+  },
+  {
+    name: "Big Hammer",
+    sprites: "weapon_big_hammer",
+    attackRadius: 32,
+    damageMultiplier: 0.7,
+  },
+  {
+    name: "Axe",
+    sprites: "weapon_axe",
+    attackRadius: 16,
+    damageMultiplier: 1.5,
+  },
+  {
+    name: "Knife",
+    sprites: "weapon_knife",
+    attackRadius: 12,
+    damageMultiplier: 3,
+  },
+  {
+    name: "Baton",
+    sprites: "weapon_baton_with_spikes",
+    attackRadius: 16,
+    damageMultiplier: 1.3,
+  },
 ]
 
 export default class Weapon extends Entity {
   constructor(x, y, opts = {}) {
     super(x, y, {
       sprites: "weapon_regular_sword",
-      ...opts
+      ...opts,
     })
 
     const {
       damage = 1,
       attackRadius = 17,
       sound = "assets/audio/sword.mp3",
+      name = "Sword",
     } = opts
 
+    this.name = name
     this.damage = damage
     this.sound = sound
     this.attackRadius = attackRadius
@@ -34,7 +73,25 @@ export default class Weapon extends Entity {
   }
 
   static createRandom(x, y) {
-    return new Weapon(x, y, sample(weapons))
+    const level = state.level
+    const adjective = sample(
+      slice(
+        adjectives,
+        Math.min(level, adjectives.length - 1),
+        Math.min(level + 1, adjectives.length)
+      )
+    )
+    const weaponType = sample(weaponTypes)
+    const damage = Math.max(
+      1,
+      round(random(3) + (level - 1) * weaponType.damageMultiplier)
+    )
+
+    return new Weapon(x, y, {
+      ...weaponType,
+      name: `${adjective} ${weaponType.name}`,
+      damage,
+    })
   }
 
   update(dt) {

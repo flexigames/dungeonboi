@@ -1,5 +1,7 @@
 import Character from "./Character"
+import Weapon from "./Weapon"
 import V from "../lib/vec2"
+import { createEntity } from "../lib/entities"
 
 export default class Player extends Character {
   constructor(x, y) {
@@ -12,7 +14,6 @@ export default class Player extends Character {
     this.xp = 0
     this.xpLimit = 100
     this.previousXpLimit = 0
-
     this.maxHealthLimit = 10
   }
 

@@ -31,6 +31,7 @@ function setup(loader, resources) {
   state.textures = textures
   state.viewport = viewport
   state.app = app
+  state.level = 0
 
   const player = createEntity(new Player(0, 0))
   state.player = player
@@ -49,6 +50,7 @@ function createGameLoop(player, hud) {
     updateViewport(player)
     updateEntities(dt)
     if (player.health <= 0) {
+      state.level = 0
       player.reset()
       restart(player)
     }
@@ -57,6 +59,7 @@ function createGameLoop(player, hud) {
 }
 
 export function goToNextLevel() {
+  state.level += 1
   restart(state.player)
 }
 
