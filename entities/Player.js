@@ -25,6 +25,7 @@ export default class Player extends Character {
     this.health = 3
     this.velocity = V(0, 0)
     this.immuneUntil = Date.now()
+    this.weapon = undefined
   }
 
   update(dt) {
