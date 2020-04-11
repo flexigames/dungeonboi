@@ -18,7 +18,11 @@ export default class Potion extends Entity {
   checkPlayerCollision() {
     const player = findEntities("player")[0]
 
-    if (player && this.pos.distance(player.pos) < this.pickupRadius) {
+    if (
+      player &&
+      this.pos.distance(player.pos) < this.pickupRadius &&
+      player.pickupIntent
+    ) {
       new Howl({
         src: "assets/audio/potion.wav",
         volume: 0.3,
