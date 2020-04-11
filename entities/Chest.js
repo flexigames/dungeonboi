@@ -9,7 +9,7 @@ export default class Chest extends Entity {
     this.sprites.main.anchor.set(0.5, 0.5)
     this.sprites.main.stop()
     this.sprites.main.loop = false
-    this.pickupRadius = 10
+    this.pickupRadius = 16
     this.open = false
   }
 
