@@ -2,11 +2,22 @@ import { findEntities, createEntity } from "../lib/entities"
 import Character from "./Character"
 import Corpse from "./Corpse"
 import V from "../lib/vec2"
-import {sample} from 'lodash'
+import { sample } from "lodash"
+import Potion from "./Potion"
 
 const enemies = [
-  {sprites: "necromancer_idle_anim", maxHealth: 2, speed: 0.5, attackRadius: 10},
-  {sprites: "big_demon_idle_anim", maxHealth: 5, speed: 0.25, attackRadius: 16}
+  {
+    sprites: "necromancer_idle_anim",
+    maxHealth: 2,
+    speed: 0.5,
+    attackRadius: 10,
+  },
+  {
+    sprites: "big_demon_idle_anim",
+    maxHealth: 5,
+    speed: 0.25,
+    attackRadius: 16,
+  },
 ]
 
 export default class Enemy extends Character {
@@ -15,13 +26,14 @@ export default class Enemy extends Character {
       speed: 0.5,
       maxHealth: 2,
       sprites: "necromancer_idle_anim",
-      ...opts
+      ...opts,
     })
-    const {attackRadius =  10} = opts
+    const { attackRadius = 10 } = opts
     this.tags = ["enemy"]
     this.followDistance = 150
     this.xpGain = 10
     this.attackRadius = attackRadius
+    this.potionDropRate = 0.2
   }
 
   static createRandom(x, y) {
@@ -31,6 +43,9 @@ export default class Enemy extends Character {
   onDeath() {
     super.onDeath()
     const player = findEntities("player")[0]
+    if (Math.random() < this.potionDropRate) {
+      createEntity(new Potion(this.pos.x, this.pos.y))
+    }
     player.increaseXP(this.xpGain)
     createEntity(new Corpse(this.pos.x, this.pos.y))
   }
