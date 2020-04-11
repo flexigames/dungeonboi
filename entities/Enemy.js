@@ -2,7 +2,7 @@ import { findEntities, createEntity } from "../lib/entities"
 import Character from "./Character"
 import Corpse from "./Corpse"
 import V from "../lib/vec2"
-import { sample } from "lodash"
+import { slice, sample } from "lodash"
 import Potion from "./Potion"
 import state from "../lib/state"
 
@@ -10,14 +10,44 @@ const enemyTypes = [
   {
     sprites: "necromancer_idle_anim",
     maxHealthModifier: 2,
-    speedModifier: 0.5,
+    speedModifier: 0.4,
     attackRadius: 10,
+    damageModifier: 1,
+  },
+  {
+    sprites: "goblin_idle_anim",
+    maxHealthModifier: 1,
+    speedModifier: 0.6,
+    attackRadius: 6,
+    damageModifier: 1,
+  },
+  {
+    sprites: "imp_idle_anim",
+    maxHealthModifier: 2,
+    speedModifier: 0.7,
+    attackRadius: 10,
+    damageModifier: 1.2,
+  },
+  {
+    sprites: "muddy_idle_anim",
+    maxHealthModifier: 6,
+    speedModifier: 0.2,
+    attackRadius: 10,
+    damageModifier: 1.2,
+  },
+  {
+    sprites: "orc_warrior_idle_anim",
+    maxHealthModifier: 6,
+    speedModifier: 0.2,
+    attackRadius: 10,
+    damageModifier: 2,
   },
   {
     sprites: "big_demon_idle_anim",
-    maxHealthModifier: 5,
-    speedModifier: 0.25,
+    maxHealthModifier: 10,
+    speedModifier: 0.3,
     attackRadius: 16,
+    damageModifier: 2,
   },
 ]
 
@@ -29,21 +59,25 @@ export default class Enemy extends Character {
       sprites: "necromancer_idle_anim",
       ...opts,
     })
-    const { attackRadius = 10 } = opts
+    const { attackRadius = 10, damage = 1 } = opts
     this.tags = ["enemy"]
     this.followDistance = 150
     this.xpGain = 10
     this.attackRadius = attackRadius
     this.potionDropRate = 0.2
+    this.damage = 1
   }
 
   static createRandom(x, y) {
-    const enemyType = sample(enemyTypes)
+    const enemyType = sample(
+      slice(enemyTypes, 0, Math.min(state.level + 1, enemyTypes.length))
+    )
 
     return new Enemy(x, y, {
       ...enemyType,
       maxHealth: (1 + 0.2 * state.level) * enemyType.maxHealthModifier,
       speed: (1 + 0.2 * state.level) * enemyType.speedModifier,
+      damage: Math.floor((1 + 0.05 * state.level) * enemyType.damageModifier),
     })
   }
 
@@ -76,14 +110,13 @@ export default class Enemy extends Character {
 
   checkPlayerHit() {
     const player = findEntities("player")[0]
-    const DAMAGE = 1
 
     if (
       player &&
       this.pos.distance(player.pos) < this.attackRadius &&
       Date.now() > this.immuneUntil
     ) {
-      player.takeHit(DAMAGE, this.pos)
+      player.takeHit(this.damage, this.pos)
     }
   }
 }
