@@ -8,6 +8,7 @@ export default class Ladder extends Entity {
 
   constructor(x, y) {
     super(x, y, { sprites: "floor_ladder" })
+    this.sprites.main.anchor.set(0.5, 0.5)
   }
 
   update(dt) {
@@ -18,7 +19,11 @@ export default class Ladder extends Entity {
   checkPlayerCollision() {
     const player = findEntities("player")[0]
 
-    if (player && this.pos.distance(player.pos) < this.interactRadius) {
+    if (
+      player &&
+      this.pos.distance(player.pos) < this.interactRadius &&
+      player.pickupIntent
+    ) {
       goToNextLevel()
     }
   }
