@@ -4,18 +4,19 @@ import Corpse from "./Corpse"
 import V from "../lib/vec2"
 import { sample } from "lodash"
 import Potion from "./Potion"
+import state from "../lib/state"
 
-const enemies = [
+const enemyTypes = [
   {
     sprites: "necromancer_idle_anim",
-    maxHealth: 2,
-    speed: 0.5,
+    maxHealthModifier: 2,
+    speedModifier: 0.5,
     attackRadius: 10,
   },
   {
     sprites: "big_demon_idle_anim",
-    maxHealth: 5,
-    speed: 0.25,
+    maxHealthModifier: 5,
+    speedModifier: 0.25,
     attackRadius: 16,
   },
 ]
@@ -37,7 +38,13 @@ export default class Enemy extends Character {
   }
 
   static createRandom(x, y) {
-    return new Enemy(x, y, sample(enemies))
+    const enemyType = sample(enemyTypes)
+
+    return new Enemy(x, y, {
+      ...enemyType,
+      maxHealth: (1 + 0.2 * state.level) * enemyType.maxHealthModifier,
+      speed: (1 + 0.2 * state.level) * enemyType.speedModifier,
+    })
   }
 
   onDeath() {
