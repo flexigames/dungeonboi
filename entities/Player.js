@@ -15,10 +15,13 @@ export default class Player extends Character {
     this.xpLimit = 100
     this.previousXpLimit = 0
     this.maxHealthLimit = 10
+    const weapon = createEntity(Weapon.createRandom(this.pos.x, this.pos.y - 6))
+    weapon.carried = true
+    this.weapon = weapon
   }
 
   reset() {
-    this.pickup = false
+    this.pickupIntent = false
     this.xp = 0
     this.xpLimit = 100
     this.previousXpLimit = 0
