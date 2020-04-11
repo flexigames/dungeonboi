@@ -1,13 +1,19 @@
-import { createLevel, populateLevel, createWalkableLevelMap } from "./lib/level"
+import { createLevel, createWalkableLevelMap } from "./lib/level"
 import Player from "./entities/Player"
 import { initInput, controlPlayer } from "./lib/input"
-import { createEntity, updateEntities } from "./lib/entities"
+import {
+  createEntity,
+  clearEntities,
+  updateEntities,
+  findEntities,
+} from "./lib/entities"
 import * as PIXI from "pixi.js"
 import { Viewport } from "pixi-viewport"
 import { createTextures } from "./lib/sprite"
 import state from "./lib/state"
 import HUD from "./lib/hud"
 import generateDungeon from "./lib/dungeon"
+import { compact } from "lodash"
 
 const VIEWPORT_DEBUG = false
 
@@ -26,15 +32,11 @@ function setup(loader, resources) {
   state.viewport = viewport
   state.app = app
 
-  const tiles = generateDungeon()
-
-  state.tiles = tiles
-  state.walkableTiles = createWalkableLevelMap(tiles, 100, 100)
-
-  const player = createEntity(new Player(250, 240))
+  const player = createEntity(new Player(0, 0))
+  state.player = player
   initInput(player)
 
-  createLevel(tiles, player)
+  startLevel(player)
 
   const hud = new HUD(player)
 
@@ -46,8 +48,37 @@ function createGameLoop(player, hud) {
     controlPlayer(player)
     updateViewport(player)
     updateEntities(dt)
+    if (player.health <= 0) {
+      player.reset()
+      restart(player)
+    }
     hud.update()
   }
+}
+
+export function goToNextLevel() {
+  restart(state.player)
+}
+
+function restart(player) {
+  state.viewport.removeChildren()
+  const survivingEntities = compact([player, player.weapon])
+  clearEntities()
+  survivingEntities.forEach(createEntity)
+  startLevel(player)
+
+  state.viewport.addChild(player.sprites.run)
+  state.viewport.addChild(player.sprites.idle)
+  if (player.weapon) state.viewport.addChild(player.weapon.sprites.main)
+}
+
+function startLevel(player) {
+  const tiles = generateDungeon()
+
+  state.tiles = tiles
+  state.walkableTiles = createWalkableLevelMap(tiles, 100, 100)
+
+  createLevel(tiles, player)
 }
 
 function createApp() {

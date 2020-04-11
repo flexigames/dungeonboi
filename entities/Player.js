@@ -1,6 +1,5 @@
-import { createEntity } from "../lib/entities"
 import Character from "./Character"
-import Weapon from "./Weapon"
+import V from "../lib/vec2"
 
 export default class Player extends Character {
   constructor(x, y) {
@@ -14,8 +13,18 @@ export default class Player extends Character {
     this.xpLimit = 100
     this.previousXpLimit = 0
 
-    // this.weapon = createEntity(new Weapon(this.pos.x, this.pos.y))
     this.maxHealthLimit = 10
+  }
+
+  reset() {
+    this.pickup = false
+    this.xp = 0
+    this.xpLimit = 100
+    this.previousXpLimit = 0
+    this.maxHealth = 3
+    this.health = 3
+    this.velocity = V(0, 0)
+    this.immuneUntil = Date.now()
   }
 
   update(dt) {

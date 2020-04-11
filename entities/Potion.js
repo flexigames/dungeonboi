@@ -1,7 +1,6 @@
 import Entity from "./Entity"
 import { findEntities } from "../lib/entities"
 import { Howl } from "howler"
-import Chest from '../entities/Chest'
 
 export default class Potion extends Entity {
   tags = ["potion"]
