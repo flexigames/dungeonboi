@@ -1,12 +1,7 @@
 import { createLevel, createWalkableLevelMap } from "./lib/level"
 import Player from "./entities/Player"
 import { initInput, controlPlayer } from "./lib/input"
-import {
-  createEntity,
-  clearEntities,
-  updateEntities,
-  findEntities,
-} from "./lib/entities"
+import { createEntity, clearEntities, updateEntities } from "./lib/entities"
 import * as PIXI from "pixi.js"
 import { Viewport } from "pixi-viewport"
 import { createTextures } from "./lib/sprite"
@@ -14,8 +9,21 @@ import state from "./lib/state"
 import HUD from "./lib/hud"
 import generateDungeon from "./lib/dungeon"
 import { compact } from "lodash"
+import Phaser from "phaser"
 
 const VIEWPORT_DEBUG = false
+
+const config = {
+  type: Phaser.AUTO,
+  width: 800,
+  height: 600,
+  physics: {
+    default: "arcade",
+  },
+  scene: [HelloWorldScene],
+}
+
+const game = new Phaser.Game(config)
 
 const app = createApp()
 const viewport = createViewport()
@@ -120,4 +128,17 @@ function updateViewport(player) {
     viewport.x = (-player.pos.x + 256 / 2) * 2
     viewport.y = (-player.pos.y + 256 / 2) * 2
   }
+}
+
+class GameScene extends Phaser.Scene {
+  constructor() {
+    super("game-scene")
+  }
+
+  preload() {
+    this.load.image("tileset", "assets/img/dungeon_tileset.png")
+    this.load.image("ui", "assets/img/dungeon_ui.png")
+  }
+
+  create() {}
 }

@@ -3,6 +3,7 @@ import { findEntities } from "../lib/entities"
 import V from "../lib/vec2"
 import { random, round, slice, sample } from "lodash"
 import state from "../lib/state"
+import { Polygon, Rectangle } from "yy-intersects"
 
 const adjectives = [
   "Lousy",
@@ -99,38 +100,43 @@ export default class Weapon extends Entity {
 
     this.sprites.main.scale.x = this.attackLeft ? -1 : 1
 
-    this.sprites.main.angle = this.isAttacking
-      ? this.attackLeft
-        ? -90
-        : 90
-      : 0
+    if (!this.isAttacking) {
+      this.sprites.main.angle = this.attackLeft ? 20 : -20
+    }
+
+    if (this.isAttacking) {
+      this.sprites.main.angle += 20 * (this.attackLeft ? -1 : 1) * dt
+    }
+
+    if (
+      this.attackLeft
+        ? this.sprites.main.angle <= -200
+        : this.sprites.main.angle >= 200
+    ) {
+      this.sprites.main.angle = -20
+      this.isAttacking = false
+    }
 
     if (!this.carried) this.checkPlayerCollision()
   }
 
   attack(targetTags) {
     this.isAttacking = true
-    setTimeout(() => {
-      this.isAttacking = false
-    }, 100)
 
     const targets = findEntities(targetTags)
 
-    const attackPoint = this.getAttackPoint()
+    const targetsInRange = targets.filter((target) => {
+      console.log(this.sprites.main, target.sprites.main)
+      const weaponRectangle = new Rectangle(this.sprites.main)
+      const targetRectangle = new Rectangle(target.sprites.main)
 
-    const targetsInRange = targets.filter(
-      (target) => attackPoint.distance(target.pos) < this.attackRadius
-    )
+      console.log({ weaponRectangle, targetRectangle })
+      return weaponRectangle.collidesRectangle(targetRectangle)
+    })
 
     new Howl({ src: [this.sound] }).play()
 
     targetsInRange.forEach((enemy) => enemy.takeHit(this.damage, this.pos))
-  }
-
-  getAttackPoint() {
-    return this.pos
-      .add(V(this.attackLeft ? -1 : 1, 0).multiply(8))
-      .add(V(0, -7))
   }
 
   checkPlayerCollision() {
