@@ -7,8 +7,10 @@
     "start": "parcel index.html"
   },
   "dependencies": {
+    "crash-colliders": "^2.0.2",
     "howler": "^2.1.3",
     "lodash": "^4.17.15",
+    "pixi": "^0.3.1",
     "pixi-viewport": "^4.10.0",
     "pixi.js": "^5.2.1"
   },

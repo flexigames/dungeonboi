@@ -2,12 +2,14 @@ import Character from "./Character"
 import Weapon from "./Weapon"
 import V from "../lib/vec2"
 import { createEntity } from "../lib/entities"
+import crash from '../lib/crash'
+import { changeTexture } from '../lib/sprite'
 
 export default class Player extends Character {
   constructor(x, y) {
     super(x, y, {
       maxHealth: 3,
-      sprites: { idle: "knight_m_idle_anim", run: "knight_m_run_anim" },
+      sprites: { main: "knight_m_idle_anim" },
     })
     this.tags = ["player"]
     this.pickupIntent = false
@@ -37,15 +39,20 @@ export default class Player extends Character {
   update(dt) {
     super.update(dt)
 
-    this.sprites.run.visible = this.isMoving()
-    this.sprites.idle.visible = !this.isMoving()
-
     if (this.weapon) {
       this.weapon.pos.x = this.pos.x
       this.weapon.pos.y = this.pos.y - 6
       this.weapon.zIndex = this.pos.y + 1
       this.weapon.attackLeft = this.flipped
     }
+  }
+
+  onStartMove() {
+    changeTexture(this.sprites.main, 'knight_m_run_anim')
+  }
+
+  onEndMove() {
+    changeTexture(this.sprites.main, 'knight_m_idle_anim')
   }
 
   setPickupIntent(intent) {
@@ -64,5 +71,9 @@ export default class Player extends Character {
       this.previousXpLimit = this.xpLimit
       this.xpLimit = this.xpLimit + this.xpLimit * 2
     }
+  }
+
+  onCollision(entity) {
+    // console.log(entity.tags, Date.now())
   }
 }

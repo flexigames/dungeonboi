@@ -14,6 +14,12 @@ import state from "./lib/state"
 import HUD from "./lib/hud"
 import generateDungeon from "./lib/dungeon"
 import { compact } from "lodash"
+import crash from './lib/crash'
+
+crash.onCollision((a, b) => {
+  a.data.entity.onCollision(b.data.entity)
+  b.data.entity.onCollision(a.data.entity)
+})
 
 const VIEWPORT_DEBUG = false
 
@@ -46,6 +52,7 @@ function setup(loader, resources) {
 
 function createGameLoop(player, hud) {
   return function gameLoop(dt) {
+    crash.check()
     controlPlayer(player)
     updateViewport(player)
     updateEntities(dt)
@@ -70,8 +77,7 @@ function restart(player) {
   survivingEntities.forEach(createEntity)
   startLevel(player)
 
-  state.viewport.addChild(player.sprites.run)
-  state.viewport.addChild(player.sprites.idle)
+  state.viewport.addChild(player.sprites.main)
   if (player.weapon) state.viewport.addChild(player.weapon.sprites.main)
 }
 
@@ -106,7 +112,6 @@ function createViewport() {
   viewport.scale.x = 2
   viewport.scale.y = 2
 
-  console.log(viewport)
   if (VIEWPORT_DEBUG) viewport.drag().pinch()
 
   viewport.sortableChildren = true

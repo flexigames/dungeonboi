@@ -24,6 +24,7 @@ export default class Character extends Entity {
     this.velocity = V(0, 0)
     this.friction = 0.92
     this.knockBackSpeed = 4
+    this.moving = false
   }
 
   update(dt) {
@@ -38,13 +39,26 @@ export default class Character extends Entity {
     Object.values(this.sprites).forEach(
       (sprite) => (sprite.scale.x = this.flipped ? -1 : 1)
     )
+
+    const lastMoving = this.moving
+    this.moving = this.isMoving()
+    if (this.moving !== lastMoving) {
+      if (this.moving) {
+        this.onStartMove()
+      } else {
+        this.onEndMove()
+      }
+    }
   }
+
+  onStartMove () {}
+  onEndMove () {}
 
   onDeath() {
     new Howl({ src: "assets/audio/death.wav" }).play()
   }
 
-  updateVelocity(dt) { 
+  updateVelocity(dt) {
     this.move(this.velocity.multiply(dt))
     this.velocity = this.velocity.multiply(this.friction)
   }

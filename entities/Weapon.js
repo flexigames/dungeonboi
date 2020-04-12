@@ -114,23 +114,8 @@ export default class Weapon extends Entity {
       this.isAttacking = false
     }, 100)
 
-    const targets = findEntities(targetTags)
-
-    const attackPoint = this.getAttackPoint()
-
-    const targetsInRange = targets.filter(
-      (target) => attackPoint.distance(target.pos) < this.attackRadius
-    )
 
     new Howl({ src: [this.sound] }).play()
-
-    targetsInRange.forEach((enemy) => enemy.takeHit(this.damage, this.pos))
-  }
-
-  getAttackPoint() {
-    return this.pos
-      .add(V(this.attackLeft ? -1 : 1, 0).multiply(8))
-      .add(V(0, -7))
   }
 
   checkPlayerCollision() {
@@ -145,6 +130,13 @@ export default class Weapon extends Entity {
       player.pickupIntent = false
       if (player.weapon) player.weapon.carried = false
       player.weapon = this
+    }
+  }
+
+  onCollision(entity) {
+    if (this.isAttacking && entity.tags.includes('enemy')) {
+      console.log('hit') 
+      entity.takeHit(this.damage, this.pos)
     }
   }
 }

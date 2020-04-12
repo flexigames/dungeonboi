@@ -3,6 +3,8 @@ import state from "../lib/state"
 import { createSprite } from "../lib/sprite"
 import { destroyEntity } from "../lib/entities"
 import { isObject } from "lodash"
+import { SpriteCollider } from '../lib/crash'
+import { Sprite } from "pixi.js"
 
 export default class Entity {
   constructor(x, y, opts = {}) {
@@ -15,6 +17,8 @@ export default class Entity {
     this.sprites = {}
 
     this.render(sprites)
+
+    this.collider = new SpriteCollider(this.sprites.main, { entity: this }) // TODO: Change entity to only have one sprite
   }
 
   render(sprites) {
@@ -35,6 +39,7 @@ export default class Entity {
       sprite.y = this.pos.y
       sprite.zIndex = this.zIndex || this.pos.y
     })
+    this.collider.update()
   }
 
   destroy() {
@@ -43,4 +48,6 @@ export default class Entity {
       state.viewport.removeChild(sprite)
     )
   }
+
+  onCollision() {}
 }
