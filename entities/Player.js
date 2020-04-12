@@ -29,7 +29,9 @@ export default class Player extends Character {
     this.health = 3
     this.velocity = V(0, 0)
     this.immuneUntil = Date.now()
-    this.weapon = undefined
+    const weapon = createEntity(Weapon.createRandom(this.pos.x, this.pos.y - 6))
+    weapon.carried = true
+    this.weapon = weapon
   }
 
   update(dt) {
