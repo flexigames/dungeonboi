@@ -70,6 +70,8 @@ export default class Weapon extends Entity {
     this.attackLeft = false
     this.pickupRadius = 10
     this.carried = false
+    this.attackSpeed = 20
+    this.attackAngle = 0
   }
 
   static createRandom(x, y) {
@@ -99,22 +101,27 @@ export default class Weapon extends Entity {
 
     this.sprites.main.scale.x = this.attackLeft ? -1 : 1
 
-    this.sprites.main.angle = this.isAttacking
-      ? this.attackLeft
-        ? -90
-        : 90
-      : 0
+    if (this.carried) {
+      this.sprites.main.angle = (this.attackLeft ? 1 : -1) * (20 - (this.isAttacking ? this.attackAngle: 0))
+    } else {
+      this.sprites.main.angle = 0
+    }
+
+
+    if (this.isAttacking) {
+      if (this.attackAngle > 180) {
+        this.isAttacking = false
+        this.attackAngle = 0
+      } else {
+        this.attackAngle += dt * this.attackSpeed
+      }
+    }
 
     if (!this.carried) this.checkPlayerCollision()
   }
 
   attack(targetTags) {
     this.isAttacking = true
-    setTimeout(() => {
-      this.isAttacking = false
-    }, 100)
-
-
     new Howl({ src: [this.sound] }).play()
   }
 
@@ -135,7 +142,6 @@ export default class Weapon extends Entity {
 
   onCollision(entity) {
     if (this.isAttacking && entity.tags.includes('enemy')) {
-      console.log('hit') 
       entity.takeHit(this.damage, this.pos)
     }
   }
