@@ -103,7 +103,10 @@ function createViewport() {
   const viewport = new Viewport({
     interaction: app.renderer.plugins.interaction,
   })
+  viewport.scale.x = 2
+  viewport.scale.y = 2
 
+  console.log(viewport)
   if (VIEWPORT_DEBUG) viewport.drag().pinch()
 
   viewport.sortableChildren = true
@@ -114,7 +117,7 @@ function createViewport() {
 
 function updateViewport(player) {
   if (!VIEWPORT_DEBUG) {
-    viewport.x = -player.pos.x + 256
-    viewport.y = -player.pos.y + 256
+    viewport.x = (-player.pos.x + 256 / 2) * 2
+    viewport.y = (-player.pos.y + 256 / 2) * 2
   }
 }
