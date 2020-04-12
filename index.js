@@ -72,9 +72,13 @@ export function goToNextLevel() {
 
 function restart(player) {
   state.viewport.removeChildren()
+  crash.clear()
   const survivingEntities = compact([player, player.weapon])
   clearEntities()
-  survivingEntities.forEach(createEntity)
+  survivingEntities.forEach(entity => {
+    createEntity(entity)
+    crash.insert(entity.collider.collider)
+  })
   startLevel(player)
 
   state.viewport.addChild(player.sprites.main)
