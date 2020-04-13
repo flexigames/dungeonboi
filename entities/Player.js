@@ -6,8 +6,7 @@ import crash from "../lib/crash"
 import { changeTexture } from "../lib/sprite"
 import { ParticleContainer, Texture, TilingSprite } from "pixi.js"
 import dustEmitterConfig from "../dust-emitter.json"
-import state from "../lib/state"
-import { Emitter } from "pixi-particles"
+import Particles from '../lib/particles'
 
 export default class Player extends Character {
   constructor(x, y) {
@@ -26,7 +25,7 @@ export default class Player extends Character {
     weapon.carried = true
     this.weapon = weapon
 
-    this.createParticles()
+    this.stepParticles = new Particles({zIndex: this.pos.y - 1})
   }
 
   reset() {
@@ -44,44 +43,12 @@ export default class Player extends Character {
     this.weapon = weapon
   }
 
-  createParticles() {
-    const particleContainer = new ParticleContainer()
-    particleContainer.zIndex = this.pos.y - 1
-    particleContainer.setProperties({
-      scale: true,
-      position: true,
-      rotation: true,
-      uvs: true,
-      alpha: true,
-    })
-    state.viewport.addChild(particleContainer)
-    this.particleContainer = particleContainer
-
-    const emitter = new Emitter(
-      particleContainer,
-      state.textures.dust,
-      dustEmitterConfig
-    )
-    this.particleEmitter = emitter
-  }
-
-  updateParticles(dt) {
-    this.particleEmitter.update((dt * 16) / 1000)
-    this.particleContainer.zIndex = this.pos.y - 1
-  }
-
-  spawnParticles() {
-    this.particleEmitter.emit = true
-    this.particleEmitter.resetPositionTracking()
-    this.particleEmitter.updateOwnerPos(this.pos.x, this.pos.y)
-  }
-
   update(dt) {
     super.update(dt)
 
-    this.updateParticles(dt)
+    this.stepParticles.update(dt, this.pos.y - 1)
 
-    if (this.moving && Math.random() > 0.95) this.spawnParticles()
+    if (this.moving && Math.random() > 0.95) this.stepParticles.spawn(this.pos)
 
     if (this.weapon) {
       this.weapon.pos.x = this.pos.x
@@ -103,7 +70,7 @@ export default class Player extends Character {
 
   onStartMove() {
     changeTexture(this.sprites.main, "knight_m_run_anim")
-    this.spawnParticles()
+    this.stepParticles.spawn(this.pos)
   }
 
   onEndMove() {
