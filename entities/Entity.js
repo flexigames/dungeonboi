@@ -44,6 +44,7 @@ export default class Entity {
 
   destroy() {
     destroyEntity(this)
+    this.collider.destroy()
     Object.values(this.sprites).forEach((sprite) =>
       state.viewport.removeChild(sprite)
     )
