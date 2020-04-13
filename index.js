@@ -32,7 +32,7 @@ app.loader
   .load(setup)
 
 function setup(loader, resources) {
-  const textures = createTextures(resources.tileset.texture)
+  const textures = createTextures(resources.tileset.texture, resources.ui.texture)
 
   state.textures = textures
   state.viewport = viewport

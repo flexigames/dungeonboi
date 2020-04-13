@@ -4,6 +4,7 @@ import V from "../lib/vec2"
 import { createEntity } from "../lib/entities"
 import crash from '../lib/crash'
 import { changeTexture } from '../lib/sprite'
+import { TilingSprite } from "pixi.js"
 
 export default class Player extends Character {
   constructor(x, y) {
@@ -14,6 +15,7 @@ export default class Player extends Character {
     this.tags = ["player"]
     this.pickupIntent = false
     this.xp = 0
+    this.xpTarget = 0
     this.xpLimit = 100
     this.previousXpLimit = 0
     this.maxHealthLimit = 10
@@ -25,6 +27,7 @@ export default class Player extends Character {
   reset() {
     this.pickupIntent = false
     this.xp = 0
+    this.xpTarget = 0
     this.xpLimit = 100
     this.previousXpLimit = 0
     this.maxHealth = 3
@@ -45,6 +48,16 @@ export default class Player extends Character {
       this.weapon.zIndex = this.pos.y + 1
       this.weapon.attackLeft = this.flipped
     }
+
+    if (this.xp < this.xpTarget) {
+      this.xp++
+      if (this.xp >= this.xpLimit) {
+        this.maxHealth = Math.min(this.maxHealthLimit, this.maxHealth + 1)
+        this.health = this.maxHealth
+        this.previousXpLimit = this.xpLimit
+        this.xpLimit = this.xpLimit + this.xpLimit * 2
+      }
+    }
   }
 
   onStartMove() {
@@ -64,13 +77,7 @@ export default class Player extends Character {
   }
 
   increaseXP(amount) {
-    this.xp += amount
-    if (this.xp >= this.xpLimit) {
-      this.maxHealth = Math.min(this.maxHealthLimit, this.maxHealth + 1)
-      this.health = this.maxHealth
-      this.previousXpLimit = this.xpLimit
-      this.xpLimit = this.xpLimit + this.xpLimit * 2
-    }
+    this.xpTarget += amount
   }
 
   onCollision(entity) {
