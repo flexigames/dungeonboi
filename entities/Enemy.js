@@ -9,42 +9,42 @@ import state from "../lib/state"
 const enemyTypes = [
   {
     sprites: "necromancer_idle_anim",
-    maxHealthModifier: 2,
+    baseHealthModifier: 2,
     speedModifier: 0.4,
     attackRadius: 10,
     damageModifier: 1,
   },
   {
     sprites: "goblin_idle_anim",
-    maxHealthModifier: 1,
+    baseHealthModifier: 1,
     speedModifier: 0.6,
     attackRadius: 6,
     damageModifier: 1,
   },
   {
     sprites: "imp_idle_anim",
-    maxHealthModifier: 2,
+    baseHealthModifier: 2,
     speedModifier: 0.7,
     attackRadius: 10,
     damageModifier: 1.2,
   },
   {
     sprites: "muddy_idle_anim",
-    maxHealthModifier: 6,
+    baseHealthModifier: 6,
     speedModifier: 0.2,
     attackRadius: 10,
     damageModifier: 1.2,
   },
   {
     sprites: "orc_warrior_idle_anim",
-    maxHealthModifier: 6,
+    baseHealthModifier: 6,
     speedModifier: 0.2,
     attackRadius: 10,
     damageModifier: 2,
   },
   {
     sprites: "big_demon_idle_anim",
-    maxHealthModifier: 10,
+    baseHealthModifier: 10,
     speedModifier: 0.3,
     attackRadius: 16,
     damageModifier: 2,
@@ -55,7 +55,7 @@ export default class Enemy extends Character {
   constructor(x, y, opts = {}) {
     super(x, y, {
       speed: 0.5,
-      maxHealth: 2,
+      baseHealth: 2,
       sprites: "necromancer_idle_anim",
       ...opts,
     })
@@ -75,7 +75,7 @@ export default class Enemy extends Character {
 
     return new Enemy(x, y, {
       ...enemyType,
-      maxHealth: (1 + 0.2 * state.level) * enemyType.maxHealthModifier,
+      baseHealth: (1 + 0.2 * state.level) * enemyType.baseHealthModifier,
       speed: (1 + 0.2 * state.level) * enemyType.speedModifier,
       damage: Math.floor((1 + 0.05 * state.level) * enemyType.damageModifier),
     })

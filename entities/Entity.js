@@ -3,8 +3,7 @@ import state from "../lib/state"
 import { createSprite } from "../lib/sprite"
 import { destroyEntity } from "../lib/entities"
 import { isObject } from "lodash"
-import { SpriteCollider } from '../lib/crash'
-import { Sprite } from "pixi.js"
+import { SpriteCollider } from "../lib/crash"
 
 export default class Entity {
   constructor(x, y, opts = {}) {
@@ -51,4 +50,8 @@ export default class Entity {
   }
 
   onCollision() {}
+
+  survivesBetweenLevels() {
+    return false
+  }
 }

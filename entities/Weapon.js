@@ -102,11 +102,12 @@ export default class Weapon extends Entity {
     this.sprites.main.scale.x = this.attackLeft ? -1 : 1
 
     if (this.carried) {
-      this.sprites.main.angle = (this.attackLeft ? 1 : -1) * (20 - (this.isAttacking ? this.attackAngle: 0))
+      this.sprites.main.angle =
+        (this.attackLeft ? 1 : -1) *
+        (20 - (this.isAttacking ? this.attackAngle : 0))
     } else {
       this.sprites.main.angle = 0
     }
-
 
     if (this.isAttacking) {
       if (this.attackAngle > 180) {
@@ -141,8 +142,12 @@ export default class Weapon extends Entity {
   }
 
   onCollision(entity) {
-    if (this.isAttacking && entity.tags.includes('enemy')) {
+    if (this.isAttacking && entity.tags.includes("enemy")) {
       entity.takeHit(this.damage, this.pos)
     }
+  }
+
+  survivesBetweenLevels() {
+    return this.carried
   }
 }

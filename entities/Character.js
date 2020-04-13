@@ -9,17 +9,20 @@ import Particles from "../lib/particles"
 export default class Character extends Entity {
   constructor(x, y, opts = {}) {
     const {
-      maxHealth = 1,
       flipped = false,
       speed = 2,
+      baseSpeed = 2,
+      baseHealth = 1,
       immunityTime = 500,
       sprites,
     } = opts
     super(x, y, { sprites })
-    this.maxHealth = maxHealth
-    this.health = maxHealth
+    this.baseHealth = baseHealth
+    this.maxHealth = baseHealth
+    this.health = baseHealth
     this.flipped = flipped
     this.speed = speed
+    this.baseSpeed = baseSpeed
     this.direction = V(0, 0)
     this.immuneUntil = Date.now()
     this.immunityTime = immunityTime
@@ -28,7 +31,7 @@ export default class Character extends Entity {
     this.knockBackSpeed = 4
     this.moving = false
 
-    this.bloodParticles = new Particles('blood', {zIndex: this.pos.y - 1})
+    this.bloodParticles = new Particles("blood", { zIndex: this.pos.y - 1 })
   }
 
   update(dt) {
@@ -109,9 +112,7 @@ export default class Character extends Entity {
   setSpriteStunned() {
     const negativeFilter = new PIXI.filters.ColorMatrixFilter()
     negativeFilter.negative()
-    Object.values(this.sprites).forEach(
-      (sprite) => sprite.tint = 0xfb1010
-    )
+    Object.values(this.sprites).forEach((sprite) => (sprite.tint = 0xfb1010))
   }
 
   takeHit(damage = 1, attackerPos) {
@@ -126,7 +127,7 @@ export default class Character extends Entity {
       setTimeout(
         () =>
           Object.values(this.sprites).forEach(
-            (sprite) => sprite.tint = 0xffffff
+            (sprite) => (sprite.tint = 0xffffff)
           ),
         this.immunityTime
       )

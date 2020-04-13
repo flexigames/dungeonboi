@@ -1,7 +1,9 @@
 import Entity from "./Entity"
-import { createSprite } from "../lib/sprite"
 import { findEntities, createEntity } from "../lib/entities"
 import Weapon from "./Weapon"
+import SpeedPotion from "./relics/SpeedPotion"
+import HeartPotion from "./relics/HeartPotion"
+import { sample } from "lodash"
 
 export default class Chest extends Entity {
   constructor(x, y) {
@@ -10,6 +12,7 @@ export default class Chest extends Entity {
     this.sprites.main.stop()
     this.sprites.main.loop = false
     this.pickupRadius = 16
+    this.relicDropRate = 0.15
     this.open = false
   }
 
@@ -28,9 +31,28 @@ export default class Chest extends Entity {
       player.pickupIntent
     ) {
       this.sprites.main.play()
-      this.sprites.main.onComplete = () =>
-        createEntity(Weapon.createRandom(this.pos.x, this.pos.y + 16))
+      this.sprites.main.onComplete = this.spawnItem.bind(this)
       this.open = true
+    }
+  }
+
+  spawnItem() {
+    const x = this.pos.x
+    const y = this.pos.y + 16
+
+    const relics = findEntities("relic")
+    const relicTypes = [SpeedPotion, HeartPotion]
+
+    const unusedRelicTypes = relicTypes.filter(
+      (relicType) => !relics.some((it) => it instanceof relicType)
+    )
+
+    const relicClass = sample(unusedRelicTypes)
+
+    if (Math.random() < (relicClass ? 1 - this.relicDropRate : 1)) {
+      return createEntity(Weapon.createRandom(x, y))
+    } else {
+      return createEntity(new relicClass(x, y))
     }
   }
 }

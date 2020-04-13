@@ -2,15 +2,13 @@ import Character from "./Character"
 import Weapon from "./Weapon"
 import V from "../lib/vec2"
 import { createEntity } from "../lib/entities"
-import crash from "../lib/crash"
 import { changeTexture } from "../lib/sprite"
-import { ParticleContainer, Texture, TilingSprite } from "pixi.js"
-import Particles from '../lib/particles'
+import Particles from "../lib/particles"
 
 export default class Player extends Character {
   constructor(x, y) {
     super(x, y, {
-      maxHealth: 3,
+      baseHealth: 3,
       sprites: { main: "knight_m_idle_anim" },
     })
     this.tags = ["player"]
@@ -18,13 +16,14 @@ export default class Player extends Character {
     this.xp = 0
     this.xpTarget = 0
     this.xpLimit = 100
+    this.speed = this.baseSpeed
     this.previousXpLimit = 0
     this.maxHealthLimit = 10
     const weapon = createEntity(Weapon.createRandom(this.pos.x, this.pos.y - 6))
     weapon.carried = true
     this.weapon = weapon
 
-    this.stepParticles = new Particles('dust', {zIndex: this.pos.y - 1})
+    this.stepParticles = new Particles("dust", { zIndex: this.pos.y - 1 })
   }
 
   reset() {
@@ -33,10 +32,11 @@ export default class Player extends Character {
     this.xpTarget = 0
     this.xpLimit = 100
     this.previousXpLimit = 0
-    this.maxHealth = 3
-    this.health = 3
+    this.maxHealth = this.baseHealth
+    this.health = this.baseHealth
     this.velocity = V(0, 0)
     this.immuneUntil = Date.now()
+    this.speed = this.baseSpeed
     const weapon = createEntity(Weapon.createRandom(this.pos.x, this.pos.y - 6))
     weapon.carried = true
     this.weapon = weapon
@@ -86,5 +86,9 @@ export default class Player extends Character {
 
   increaseXP(amount) {
     this.xpTarget += amount
+  }
+
+  survivesBetweenLevels() {
+    return true
   }
 }

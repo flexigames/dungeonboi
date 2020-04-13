@@ -1,7 +1,12 @@
 import { createLevel, createWalkableLevelMap } from "./lib/level"
 import Player from "./entities/Player"
 import { initInput, controlPlayer } from "./lib/input"
-import { createEntity, clearEntities, updateEntities } from "./lib/entities"
+import {
+  createEntity,
+  clearEntities,
+  updateEntities,
+  getSurvivingEntities,
+} from "./lib/entities"
 import * as PIXI from "pixi.js"
 import { Viewport } from "pixi-viewport"
 import { createTextures } from "./lib/sprite"
@@ -61,8 +66,6 @@ function createGameLoop(player, hud) {
     randomizeViewportOffsetForScreenShake()
 
     if (player.health <= 0) {
-      state.level = 0
-      player.reset()
       restart(player)
     }
     hud.update()
@@ -70,8 +73,23 @@ function createGameLoop(player, hud) {
 }
 
 export function goToNextLevel() {
+  state.viewport.removeChildren()
+  crash.clear()
+  const survivingEntities = getSurvivingEntities()
+  clearEntities(survivingEntities.filter((it) => it.tags.includes("relic")))
+  survivingEntities.forEach((entity) => {
+    if (!entity.tags.includes("relic")) {
+      createEntity(entity)
+      crash.insert(entity.collider.collider)
+    }
+  })
   state.level += 1
-  restart(state.player)
+  startLevel(state.player)
+
+  state.viewport.addChild(state.player.stepParticles.container)
+  state.viewport.addChild(state.player.sprites.main)
+  if (state.player.weapon)
+    state.viewport.addChild(state.player.weapon.sprites.main)
 }
 
 function randomizeViewportOffsetForScreenShake() {
@@ -85,14 +103,13 @@ function randomizeViewportOffsetForScreenShake() {
 }
 
 function restart(player) {
+  state.level = 0
+  clearEntities()
+  player.reset()
   state.viewport.removeChildren()
   crash.clear()
-  const survivingEntities = compact([player, player.weapon])
-  clearEntities()
-  survivingEntities.forEach((entity) => {
-    createEntity(entity)
-    crash.insert(entity.collider.collider)
-  })
+  const entity = createEntity(player)
+  crash.insert(entity.collider.collider)
   startLevel(player)
 
   state.viewport.addChild(player.stepParticles.container)
