@@ -4,6 +4,7 @@ import { Howl } from "howler"
 import * as PIXI from "pixi.js"
 import state from "../lib/state"
 import { shakeScreen } from "../index"
+import Particles from "../lib/particles"
 
 export default class Character extends Entity {
   constructor(x, y, opts = {}) {
@@ -26,12 +27,16 @@ export default class Character extends Entity {
     this.friction = 0.92
     this.knockBackSpeed = 4
     this.moving = false
+
+    this.bloodParticles = new Particles('blood', {zIndex: this.pos.y - 1})
   }
 
   update(dt) {
     super.update(dt)
     this.updateVelocity(dt)
     this.handleMove(dt)
+    this.bloodParticles.move(this.pos)
+    this.bloodParticles.update(dt, this.pos.y - 1)
     if (this.health <= 0 && !this.isStunned()) {
       this.onDeath()
       this.destroy()
@@ -105,7 +110,7 @@ export default class Character extends Entity {
     const negativeFilter = new PIXI.filters.ColorMatrixFilter()
     negativeFilter.negative()
     Object.values(this.sprites).forEach(
-      (sprite) => (sprite.filters = [negativeFilter])
+      (sprite) => sprite.tint = 0xfb1010
     )
   }
 
@@ -114,13 +119,14 @@ export default class Character extends Entity {
 
     if (Date.now() > this.immuneUntil) {
       shakeScreen(100)
+      this.bloodParticles.spawn(this.pos)
       new Howl({ src: "assets/audio/hit.wav", volume: 0.2 }).play()
       this.health = Math.max(0, this.health - damage)
       this.immuneUntil = Date.now() + this.immunityTime
       setTimeout(
         () =>
           Object.values(this.sprites).forEach(
-            (sprite) => (sprite.filters = [])
+            (sprite) => sprite.tint = 0xffffff
           ),
         this.immunityTime
       )

@@ -5,7 +5,6 @@ import { createEntity } from "../lib/entities"
 import crash from "../lib/crash"
 import { changeTexture } from "../lib/sprite"
 import { ParticleContainer, Texture, TilingSprite } from "pixi.js"
-import dustEmitterConfig from "../dust-emitter.json"
 import Particles from '../lib/particles'
 
 export default class Player extends Character {
@@ -25,7 +24,7 @@ export default class Player extends Character {
     weapon.carried = true
     this.weapon = weapon
 
-    this.stepParticles = new Particles({zIndex: this.pos.y - 1})
+    this.stepParticles = new Particles('dust', {zIndex: this.pos.y - 1})
   }
 
   reset() {
