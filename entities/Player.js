@@ -2,9 +2,12 @@ import Character from "./Character"
 import Weapon from "./Weapon"
 import V from "../lib/vec2"
 import { createEntity } from "../lib/entities"
-import crash from '../lib/crash'
-import { changeTexture } from '../lib/sprite'
-import { TilingSprite } from "pixi.js"
+import crash from "../lib/crash"
+import { changeTexture } from "../lib/sprite"
+import { ParticleContainer, Texture, TilingSprite } from "pixi.js"
+import dustEmitterConfig from "../dust-emitter.json"
+import state from "../lib/state"
+import { Emitter } from "pixi-particles"
 
 export default class Player extends Character {
   constructor(x, y) {
@@ -22,6 +25,8 @@ export default class Player extends Character {
     const weapon = createEntity(Weapon.createRandom(this.pos.x, this.pos.y - 6))
     weapon.carried = true
     this.weapon = weapon
+
+    this.createParticles()
   }
 
   reset() {
@@ -39,8 +44,44 @@ export default class Player extends Character {
     this.weapon = weapon
   }
 
+  createParticles() {
+    const particleContainer = new ParticleContainer()
+    particleContainer.zIndex = this.pos.y - 1
+    particleContainer.setProperties({
+      scale: true,
+      position: true,
+      rotation: true,
+      uvs: true,
+      alpha: true,
+    })
+    state.viewport.addChild(particleContainer)
+    this.particleContainer = particleContainer
+
+    const emitter = new Emitter(
+      particleContainer,
+      state.textures.dust,
+      dustEmitterConfig
+    )
+    this.particleEmitter = emitter
+  }
+
+  updateParticles(dt) {
+    this.particleEmitter.update((dt * 16) / 1000)
+    this.particleContainer.zIndex = this.pos.y - 1
+  }
+
+  spawnParticles() {
+    this.particleEmitter.emit = true
+    this.particleEmitter.resetPositionTracking()
+    this.particleEmitter.updateOwnerPos(this.pos.x, this.pos.y)
+  }
+
   update(dt) {
     super.update(dt)
+
+    this.updateParticles(dt)
+
+    if (this.moving && Math.random() > 0.95) this.spawnParticles()
 
     if (this.weapon) {
       this.weapon.pos.x = this.pos.x
@@ -61,11 +102,12 @@ export default class Player extends Character {
   }
 
   onStartMove() {
-    changeTexture(this.sprites.main, 'knight_m_run_anim')
+    changeTexture(this.sprites.main, "knight_m_run_anim")
+    this.spawnParticles()
   }
 
   onEndMove() {
-    changeTexture(this.sprites.main, 'knight_m_idle_anim')
+    changeTexture(this.sprites.main, "knight_m_idle_anim")
   }
 
   setPickupIntent(intent) {
@@ -78,9 +120,5 @@ export default class Player extends Character {
 
   increaseXP(amount) {
     this.xpTarget += amount
-  }
-
-  onCollision(entity) {
-    // console.log(entity.tags, Date.now())
   }
 }

@@ -24,6 +24,7 @@ const viewport = createViewport()
 app.loader
   .add("tileset", "assets/img/dungeon_tileset.png")
   .add("ui", "assets/img/dungeon_ui.png")
+  .add("dust", "assets/img/dust.png")
   .load(setup)
 
 function setup(loader, resources) {
@@ -31,6 +32,7 @@ function setup(loader, resources) {
     resources.tileset.texture,
     resources.ui.texture
   )
+  textures.dust = resources.dust.texture
 
   state.textures = textures
   state.viewport = viewport
@@ -38,6 +40,7 @@ function setup(loader, resources) {
   state.level = 0
 
   const player = createEntity(new Player(0, 0))
+
   state.player = player
   initInput(player)
 
