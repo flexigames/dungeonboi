@@ -95,6 +95,7 @@ function restart(player) {
   })
   startLevel(player)
 
+  state.viewport.addChild(player.stepParticles.container)
   state.viewport.addChild(player.sprites.main)
   if (player.weapon) state.viewport.addChild(player.weapon.sprites.main)
 }
