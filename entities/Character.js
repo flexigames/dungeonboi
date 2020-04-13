@@ -2,7 +2,8 @@ import V from "../lib/vec2"
 import Entity from "./Entity"
 import { Howl } from "howler"
 import * as PIXI from "pixi.js"
-import state from '../lib/state'
+import state from "../lib/state"
+import { shakeScreen } from "../index"
 
 export default class Character extends Entity {
   constructor(x, y, opts = {}) {
@@ -51,8 +52,8 @@ export default class Character extends Entity {
     }
   }
 
-  onStartMove () {}
-  onEndMove () {}
+  onStartMove() {}
+  onEndMove() {}
 
   onDeath() {
     new Howl({ src: "assets/audio/death.wav" }).play()
@@ -74,14 +75,19 @@ export default class Character extends Entity {
   move(direction) {
     const newPos = this.pos.add(direction)
 
-    const checkPosBack = direction.x === 0 ? newPos : newPos.add(V((direction.x < 0 ? 6 : -6), 0))
-    const checkPosFront = direction.x === 0 ? newPos : newPos.add(V((direction.x < 0 ? -6 : 6), 0))
+    const checkPosBack =
+      direction.x === 0 ? newPos : newPos.add(V(direction.x < 0 ? 6 : -6, 0))
+    const checkPosFront =
+      direction.x === 0 ? newPos : newPos.add(V(direction.x < 0 ? -6 : 6, 0))
 
     if (isWalkable(checkPosFront) || isWalkable(checkPosBack)) {
       this.pos = newPos
     } else if (isWalkable(V(newPos.x, this.pos.y))) {
       this.pos.x = newPos.x
-    } else if (isWalkable(V(this.pos.x - 6, newPos.y)) || isWalkable(V(this.pos.x + 6, newPos.y))) {
+    } else if (
+      isWalkable(V(this.pos.x - 6, newPos.y)) ||
+      isWalkable(V(this.pos.x + 6, newPos.y))
+    ) {
       this.pos.y = newPos.y
     }
   }
@@ -107,6 +113,7 @@ export default class Character extends Entity {
     this.setSpriteStunned()
 
     if (Date.now() > this.immuneUntil) {
+      shakeScreen(100)
       new Howl({ src: "assets/audio/hit.wav", volume: 0.2 }).play()
       this.health = Math.max(0, this.health - damage)
       this.immuneUntil = Date.now() + this.immunityTime

@@ -1,20 +1,15 @@
 import { createLevel, createWalkableLevelMap } from "./lib/level"
 import Player from "./entities/Player"
 import { initInput, controlPlayer } from "./lib/input"
-import {
-  createEntity,
-  clearEntities,
-  updateEntities,
-  findEntities,
-} from "./lib/entities"
+import { createEntity, clearEntities, updateEntities } from "./lib/entities"
 import * as PIXI from "pixi.js"
 import { Viewport } from "pixi-viewport"
 import { createTextures } from "./lib/sprite"
 import state from "./lib/state"
 import HUD from "./lib/hud"
 import generateDungeon from "./lib/dungeon"
-import { compact } from "lodash"
-import crash from './lib/crash'
+import { random, compact } from "lodash"
+import crash from "./lib/crash"
 
 crash.onCollision((a, b) => {
   a.data.entity.onCollision(b.data.entity)
@@ -32,7 +27,10 @@ app.loader
   .load(setup)
 
 function setup(loader, resources) {
-  const textures = createTextures(resources.tileset.texture, resources.ui.texture)
+  const textures = createTextures(
+    resources.tileset.texture,
+    resources.ui.texture
+  )
 
   state.textures = textures
   state.viewport = viewport
@@ -56,6 +54,9 @@ function createGameLoop(player, hud) {
     controlPlayer(player)
     updateViewport(player)
     updateEntities(dt)
+
+    randomizeViewportOffsetForScreenShake()
+
     if (player.health <= 0) {
       state.level = 0
       player.reset()
@@ -70,12 +71,22 @@ export function goToNextLevel() {
   restart(state.player)
 }
 
+function randomizeViewportOffsetForScreenShake() {
+  if (state.viewport.shake) {
+    state.viewport.offsetX = random(-5, 5)
+    state.viewport.offsetY = random(-5, 5)
+  } else {
+    state.viewport.offsetX = 0
+    state.viewport.offsetY = 0
+  }
+}
+
 function restart(player) {
   state.viewport.removeChildren()
   crash.clear()
   const survivingEntities = compact([player, player.weapon])
   clearEntities()
-  survivingEntities.forEach(entity => {
+  survivingEntities.forEach((entity) => {
     createEntity(entity)
     crash.insert(entity.collider.collider)
   })
@@ -121,12 +132,22 @@ function createViewport() {
   viewport.sortableChildren = true
   app.stage.addChild(viewport)
 
+  viewport.offsetX = 0
+  viewport.offsetY = 0
+
   return viewport
 }
 
 function updateViewport(player) {
   if (!VIEWPORT_DEBUG) {
-    viewport.x = (-player.pos.x + 256 / 2) * 2
-    viewport.y = (-player.pos.y + 256 / 2) * 2
+    viewport.x = (-player.pos.x + 256 / 2) * 2 + viewport.offsetX
+    viewport.y = (-player.pos.y + 256 / 2) * 2 + viewport.offsetY
   }
+}
+
+export function shakeScreen(durationMS) {
+  state.viewport.shake = true
+  setTimeout(() => {
+    state.viewport.shake = false
+  }, durationMS)
 }
