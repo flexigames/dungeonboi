@@ -13,6 +13,7 @@ import { createTextures } from "./lib/sprite"
 import state from "./lib/state"
 import HUD from "./lib/hud"
 import PauseMenu from './lib/pauseMenu'
+import MainMenu from './lib/mainMenu'
 import generateDungeon from "./lib/dungeon"
 import { random, compact } from "lodash"
 import crash from "./lib/crash"
@@ -35,7 +36,7 @@ app.loader
   .add("spikes", "assets/img/spikes.png")
   .load(setup)
 
-let gameState = 'playing'
+let gameState = 'mainmenu'
 
 function setup(loader, resources) {
   const textures = createTextures(
@@ -54,19 +55,30 @@ function setup(loader, resources) {
   const player = createEntity(new Player(0, 0))
 
   state.player = player
-  initInput(player, onPause)
+  initInput(player, {onPause, onEnter})
 
   const pauseMenu = new PauseMenu()
+  const mainMenu = new MainMenu()
+  mainMenu.setVisible(true)
+  mainMenu.onStart = () => {
+    gameState = 'playing'
+    mainMenu.setVisible(false)
+  }
+  const hud = new HUD(player)
 
   function onPause () {
     gameState = gameState === 'paused' ? 'playing' : 'paused'
     pauseMenu.setVisible(gameState === 'paused')
+  }
 
+  function onEnter () {
+    if (gameState === 'mainmenu') {
+      gameState = 'playing'
+      mainMenu.setVisible(false)
+    }
   }
 
   startLevel(player)
-
-  const hud = new HUD(player)
   
   app.ticker.add(createGameLoop(player, hud))
 }
