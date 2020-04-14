@@ -116,7 +116,7 @@ export default class Enemy extends Character {
       this.pos.distance(player.pos) < this.attackRadius &&
       Date.now() > this.immuneUntil
     ) {
-      player.takeHit(this.damage, this.pos)
+      player.tryHit(this.damage, this.pos, this)
     }
   }
 }

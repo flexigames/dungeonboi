@@ -115,28 +115,32 @@ export default class Character extends Entity {
     Object.values(this.sprites).forEach((sprite) => (sprite.tint = 0xfb1010))
   }
 
-  takeHit(damage = 1, attackerPos) {
+  tryHit(damage = 1, attackPos, attacker) {
     this.setSpriteStunned()
 
     if (Date.now() > this.immuneUntil) {
-      shakeScreen(100)
-      this.bloodParticles.spawn(this.pos)
-      new Howl({ src: "assets/audio/hit.wav", volume: 0.2 }).play()
-      this.health = Math.max(0, this.health - damage)
-      this.immuneUntil = Date.now() + this.immunityTime
-      setTimeout(
-        () =>
-          Object.values(this.sprites).forEach(
-            (sprite) => (sprite.tint = 0xffffff)
-          ),
-        this.immunityTime
-      )
-      const fromDirection = attackerPos.subtract(this.pos).normalize()
-      this.velocity = fromDirection
-        .multiply(-1)
-        .normalize()
-        .multiply(this.knockBackSpeed)
+      this.takeHit(damage, attackPos, attacker)
     }
+  }
+
+  takeHit(damage, attackPos) {
+    shakeScreen(100)
+    this.bloodParticles.spawn(this.pos)
+    new Howl({ src: "assets/audio/hit.wav", volume: 0.2 }).play()
+    this.health = Math.max(0, this.health - damage)
+    this.immuneUntil = Date.now() + this.immunityTime
+    setTimeout(
+      () =>
+        Object.values(this.sprites).forEach(
+          (sprite) => (sprite.tint = 0xffffff)
+        ),
+      this.immunityTime
+    )
+    const fromDirection = attackPos.subtract(this.pos).normalize()
+    this.velocity = fromDirection
+      .multiply(-1)
+      .normalize()
+      .multiply(this.knockBackSpeed)
   }
 
   gainHealth(points = 1) {

@@ -21,6 +21,8 @@ export default class Relic extends Entity {
     state.viewport.removeChild(this.sprites.main)
   }
 
+  onPlayerHit() {}
+
   onRemoval() {}
 
   update(dt) {

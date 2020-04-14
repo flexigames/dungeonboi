@@ -4,6 +4,7 @@ import Weapon from "./Weapon"
 import SpeedPotion from "./relics/SpeedPotion"
 import HeartPotion from "./relics/HeartPotion"
 import { sample } from "lodash"
+import Thorns from "./relics/Thorns"
 
 export default class Chest extends Entity {
   constructor(x, y) {
@@ -41,7 +42,7 @@ export default class Chest extends Entity {
     const y = this.pos.y + 16
 
     const relics = findEntities("relic")
-    const relicTypes = [SpeedPotion, HeartPotion]
+    const relicTypes = [SpeedPotion, HeartPotion, Thorns]
 
     const unusedRelicTypes = relicTypes.filter(
       (relicType) => !relics.some((it) => it instanceof relicType)

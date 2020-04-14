@@ -30,6 +30,7 @@ app.loader
   .add("tileset", "assets/img/dungeon_tileset.png")
   .add("ui", "assets/img/dungeon_ui.png")
   .add("dust", "assets/img/dust.png")
+  .add("rose", "assets/img/rose.png")
   .load(setup)
 
 function setup(loader, resources) {
@@ -38,6 +39,7 @@ function setup(loader, resources) {
     resources.ui.texture
   )
   textures.dust = resources.dust.texture
+  textures.rose = resources.rose.texture
 
   state.textures = textures
   state.viewport = viewport

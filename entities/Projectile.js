@@ -56,7 +56,7 @@ export default class Projectile extends Entity {
   checkCollision() {
     findEntities(this.targetTags).forEach((target) => {
       if (this && target && this.pos.distance(target.pos) < this.hitRadius) {
-        target.takeHit(this.damage, this.pos)
+        target.tryHit(this.damage, this.pos)
         this.destroy()
       }
     })
