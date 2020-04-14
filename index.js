@@ -12,6 +12,7 @@ import { Viewport } from "pixi-viewport"
 import { createTextures } from "./lib/sprite"
 import state from "./lib/state"
 import HUD from "./lib/hud"
+import PauseMenu from './lib/pauseMenu'
 import generateDungeon from "./lib/dungeon"
 import { random, compact } from "lodash"
 import crash from "./lib/crash"
@@ -34,6 +35,8 @@ app.loader
   .add("spikes", "assets/img/spikes.png")
   .load(setup)
 
+let gameState = 'playing'
+
 function setup(loader, resources) {
   const textures = createTextures(
     resources.tileset.texture,
@@ -51,28 +54,38 @@ function setup(loader, resources) {
   const player = createEntity(new Player(0, 0))
 
   state.player = player
-  initInput(player)
+  initInput(player, onPause)
+
+  const pauseMenu = new PauseMenu()
+
+  function onPause () {
+    gameState = gameState === 'paused' ? 'playing' : 'paused'
+    pauseMenu.setVisible(gameState === 'paused')
+
+  }
 
   startLevel(player)
 
   const hud = new HUD(player)
-
+  
   app.ticker.add(createGameLoop(player, hud))
 }
 
 function createGameLoop(player, hud) {
   return function gameLoop(dt) {
-    crash.check()
-    controlPlayer(player)
-    updateViewport(player)
-    updateEntities(dt)
-
-    randomizeViewportOffsetForScreenShake()
-
-    if (player.health <= 0) {
-      restart(player)
+    if (gameState === 'playing') {
+      crash.check()
+      controlPlayer(player)
+      updateViewport(player)
+      updateEntities(dt)
+  
+      randomizeViewportOffsetForScreenShake()
+  
+      if (player.health <= 0) {
+        restart(player)
+      }
+      hud.update()
     }
-    hud.update()
   }
 }
 
