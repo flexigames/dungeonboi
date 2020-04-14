@@ -1,6 +1,7 @@
 import Entity from "./Entity"
 import { findEntities, createEntity } from "../lib/entities"
 import Weapon from "./Weapon"
+import Potion from "./Potion"
 import SpeedPotion from "./relics/SpeedPotion"
 import HeartPotion from "./relics/HeartPotion"
 import Thorns from "./relics/Thorns"
@@ -14,7 +15,9 @@ export default class Chest extends Entity {
     this.sprites.main.stop()
     this.sprites.main.loop = false
     this.pickupRadius = 16
-    this.relicDropRate = 1 //0.15
+    this.relicDropRate = 0.2
+    this.potionDropRate = 0.4
+    this.weaponDropRate = 0.4
     this.open = false
   }
 
@@ -51,10 +54,35 @@ export default class Chest extends Entity {
 
     const relicClass = sample(unusedRelicTypes)
 
-    if (Math.random() < (relicClass ? 1 - this.relicDropRate : 1)) {
-      return createEntity(Weapon.createRandom(x, y))
-    } else {
-      return createEntity(new relicClass(x, y))
-    }
+    const { create } = pickRandom([
+      {
+        rate: relicClass ? this.relicDropRate : 0,
+        create: (x, y) => new relicClass(x, y),
+      },
+      {
+        rate: this.weaponDropRate,
+        create: (x, y) => Weapon.createRandom(x, y),
+      },
+      {
+        rate: this.potionDropRate,
+        create: (x, y) => new Potion(x, y),
+      },
+    ])
+
+    if (create) createEntity(create(x, y))
   }
+}
+
+function pickRandom(array) {
+  const rnd = Math.random()
+
+  let baseRate = 0
+
+  const totalRate = array.map((it) => it.rate).reduce((a, b) => a + b)
+
+  for (let i = 0; i < array.length; i++) {
+    if (rnd < (baseRate + array[i].rate) / totalRate) return array[i]
+    baseRate += array[i].rate
+  }
+  return null
 }
