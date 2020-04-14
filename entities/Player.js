@@ -1,7 +1,7 @@
 import Character from "./Character"
 import Weapon from "./Weapon"
 import V from "../lib/vec2"
-import { createEntity } from "../lib/entities"
+import { createEntity, findEntities } from "../lib/entities"
 import { changeTexture } from "../lib/sprite"
 import Particles from "../lib/particles"
 
@@ -90,5 +90,13 @@ export default class Player extends Character {
 
   survivesBetweenLevels() {
     return true
+  }
+
+  takeHit(damage, attackPos, attacker) {
+    findEntities("relic").forEach((it) =>
+      it.onPlayerHit(damage, attackPos, attacker)
+    )
+
+    super.takeHit(damage, attackPos, attacker)
   }
 }

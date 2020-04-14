@@ -121,7 +121,7 @@ export default class Weapon extends Entity {
     if (!this.carried) this.checkPlayerCollision()
   }
 
-  attack(targetTags) {
+  attack() {
     this.isAttacking = true
     new Howl({ src: [this.sound] }).play()
   }
@@ -142,8 +142,10 @@ export default class Weapon extends Entity {
   }
 
   onCollision(entity) {
+    const player = findEntities("player")[0]
+
     if (this.isAttacking && entity.tags.includes("enemy")) {
-      entity.takeHit(this.damage, this.pos)
+      entity.tryHit(this.damage, this.pos, player)
     }
   }
 
