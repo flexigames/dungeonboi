@@ -49,13 +49,6 @@ export default class Player extends Character {
 
     if (this.moving && Math.random() > 0.95) this.stepParticles.spawn(this.pos)
 
-    if (this.weapon) {
-      this.weapon.pos.x = this.pos.x
-      this.weapon.pos.y = this.pos.y - 6
-      this.weapon.zIndex = this.pos.y + 1
-      this.weapon.attackLeft = this.flipped
-    }
-
     if (this.xp < this.xpTarget) {
       this.xp++
       if (this.xp >= this.xpLimit) {
@@ -64,6 +57,13 @@ export default class Player extends Character {
         this.previousXpLimit = this.xpLimit
         this.xpLimit = this.xpLimit + this.xpLimit * 2
       }
+    }
+
+    if (this.weapon) {
+      this.weapon.pos.x = this.pos.x
+      this.weapon.pos.y = this.pos.y - 6
+      this.weapon.zIndex = this.pos.y + 1
+      this.weapon.attackLeft = this.flipped
     }
   }
 
