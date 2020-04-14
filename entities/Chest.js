@@ -3,8 +3,9 @@ import { findEntities, createEntity } from "../lib/entities"
 import Weapon from "./Weapon"
 import SpeedPotion from "./relics/SpeedPotion"
 import HeartPotion from "./relics/HeartPotion"
-import { sample } from "lodash"
 import Thorns from "./relics/Thorns"
+import Spikes from "./relics/Spikes"
+import { sample } from "lodash"
 
 export default class Chest extends Entity {
   constructor(x, y) {
@@ -13,7 +14,7 @@ export default class Chest extends Entity {
     this.sprites.main.stop()
     this.sprites.main.loop = false
     this.pickupRadius = 16
-    this.relicDropRate = 0.15
+    this.relicDropRate = 1 //0.15
     this.open = false
   }
 
@@ -42,7 +43,7 @@ export default class Chest extends Entity {
     const y = this.pos.y + 16
 
     const relics = findEntities("relic")
-    const relicTypes = [SpeedPotion, HeartPotion, Thorns]
+    const relicTypes = [Spikes, SpeedPotion, HeartPotion, Thorns]
 
     const unusedRelicTypes = relicTypes.filter(
       (relicType) => !relics.some((it) => it instanceof relicType)

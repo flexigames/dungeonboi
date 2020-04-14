@@ -15,6 +15,7 @@ export default class Projectile extends Entity {
       targetTags = ["enemy"],
       hitRadius = 8,
       speed = 3,
+      angle = 0,
     } = opts
 
     this.direction = direction
@@ -22,9 +23,13 @@ export default class Projectile extends Entity {
     this.targetTags = targetTags
     this.damage = damage
     this.hitRadius = hitRadius
+    this.angle = angle
+
+    this.sprites.main.angle = angle
   }
 
   update(dt) {
+    console.log("projectile pos", this.pos)
     super.update(dt)
 
     this.handleMove(dt)

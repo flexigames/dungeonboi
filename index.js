@@ -31,6 +31,7 @@ app.loader
   .add("ui", "assets/img/dungeon_ui.png")
   .add("dust", "assets/img/dust.png")
   .add("rose", "assets/img/rose.png")
+  .add("spikes", "assets/img/spikes.png")
   .load(setup)
 
 function setup(loader, resources) {
@@ -40,6 +41,7 @@ function setup(loader, resources) {
   )
   textures.dust = resources.dust.texture
   textures.rose = resources.rose.texture
+  textures.spikes = resources.spikes.texture
 
   state.textures = textures
   state.viewport = viewport
