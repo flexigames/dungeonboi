@@ -64,7 +64,7 @@ export default class Enemy extends Character {
     this.followDistance = 150
     this.xpGain = 10
     this.attackRadius = attackRadius
-    this.potionDropRate = 0.2
+    this.potionDropRate = 0.07
     this.damage = 1
   }
 

@@ -1,9 +1,11 @@
 import Character from "./Character"
 import Weapon from "./Weapon"
+import Entity from "./Entity"
 import V from "../lib/vec2"
 import { createEntity, findEntities } from "../lib/entities"
 import { changeTexture } from "../lib/sprite"
 import Particles from "../lib/particles"
+import state from "../lib/state"
 
 export default class Player extends Character {
   constructor(x, y) {
@@ -22,6 +24,7 @@ export default class Player extends Character {
     const weapon = createEntity(Weapon.createRandom(this.pos.x, this.pos.y - 6))
     weapon.carried = true
     this.weapon = weapon
+    this.compass = createEntity(new Entity(this.pos.x, this.pos.y))
 
     this.stepParticles = new Particles("dust", { zIndex: this.pos.y - 1 })
   }
@@ -37,13 +40,32 @@ export default class Player extends Character {
     this.velocity = V(0, 0)
     this.immuneUntil = Date.now()
     this.speed = this.baseSpeed
-    const weapon = createEntity(Weapon.createRandom(this.pos.x, this.pos.y - 6))
+    const weapon = createEntity(
+      Weapon.createRandom(this.pos.x, this.pos.y - 6, {
+        sprites: "ui_heart_full",
+      })
+    )
     weapon.carried = true
     this.weapon = weapon
   }
 
   update(dt) {
     super.update(dt)
+
+    if (this.compass) {
+      const ladder = findEntities("ladder")[0]
+
+      const angle = 0
+      // (Math.atan2(ladder.pos.y - this.pos.y, ladder.pos.x - this.pos.x) *
+      //   180) /
+      // Math.PI
+      this.sprites.main.visible = false
+      state.viewport.addChild(this.compass.sprites.main)
+      this.compass.sprites.main.angle = angle
+      this.compass.sprites.main.zIndex = 100
+      this.compass.pos.x = this.pos.x
+      this.compass.pos.y = this.pos.y
+    }
 
     this.stepParticles.update(dt, this.pos.y - 1)
 
