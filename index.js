@@ -60,10 +60,7 @@ function setup(loader, resources) {
   const pauseMenu = new PauseMenu()
   const mainMenu = new MainMenu()
   mainMenu.setVisible(true)
-  mainMenu.onStart = () => {
-    gameState = 'playing'
-    mainMenu.setVisible(false)
-  }
+  mainMenu.onStart = startPlaying
   const hud = new HUD(player)
 
   function onPause () {
@@ -72,10 +69,13 @@ function setup(loader, resources) {
   }
 
   function onEnter () {
-    if (gameState === 'mainmenu') {
-      gameState = 'playing'
-      mainMenu.setVisible(false)
-    }
+    if (gameState === 'mainmenu') startPlaying()
+  }
+
+  function startPlaying () {
+    gameState = 'playing'
+    mainMenu.setVisible(false)
+    hud.setVisible(true)
   }
 
   startLevel(player)
