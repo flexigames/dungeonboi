@@ -9,6 +9,7 @@ export default class Ladder extends Entity {
   constructor(x, y) {
     super(x, y, { sprites: "floor_ladder" })
     this.sprites.main.anchor.set(0.5, 0.5)
+    this.zIndex = y - 8
   }
 
   update(dt) {

@@ -21,7 +21,7 @@ import WebFont from 'webfontloader'
 
 WebFont.load({
   google: {
-    families: ['VT323', 'Press Start 2P']
+    families: ['Press Start 2P']
   },
   active: startPIXI
 })
@@ -48,6 +48,8 @@ function startPIXI() {
     .add("rose", "assets/img/rose.png")
     .add("spikes", "assets/img/spikes.png")
     .add("light", "assets/img/light.png")
+    .add("heart_empty", "assets/img/heart_empty.png")
+    .add("heart_full", "assets/img/heart_full.png")
     .load(setup)
 
     function setup(loader, resources) {
@@ -59,6 +61,8 @@ function startPIXI() {
       textures.rose = resources.rose.texture
       textures.spikes = resources.spikes.texture
       textures.light = resources.light.texture
+      textures['heart_empty'] = resources.heart_empty.texture
+      textures['heart_full'] = resources.heart_full.texture
     
       state.textures = textures
       state.viewport = viewport
