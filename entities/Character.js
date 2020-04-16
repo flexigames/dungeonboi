@@ -64,6 +64,7 @@ export default class Character extends Entity {
   onEndMove() {}
 
   onDeath() {
+    this.bloodParticles.destroy()
     new Howl({ src: "assets/audio/death.wav" }).play()
   }
 
