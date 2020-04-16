@@ -34,6 +34,7 @@ app.loader
   .add("dust", "assets/img/dust.png")
   .add("rose", "assets/img/rose.png")
   .add("spikes", "assets/img/spikes.png")
+  .add("light", "assets/img/light.png")
   .load(setup)
 
 let gameState = 'mainmenu'
@@ -46,6 +47,7 @@ function setup(loader, resources) {
   textures.dust = resources.dust.texture
   textures.rose = resources.rose.texture
   textures.spikes = resources.spikes.texture
+  textures.light = resources.light.texture
 
   state.textures = textures
   state.viewport = viewport
