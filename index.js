@@ -18,6 +18,11 @@ import generateDungeon from "./lib/dungeon"
 import { random, compact } from "lodash"
 import crash from "./lib/crash"
 import WebFont from 'webfontloader'
+import Stats from 'stats.js'
+
+const stats = new Stats()
+stats.showPanel(0)
+document.body.appendChild( stats.dom );
 
 WebFont.load({
   google: {
@@ -127,6 +132,7 @@ function startPIXI() {
 
     function createGameLoop(player, hud) {
       return function gameLoop(dt) {
+        stats.begin()
         if (gameState === 'playing') {
           crash.check()
           controlPlayer(player)
@@ -140,6 +146,7 @@ function startPIXI() {
           }
           hud.update()
         }
+        stats.end()
       }
     }
 }
