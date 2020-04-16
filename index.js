@@ -17,6 +17,16 @@ import MainMenu from './lib/mainMenu'
 import generateDungeon from "./lib/dungeon"
 import { random, compact } from "lodash"
 import crash from "./lib/crash"
+import WebFont from 'webfontloader'
+
+WebFont.load({
+  google: {
+    families: ['VT323', 'Press Start 2P']
+  },
+  active: startPIXI
+})
+
+
 
 crash.onCollision((a, b) => {
   a.data.entity.onCollision(b.data.entity)
@@ -25,83 +35,114 @@ crash.onCollision((a, b) => {
 
 const VIEWPORT_DEBUG = false
 
-const app = createApp()
-const viewport = createViewport()
-
-app.loader
-  .add("tileset", "assets/img/dungeon_tileset.png")
-  .add("ui", "assets/img/dungeon_ui.png")
-  .add("dust", "assets/img/dust.png")
-  .add("rose", "assets/img/rose.png")
-  .add("spikes", "assets/img/spikes.png")
-  .add("light", "assets/img/light.png")
-  .load(setup)
-
 let gameState = 'mainmenu'
 
-function setup(loader, resources) {
-  const textures = createTextures(
-    resources.tileset.texture,
-    resources.ui.texture
-  )
-  textures.dust = resources.dust.texture
-  textures.rose = resources.rose.texture
-  textures.spikes = resources.spikes.texture
-  textures.light = resources.light.texture
+function startPIXI() {
+  const app = createApp()
+  const viewport = createViewport()
 
-  state.textures = textures
-  state.viewport = viewport
-  state.app = app
-  state.level = 0
+  app.loader
+    .add("tileset", "assets/img/dungeon_tileset.png")
+    .add("ui", "assets/img/dungeon_ui.png")
+    .add("dust", "assets/img/dust.png")
+    .add("rose", "assets/img/rose.png")
+    .add("spikes", "assets/img/spikes.png")
+    .add("light", "assets/img/light.png")
+    .load(setup)
 
-  const player = createEntity(new Player(0, 0))
-
-  state.player = player
-  initInput(player, {onPause, onEnter})
-
-  const pauseMenu = new PauseMenu()
-  const mainMenu = new MainMenu()
-  mainMenu.setVisible(true)
-  mainMenu.onStart = startPlaying
-  const hud = new HUD(player)
-
-  function onPause () {
-    gameState = gameState === 'paused' ? 'playing' : 'paused'
-    pauseMenu.setVisible(gameState === 'paused')
-  }
-
-  function onEnter () {
-    if (gameState === 'mainmenu') startPlaying()
-  }
-
-  function startPlaying () {
-    gameState = 'playing'
-    mainMenu.setVisible(false)
-    hud.setVisible(true)
-  }
-
-  startLevel(player)
-  
-  app.ticker.add(createGameLoop(player, hud))
-}
-
-function createGameLoop(player, hud) {
-  return function gameLoop(dt) {
-    if (gameState === 'playing') {
-      crash.check()
-      controlPlayer(player)
-      updateViewport(player)
-      updateEntities(dt)
-  
-      randomizeViewportOffsetForScreenShake()
-  
-      if (player.health <= 0) {
-        restart(player)
+    function setup(loader, resources) {
+      const textures = createTextures(
+        resources.tileset.texture,
+        resources.ui.texture
+      )
+      textures.dust = resources.dust.texture
+      textures.rose = resources.rose.texture
+      textures.spikes = resources.spikes.texture
+      textures.light = resources.light.texture
+    
+      state.textures = textures
+      state.viewport = viewport
+      state.app = app
+      state.level = 0
+    
+      const player = createEntity(new Player(0, 0))
+    
+      state.player = player
+      initInput(player, { onPause, onEnter })
+    
+      const pauseMenu = new PauseMenu()
+      const mainMenu = new MainMenu()
+      mainMenu.setVisible(true)
+      mainMenu.onStart = startPlaying
+      const hud = new HUD(player)
+    
+      function onPause() {
+        gameState = gameState === 'paused' ? 'playing' : 'paused'
+        pauseMenu.setVisible(gameState === 'paused')
       }
-      hud.update()
+    
+      function onEnter() {
+        if (gameState === 'mainmenu') startPlaying()
+      }
+    
+      function startPlaying() {
+        gameState = 'playing'
+        mainMenu.setVisible(false)
+        hud.setVisible(true)
+      }
+    
+      startLevel(player)
+    
+      app.ticker.add(createGameLoop(player, hud))
     }
-  }
+
+    function createViewport() {
+      const viewport = new Viewport({
+        interaction: app.renderer.plugins.interaction,
+      })
+      viewport.scale.x = 2
+      viewport.scale.y = 2
+    
+      if (VIEWPORT_DEBUG) viewport.drag().pinch()
+    
+      viewport.sortableChildren = true
+      app.stage.addChild(viewport)
+    
+      viewport.offsetX = 0
+      viewport.offsetY = 0
+    
+      return viewport
+    }
+
+    function updateViewport(player) {
+      if (!VIEWPORT_DEBUG) {
+        viewport.x = (-player.pos.x + 256 / 2) * 2 + viewport.offsetX
+        viewport.y = (-player.pos.y + 256 / 2) * 2 + viewport.offsetY
+      }
+    }
+
+    function createGameLoop(player, hud) {
+      return function gameLoop(dt) {
+        if (gameState === 'playing') {
+          crash.check()
+          controlPlayer(player)
+          updateViewport(player)
+          updateEntities(dt)
+    
+          randomizeViewportOffsetForScreenShake()
+    
+          if (player.health <= 0) {
+            restart(player)
+          }
+          hud.update()
+        }
+      }
+    }
 }
+
+
+
+
 
 export function goToNextLevel() {
   state.viewport.removeChildren()
@@ -170,31 +211,6 @@ function createApp() {
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
   return app
-}
-
-function createViewport() {
-  const viewport = new Viewport({
-    interaction: app.renderer.plugins.interaction,
-  })
-  viewport.scale.x = 2
-  viewport.scale.y = 2
-
-  if (VIEWPORT_DEBUG) viewport.drag().pinch()
-
-  viewport.sortableChildren = true
-  app.stage.addChild(viewport)
-
-  viewport.offsetX = 0
-  viewport.offsetY = 0
-
-  return viewport
-}
-
-function updateViewport(player) {
-  if (!VIEWPORT_DEBUG) {
-    viewport.x = (-player.pos.x + 256 / 2) * 2 + viewport.offsetX
-    viewport.y = (-player.pos.y + 256 / 2) * 2 + viewport.offsetY
-  }
 }
 
 export function shakeScreen(durationMS) {
