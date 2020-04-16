@@ -166,8 +166,8 @@ export function goToNextLevel() {
 
 function randomizeViewportOffsetForScreenShake() {
   if (state.viewport.shake) {
-    state.viewport.offsetX = random(-5, 5)
-    state.viewport.offsetY = random(-5, 5)
+    state.viewport.offsetX = random(-8, 8)
+    state.viewport.offsetY = random(-8, 8)
   } else {
     state.viewport.offsetX = 0
     state.viewport.offsetY = 0
@@ -202,7 +202,7 @@ function createApp() {
   const app = new PIXI.Application({
     width: 512,
     height: 512,
-    backgroundColor: 0x222222,
+    backgroundColor: 0x150A21,
     antialias: false,
   })
 

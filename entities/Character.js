@@ -124,7 +124,7 @@ export default class Character extends Entity {
   }
 
   takeHit(damage, attackPos) {
-    shakeScreen(100)
+    shakeScreen(120)
     this.bloodParticles.spawn(this.pos)
     new Howl({ src: "assets/audio/hit.wav", volume: 0.2 }).play()
     this.health = Math.max(0, this.health - damage)
