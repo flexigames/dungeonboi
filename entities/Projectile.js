@@ -29,7 +29,6 @@ export default class Projectile extends Entity {
   }
 
   update(dt) {
-    console.log("projectile pos", this.pos)
     super.update(dt)
 
     this.handleMove(dt)
