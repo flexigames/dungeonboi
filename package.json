@@ -4,7 +4,8 @@
   "description": "a dungeon crawler",
   "main": "index.html",
   "scripts": {
-    "start": "parcel index.html"
+    "start": "parcel index.html",
+    "bundle": "rm -rf dist && parcel build index.html --no-source-maps --public-url '.' && zip -r bundle.zip dist"
   },
   "dependencies": {
     "crash-colliders": "^2.0.2",
