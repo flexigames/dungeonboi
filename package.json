@@ -14,7 +14,7 @@
     "pixi": "^0.3.1",
     "pixi-particles": "^4.2.0",
     "pixi-viewport": "^4.10.0",
-    "pixi.js": "^5.2.1",
+    "pixi.js": "^5.2.3",
     "stats.js": "^0.17.0",
     "webfontloader": "^1.6.28"
   },
@@ -23,7 +23,7 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "bankai": "9.15.3",
     "browserify": "16.5.1",
-    "parcel-bundler": "*",
+    "parcel-bundler": "^1.12.4",
     "parcel-plugin-static-files-copy": "^2.3.1",
     "parcel-plugin-txt": "*",
     "seedrandom": "3.0.5"
